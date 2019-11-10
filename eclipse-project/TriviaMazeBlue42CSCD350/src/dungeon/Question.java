@@ -15,6 +15,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Patrick Enburg <patrick@enburg.info
+ */
 public abstract class Question implements Drawable{
 
 	@Override
@@ -30,10 +33,19 @@ public abstract class Question implements Drawable{
         gc.strokeText("?", imgX + (x * offset) + (offset / 2), imgY + (y * offset) + (offset / 2));
 	}
 	
+	/**
+	 * Passes the up keystroke event
+	 */
 	public abstract void onUp();
 	
+	/**
+	 * Passes the down keystroke event
+	 */
 	public abstract void onDown();
 	
+	/**
+	 * Passes the enter / return keystroke event
+	 */
 	public abstract void onEnter();
 
 }
