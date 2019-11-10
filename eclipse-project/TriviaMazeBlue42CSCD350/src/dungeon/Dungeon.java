@@ -40,6 +40,9 @@ public class Dungeon extends Region {
 
     private BattleScene battle;
     private BooleanProperty isBattleOver;
+    
+    private Question question;
+    private BooleanProperty isQuestionSubmitted;
 
     private StringProperty statusString;
 
@@ -170,33 +173,42 @@ public class Dungeon extends Region {
     }
 
     public void onLeft() {
-        if (battle == null) {
+        if (battle == null && question == null) {
             moveHero(-1, 0);
         }
         draw();
     }
 
     public void onRight() {
-        if (battle == null) {
+        if (battle == null && question == null) {
             moveHero(1, 0);
         }
         draw();
     }
 
     public void onUp() {
-        if (battle == null) {
-            moveHero(0, -1);
-        } else {
-            battle.onUp();
+        if (battle != null) {
+        	battle.onUp();
+            
+        }
+        else if(question != null){
+        	question.onUp();
+        }
+        else {
+          	moveHero(0, -1);
         }
         draw();
     }
 
     public void onDown() {
-        if (battle == null) {
+        if (battle != null) {
+        	battle.onDown();
+        }
+        else if(question != null) {
+        	question.onDown();
+        }
+        else {
             moveHero(0, 1);
-        } else {
-            battle.onDown();
         }
         draw();
     }
@@ -276,7 +288,7 @@ public class Dungeon extends Region {
 
     public void onEnter() {
         if (mHero.isAlive()) {
-            if (battle == null) {
+            if (battle == null && question == null) {
                 if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].isEntrance() && mHero.isAlive()) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Return to the surface?");
@@ -299,8 +311,12 @@ public class Dungeon extends Region {
                     }
                     
                 }
-            } else {
+            }
+            else if(battle != null){
                 battle.onEnter();
+            }
+            else if(question != null) {
+            	question.onEnter();
             }
 
         }
@@ -367,4 +383,6 @@ public class Dungeon extends Region {
         draw();
     }
 
+    
+    
 }
