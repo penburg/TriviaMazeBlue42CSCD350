@@ -21,8 +21,8 @@ import javafx.scene.paint.Color;
  * @author Patrick Enburg <patrick@enburg.info
  */
 public abstract class Question implements Drawable{
-	private boolean QuestionCorrect;
-	private BooleanProperty QuestionSubmitted;
+	protected boolean QuestionCorrect;
+	protected BooleanProperty QuestionSubmitted;
 	
 	public Question() {
 		this.QuestionCorrect = false;
@@ -40,6 +40,7 @@ public abstract class Question implements Drawable{
         
         //Draw a black ? somewhere near the middle
         gc.setFill(Color.BLACK);
+        gc.fillText("?", imgX + (x * offset) + (offset / 2), imgY + (y * offset) + (offset / 2));
         gc.strokeText("?", imgX + (x * offset) + (offset / 2), imgY + (y * offset) + (offset / 2));
 	}
 	
