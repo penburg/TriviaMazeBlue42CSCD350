@@ -247,6 +247,9 @@ public class DungeonAdventure extends Application {
             case C:
                 mGame.onCheatCode();
                 break;
+            case D:
+            	mGame.onDebugQuestion();
+            	break;
             case ENTER:
                 mGame.onEnter();
                 break;

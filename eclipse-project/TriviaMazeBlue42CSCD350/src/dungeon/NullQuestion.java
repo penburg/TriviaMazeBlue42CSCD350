@@ -13,11 +13,13 @@ package dungeon;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class NullQuestion extends Question {
 
-	private final String message = "Press Enter to (un)lock and continue.";
-	private final String[] options = {"Lock", "Unlock"};
+	private final String message = "Lock or Open the door?";
+	private final String[] options = {"Lock", "Open"};
 	private int optionSelected = 0;
 
 	
@@ -27,7 +29,12 @@ public class NullQuestion extends Question {
 		// TODO Auto-generated method stub
 		super.draw(imgX, imgY, x, y, offset, canvas);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		
+		gc.save();
+		gc.setStroke(Color.BLACK);
+        gc.setFill(Color.WHITE);
+        gc.setLineWidth(lineWidth);
+        gc.setFont(new Font(fontString, fontSize * offset));
+        
 		double tenPercent = offset * 0.1f;
         double fivePercent = offset * 0.05f;
         double thirtyFivePercent = offset * 0.35f;
@@ -51,6 +58,8 @@ public class NullQuestion extends Question {
                 gc.strokeText("->", listX - fivePercent, listY + (i * listSpace));
             }
         }
+        
+        gc.restore();
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  * @author Patrick Enburg <patrick@enburg.info
@@ -23,6 +24,9 @@ import javafx.scene.paint.Color;
 public abstract class Question implements Drawable{
 	protected boolean QuestionCorrect;
 	protected BooleanProperty QuestionSubmitted;
+    protected final double lineWidth = 1.0f;
+    protected final String fontString = "System";
+    protected final double fontSize = .05;
 	
 	public Question() {
 		this.QuestionCorrect = false;
@@ -33,15 +37,24 @@ public abstract class Question implements Drawable{
 	@Override
 	public void draw(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        //save gc fills and strokes
+        gc.save();
+        gc.setStroke(Color.BLACK);
+        gc.setFill(Color.WHITE);
+        gc.setLineWidth(lineWidth);
+        gc.setFont(new Font(fontString, fontSize * offset));
         //Set background color
         gc.setFill(Color.FUCHSIA);
         //Fill background
         gc.fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
         
         //Draw a black ? somewhere near the middle
-        gc.setFill(Color.BLACK);
+        gc.setStroke(Color.BLACK);
         gc.fillText("?", imgX + (x * offset) + (offset / 2), imgY + (y * offset) + (offset / 2));
         gc.strokeText("?", imgX + (x * offset) + (offset / 2), imgY + (y * offset) + (offset / 2));
+        
+        //restore gc state
+        gc.restore();
 	}
 	
 	/**

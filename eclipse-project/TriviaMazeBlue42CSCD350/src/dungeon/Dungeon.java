@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Random;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -42,7 +43,6 @@ public class Dungeon extends Region {
     private BooleanProperty isBattleOver;
     
     private Question question;
-    private BooleanProperty isQuestionSubmitted;
 
     private StringProperty statusString;
 
@@ -84,7 +84,7 @@ public class Dungeon extends Region {
         double imgX = (getWidth() - (pWidth * mScale)) / 2f;
         double imgY = (getHeight() - (pHeight * mScale)) / 2f;
         //System.out.println("offset " + imgX + " " + imgY);
-        if (battle == null) {
+        if (battle == null && question == null) {
             gc.drawImage(mBackground, imgX, imgY, (pWidth * mScale), (pHeight * mScale));
             double offset = pWidth * mScale / (double) BOARDSIZE;
             for (int i = 0; i < BOARDSIZE; i++) {
@@ -93,8 +93,12 @@ public class Dungeon extends Region {
                 }
 
             }
-        } else {
+        } 
+        else if (battle != null){
             battle.draw(imgX, imgY, 0, 0, (pWidth * mScale), mCanvas);
+        }
+        else if(question != null) {
+        	question.draw(imgX, imgY, 0, 0, (pWidth * mScale), mCanvas);
         }
     }
 
@@ -383,6 +387,30 @@ public class Dungeon extends Region {
         draw();
     }
 
-    
+    public void onDebugQuestion() {
+    	if(question == null) {
+    		statusString.set("Debug launch question screen");
+    		question = new NullQuestion();
+    		question.getQuestionSubmitted().addListener(notUsed -> questionSubmitted());
+    	}
+    	else {
+    		question = null;
+    		statusString.set("Debug Question screen terminated");
+    	}
+    	draw();
+    }
+
+	private void questionSubmitted() {
+		if(question.isQuestionCorrect()) {
+			statusString.set("Open Sesame!!");
+			//do something to open door
+		}
+		else {
+			statusString.set("Failure is always an option");
+			//do something to lock door
+		}
+		this.question = null;
+		draw();
+	}
     
 }
