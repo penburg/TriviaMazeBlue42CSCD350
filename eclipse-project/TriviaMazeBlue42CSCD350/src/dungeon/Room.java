@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 public class Room implements Drawable {
 
     private boolean isVisable;
-    private boolean hasPit;
+    //private boolean hasPit;
     private boolean isEntrance;
     private boolean isExit;
     private boolean doors[] = {false, false, false, false};
@@ -78,7 +78,7 @@ public class Room implements Drawable {
             //setItem(MONSTER);
         }
 
-        hasPit = (rand.nextInt(100) <= PROBIBILITY);
+       // hasPit = (rand.nextInt(100) <= PROBIBILITY);
 
     }
 
@@ -104,10 +104,11 @@ public class Room implements Drawable {
         this.hero = hero;
         this.isVisable = true;
         //roomGrid[ROOMSIZE / 2][ROOMSIZE / 2] = HERO;
-        if (hasPit) {
-            this.statusString.set(hero.getName() + " Fell in a pit\n" + hero.subtractHitPoints(rand.nextInt(19) + 1));
-            //hero.subtractHitPoints(rand.nextInt(19) + 1);
-        }
+		/*
+		 * if (hasPit) { this.statusString.set(hero.getName() + " Fell in a pit\n" +
+		 * hero.subtractHitPoints(rand.nextInt(19) + 1));
+		 * //hero.subtractHitPoints(rand.nextInt(19) + 1); }
+		 */
     }
 
     public int[] getHeroLoc() {
@@ -224,7 +225,7 @@ public class Room implements Drawable {
         this.isExit = false;
         this.isEntrance = true;
         this.isVisable = true;
-        this.hasPit = false;
+        //this.hasPit = false;
     }
 
     public void setIsExit() {
@@ -233,7 +234,7 @@ public class Room implements Drawable {
        // this.monster = null;
         this.isEntrance = false;
         this.isExit = true;
-        this.hasPit = false;
+        //this.hasPit = false;
     }
 
     public void setTreasure(String treasure) {
@@ -270,11 +271,11 @@ public class Room implements Drawable {
         if (!isVisable) {
             canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
         } else {
-            if (hasPit) {
-                gc.setFill(Color.color(1, 0, 0, .25));
-                canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
-                gc.setFill(Color.BLACK);
-            }
+			/*
+			 * if (hasPit) { gc.setFill(Color.color(1, 0, 0, .25));
+			 * canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y *
+			 * offset), offset, offset); gc.setFill(Color.BLACK); }
+			 */
             double topX = imgX + (x * offset);
             double topY = imgY + (y * offset);
             gc.setStroke(Color.BLACK);
