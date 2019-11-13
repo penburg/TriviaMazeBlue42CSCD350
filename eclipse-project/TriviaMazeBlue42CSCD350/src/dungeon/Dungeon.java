@@ -254,6 +254,7 @@ public class Dungeon extends Region {
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
                 }
+                mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.WEST);
             } else if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[0] < 0) {
                 mHeroLoc[0]--;
                 if (mHeroLoc[0] >= 0) {
@@ -264,6 +265,7 @@ public class Dungeon extends Region {
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
                 }
+                mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.EAST);
             }
             if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[1] >= Room.ROOMSIZE) {
                 mHeroLoc[1]++;
@@ -275,6 +277,7 @@ public class Dungeon extends Region {
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
                 }
+                mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
             } else if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[1] < 0) {
                 mHeroLoc[1]--;
                 if (mHeroLoc[1] >= 0) {
@@ -285,6 +288,7 @@ public class Dungeon extends Region {
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
                     mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
                 }
+                mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
             }
         } else {
             this.mHero.setCharacterImage(gravestoneImage);
@@ -416,6 +420,7 @@ public class Dungeon extends Region {
     }
 
 	private void questionSubmitted() {
+		mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorInQuestion(question.isQuestionCorrect());
 		if(question.isQuestionCorrect()) {
 			statusString.set("Open Sesame!!");
 			//do something to open door

@@ -37,6 +37,7 @@ public class Room implements Drawable {
 	private boolean isEntrance;
 	private boolean isExit;
 	private DoorState doors[] = {DoorState.CLOSED, DoorState.CLOSED, DoorState.CLOSED, DoorState.CLOSED};
+	private DoorPosition doorInQuestion;
 	private String treasure;
 	private Monster monster;
 	private Hero hero;
@@ -131,33 +132,57 @@ public class Room implements Drawable {
 	public void setHeroLoc(int x, int y) {
 
 		if (x < 0) {
-			if (y == ROOM_MID && doors[3] == DoorState.OPEN) {
+			if (y == ROOM_MID && doors[DoorPosition.WEST.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			} else {
+			} 
+			else if (y == ROOM_MID && doors[DoorPosition.WEST.ordinal()] == DoorState.CLOSED) {
+				x = 0;
+				doorInQuestion = DoorPosition.WEST;
+				//statusString.set("WEST");
+			} 
+			else {
 				x = 0;
 			}
 		}
 
 		if (y < 0) {
-			if (x == ROOM_MID && doors[0] == DoorState.OPEN) {
+			if (x == ROOM_MID && doors[DoorPosition.NORTH.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			} else {
+			}
+			else if (x == ROOM_MID && doors[DoorPosition.NORTH.ordinal()] == DoorState.CLOSED) {
+				y = 0;
+				doorInQuestion = DoorPosition.NORTH;
+				//statusString.set("NORTH");
+			} 
+			else {
 				y = 0;
 			}
 		}
 
 		if (x >= ROOMSIZE) {
-			if (y == ROOM_MID && doors[1] == DoorState.OPEN) {
+			if (y == ROOM_MID && doors[DoorPosition.EAST.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			} else {
+			}
+			else if (y == ROOM_MID && doors[DoorPosition.EAST.ordinal()] == DoorState.CLOSED) {
+				x = ROOMSIZE - 1;
+				doorInQuestion = DoorPosition.EAST;
+				//statusString.set("EAST");
+			}
+			else {
 				x = ROOMSIZE - 1;
 			}
 		}
 
 		if (y >= ROOMSIZE) {
-			if (x == ROOM_MID && doors[2] == DoorState.OPEN) {
+			if (x == ROOM_MID && doors[DoorPosition.SOUTH.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			} else {
+			}
+			else if (x == ROOM_MID && doors[DoorPosition.SOUTH.ordinal()] == DoorState.CLOSED) {
+				y = ROOMSIZE - 1;
+				doorInQuestion = DoorPosition.SOUTH;
+				//statusString.set("SOUTH");
+			}
+			else {
 				y = ROOMSIZE - 1;
 			}
 		}
@@ -231,20 +256,8 @@ public class Room implements Drawable {
 	}
 
 	public void setDoorState(DoorState state, DoorPosition pos) {
-		switch (pos) {
-		case NORTH:
-			doors[0] = state;
-			break;
-		case SOUTH:
-			doors[2] = state;
-			break;
-		case EAST:
-			doors[1] = state;
-			break;
-		case WEST:
-			doors[3] = state;
-			break;
-		}
+		
+		doors[pos.ordinal()] = state;
 	}
 	
 	public void setIsVisable(boolean isVisable) {
@@ -313,16 +326,16 @@ public class Room implements Drawable {
 			double doorLength = (double) offset / 3f;
 
 			
-			setDoorColor(gc, doors[0]);
+			setDoorColor(gc, doors[DoorPosition.NORTH.ordinal()]);
 			gc.strokeLine(topX + doorLength, topY, topX + doorLength + doorLength, topY);
 
-			setDoorColor(gc, doors[1]);
+			setDoorColor(gc, doors[DoorPosition.EAST.ordinal()]);
 			gc.strokeLine(topX + offset, topY + doorLength, topX + offset, topY + doorLength + doorLength);
 
-			setDoorColor(gc, doors[2]);
+			setDoorColor(gc, doors[DoorPosition.SOUTH.ordinal()]);
 			gc.strokeLine(topX + doorLength, topY + offset, topX + doorLength + doorLength, topY + offset);
 
-			setDoorColor(gc, doors[3]);
+			setDoorColor(gc, doors[DoorPosition.WEST.ordinal()]);
 			gc.strokeLine(topX, topY + doorLength, topX, topY + doorLength + doorLength);
 
 			double roomOffset = offset / (double) ROOMSIZE;
@@ -391,6 +404,29 @@ public class Room implements Drawable {
 			gc.setStroke(Color.BLACK);
 			break;
 		}
+	}
+
+	
+	/**
+	 * @param questionCorrect
+	 */
+	public void setDoorInQuestion(boolean questionCorrect) {
+		DoorState newState = questionCorrect ? DoorState.OPEN : DoorState.LOCKED;
+		switch (doorInQuestion) {
+		case NORTH:
+			doors[DoorPosition.NORTH.ordinal()] = newState;
+			break;
+		case SOUTH:
+			doors[DoorPosition.SOUTH.ordinal()] = newState;
+			break;
+		case EAST:
+			doors[DoorPosition.EAST.ordinal()] = newState;
+			break;
+		case WEST:
+			doors[DoorPosition.WEST.ordinal()] = newState;
+			break;
+		}
+		
 	}
 
 }
