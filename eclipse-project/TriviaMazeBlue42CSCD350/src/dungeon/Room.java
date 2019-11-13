@@ -41,7 +41,7 @@ public class Room implements Drawable {
     private final int POTION_HEAL = 5;
     private final int POTION_VISION = 6;
     private final int POTION_GREEN = 7;
-    private final int TREASURE = 8;
+   // private final int TREASURE = 8;
     private final double wallWidth = 3;
     private final double doorWidth = 5;
 
@@ -177,11 +177,11 @@ public class Room implements Drawable {
         }
         if (this.hero != null) {
             switch (roomGrid[x][y]) {
-                case TREASURE:
-                    this.hero.addTreasure(treasure);
-                    this.statusString.set(this.hero.getName() + " found the \"" + treasure + "\" pillar.");
-                    roomGrid[x][y] = EMPTY;
-                    break;
+			/*
+			 * case TREASURE: this.hero.addTreasure(treasure);
+			 * this.statusString.set(this.hero.getName() + " found the \"" + treasure +
+			 * "\" pillar."); roomGrid[x][y] = EMPTY; break;
+			 */
 				/*
 				 * case MONSTER: this.statusString.set(this.monster.attack(this.hero));
 				 * if(!this.monster.isAlive()){ roomGrid[x][y] = EMPTY; this.monster = null; }
@@ -244,7 +244,7 @@ public class Room implements Drawable {
             x = rand.nextInt(ROOMSIZE);
             y = rand.nextInt(ROOMSIZE);
         }
-        roomGrid[rand.nextInt(ROOMSIZE)][rand.nextInt(ROOMSIZE)] = TREASURE;
+        //roomGrid[rand.nextInt(ROOMSIZE)][rand.nextInt(ROOMSIZE)] = TREASURE;
 
     }
 
@@ -299,10 +299,10 @@ public class Room implements Drawable {
             for (int i = 0; i < ROOMSIZE; i++) {
                 for (int j = 0; j < ROOMSIZE; j++) {
                     switch (roomGrid[i][j]) {
-                        case TREASURE:
+                        //case TREASURE:
                             //System.out.println("draw rock at " + i + "," + j);
-                            gc.drawImage(IMAGE_TREASURE, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
-                            break;
+                           // gc.drawImage(IMAGE_TREASURE, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
+                            //break;
 						/*
 						 * case MONSTER: if (this.monster != null && this.monster.isAlive()) {
 						 * 
