@@ -24,7 +24,7 @@ public class Room implements Drawable {
     private boolean isExit;
     private boolean doors[] = {false, false, false, false};
     private String treasure;
-    private Monster monster;
+    //private Monster monster;
     private Hero hero;
     private int[] heroLoc;
     private int[][] roomGrid;
@@ -35,7 +35,7 @@ public class Room implements Drawable {
     private final int ROOM_MID = ROOMSIZE / 3;
     private final int EMPTY = 0;
     private final int HERO = 1;
-    private final int MONSTER = 2;
+    //private final int MONSTER = 2;
     private final int ENTRANCE = 3;
     private final int EXIT = 4;
     private final int POTION_HEAL = 5;
@@ -74,17 +74,17 @@ public class Room implements Drawable {
         }
         //Monster
         if (rand.nextInt(100) <= PROBIBILITY) {
-            this.monster = monsterFactory.createMonster(monsterFactory.randomMonster());
-            setItem(MONSTER);
+            //this.monster = monsterFactory.createMonster(monsterFactory.randomMonster());
+            //setItem(MONSTER);
         }
 
         hasPit = (rand.nextInt(100) <= PROBIBILITY);
 
     }
 
-    public Monster getMonster() {
-        return monster;
-    }
+	/*
+	 * public Monster getMonster() { return monster; }
+	 */
 
     public final void setItem(int item) {
         int x = rand.nextInt(ROOMSIZE);
@@ -152,14 +152,13 @@ public class Room implements Drawable {
         this.heroLoc[1] = y;
         //move Monster
         int monsterX = x, monsterY = y;
-        if (this.monster != null && this.hero != null) {
+        //REMOVED this.monster != null from if statement
+        if (this.hero != null) {
             for (int i = 0; i < ROOMSIZE; i++) {
                 for (int j = 0; j < ROOMSIZE; j++) {
-                    if (roomGrid[i][j] == MONSTER) {
-                        monsterX = i;
-                        monsterY = j;
-                        break;
-                    }
+					/*
+					 * if (roomGrid[i][j] == MONSTER) { monsterX = i; monsterY = j; break; }
+					 */
                 }
             }
             roomGrid[monsterX][monsterY] = EMPTY;
@@ -173,7 +172,7 @@ public class Room implements Drawable {
                 monsterY --;
             }
 
-            roomGrid[monsterX][monsterY] = MONSTER;
+           // roomGrid[monsterX][monsterY] = MONSTER;
 
         }
         if (this.hero != null) {
@@ -183,13 +182,11 @@ public class Room implements Drawable {
                     this.statusString.set(this.hero.getName() + " found the \"" + treasure + "\" pillar.");
                     roomGrid[x][y] = EMPTY;
                     break;
-                case MONSTER:
-                    this.statusString.set(this.monster.attack(this.hero));
-                    if(!this.monster.isAlive()){
-                        roomGrid[x][y] = EMPTY;
-                        this.monster = null;
-                    }
-                    break;
+				/*
+				 * case MONSTER: this.statusString.set(this.monster.attack(this.hero));
+				 * if(!this.monster.isAlive()){ roomGrid[x][y] = EMPTY; this.monster = null; }
+				 */
+                    //break;
                 case ENTRANCE:
                     break;
                 case EXIT:
@@ -223,7 +220,7 @@ public class Room implements Drawable {
     public void setIsEntrance() {
         roomGrid = new int[ROOMSIZE][ROOMSIZE];
         roomGrid[0][0] = ENTRANCE;
-        this.monster = null;
+        //this.monster = null;
         this.isExit = false;
         this.isEntrance = true;
         this.isVisable = true;
@@ -233,7 +230,7 @@ public class Room implements Drawable {
     public void setIsExit() {
         roomGrid = new int[ROOMSIZE][ROOMSIZE];
         roomGrid[ROOMSIZE - 1][ROOMSIZE - 1] = EXIT;
-        this.monster = null;
+       // this.monster = null;
         this.isEntrance = false;
         this.isExit = true;
         this.hasPit = false;
@@ -306,16 +303,14 @@ public class Room implements Drawable {
                             //System.out.println("draw rock at " + i + "," + j);
                             gc.drawImage(IMAGE_TREASURE, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
                             break;
-                        case MONSTER:
-                            if (this.monster != null && this.monster.isAlive()) {
-                                
-                                this.monster.draw(imgX + (x * offset), imgY + (y * offset), i, j, roomOffset, canvas);
-                            }
-                            else{
-                                this.monster = null;
-                            }
+						/*
+						 * case MONSTER: if (this.monster != null && this.monster.isAlive()) {
+						 * 
+						 * this.monster.draw(imgX + (x * offset), imgY + (y * offset), i, j, roomOffset,
+						 * canvas); } else{ this.monster = null; }
+						 */
                             //gc.drawImage(ROCK_CRACKED_IMAGE, (roomOffset * i) + imgX, (roomOffset * j) + imgY, roomOffset, roomOffset);
-                            break;
+                            //break;
                         case ENTRANCE:
                             gc.drawImage(IMAGE_ENTRANCE, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
                             break;
