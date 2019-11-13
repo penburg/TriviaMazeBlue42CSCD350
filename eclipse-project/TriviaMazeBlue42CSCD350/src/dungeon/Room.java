@@ -18,11 +18,18 @@ import javafx.scene.paint.Color;
  */
 public class Room implements Drawable {
 
-	private enum DoorState{
+	public enum DoorState{
 		CLOSED,
 		OPEN,
 		LOCKED,
 		WALL,
+	};
+	
+	public enum DoorPosition{
+		NORTH,
+		SOUTH,
+		EAST,
+		WEST,
 	};
 
 	private boolean isVisable;
@@ -223,6 +230,23 @@ public class Room implements Drawable {
 		return doors;
 	}
 
+	public void setDoorState(DoorState state, DoorPosition pos) {
+		switch (pos) {
+		case NORTH:
+			doors[0] = state;
+			break;
+		case SOUTH:
+			doors[2] = state;
+			break;
+		case EAST:
+			doors[1] = state;
+			break;
+		case WEST:
+			doors[3] = state;
+			break;
+		}
+	}
+	
 	public void setIsVisable(boolean isVisable) {
 		this.isVisable = isVisable;
 	}
@@ -272,10 +296,6 @@ public class Room implements Drawable {
 
 	@Override
 	public void draw(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {
-		doors[0] = (y != 0) ? DoorState.CLOSED : DoorState.WALL;
-		doors[1] = (x < Dungeon.BOARDSIZE - 1) ? DoorState.CLOSED : DoorState.WALL;
-		doors[2] = (y < Dungeon.BOARDSIZE - 1) ? DoorState.CLOSED : DoorState.WALL;
-		doors[3] = (x != 0) ? DoorState.CLOSED : DoorState.WALL;
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		if (!isVisable) {
 			canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
@@ -292,7 +312,7 @@ public class Room implements Drawable {
 			gc.strokeRect(topX, topY, offset, offset);
 			double doorLength = (double) offset / 3f;
 
-			gc.setLineWidth(doorWidth);
+			
 			setDoorColor(gc, doors[0]);
 			gc.strokeLine(topX + doorLength, topY, topX + doorLength + doorLength, topY);
 
@@ -355,15 +375,19 @@ public class Room implements Drawable {
 	private void setDoorColor(GraphicsContext gc, DoorState d) {
 		switch (d){
 		case OPEN:
+			gc.setLineWidth(doorWidth);
 			gc.setStroke(Color.WHITESMOKE);
 			break;
 		case CLOSED:
+			gc.setLineWidth(doorWidth);
 			gc.setStroke(Color.BURLYWOOD);
 			break;
 		case LOCKED:
+			gc.setLineWidth(doorWidth);
 			gc.setStroke(Color.DARKRED);
 			break;
 		case WALL:
+			gc.setLineWidth(wallWidth);
 			gc.setStroke(Color.BLACK);
 			break;
 		}

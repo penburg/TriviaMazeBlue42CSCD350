@@ -7,6 +7,9 @@ package dungeon;
 
 import java.util.Optional;
 import java.util.Random;
+
+import dungeon.Room.DoorPosition;
+import dungeon.Room.DoorState;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -125,6 +128,18 @@ public class Dungeon extends Region {
         for (int i = 0; i < BOARDSIZE; i++) {
             for (int j = 0; j < BOARDSIZE; j++) {
                 mGameBoard[i][j] = new Room(statusString);
+                if(j == 0) {
+                	mGameBoard[i][j].setDoorState(DoorState.WALL, DoorPosition.NORTH);
+                }
+                if(j == BOARDSIZE -1) {
+                	mGameBoard[i][j].setDoorState(DoorState.WALL, DoorPosition.SOUTH);
+                }
+                if(i == 0) {
+                	mGameBoard[i][j].setDoorState(DoorState.WALL, DoorPosition.WEST);
+                }
+                if(i == BOARDSIZE -1) {
+                	mGameBoard[i][j].setDoorState(DoorState.WALL, DoorPosition.EAST);
+                }
             }
 
         }
