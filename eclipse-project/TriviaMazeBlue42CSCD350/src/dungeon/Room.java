@@ -6,6 +6,9 @@
 package dungeon;
 
 import java.util.Random;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -44,6 +47,7 @@ public class Room implements Drawable {
 	private int[] heroLoc;
 	private int[][] roomGrid;
 	private StringProperty statusString;
+	private IntegerProperty questionTrigger;
 
 	private final int PROBIBILITY = 10;
 	public static final int ROOMSIZE = 3;
@@ -70,9 +74,10 @@ public class Room implements Drawable {
 	private static final Random rand = new Random();
 	private static final MonsterFactory monsterFactory = new MonsterFactory();
 
-	public Room(StringProperty statusS) {
+	public Room(StringProperty statusS, IntegerProperty trigger) {
 		//System.out.println("Creating room");
 		statusString = statusS;
+		questionTrigger = trigger;
 		roomGrid = new int[ROOMSIZE][ROOMSIZE];
 		heroLoc = new int[2];
 		isVisable = false;
@@ -138,6 +143,7 @@ public class Room implements Drawable {
 			else if (y == ROOM_MID && doors[DoorPosition.WEST.ordinal()] == DoorState.CLOSED) {
 				x = 0;
 				doorInQuestion = DoorPosition.WEST;
+				questionTrigger.set(questionTrigger.get() + 1);
 				//statusString.set("WEST");
 			} 
 			else {
@@ -152,6 +158,7 @@ public class Room implements Drawable {
 			else if (x == ROOM_MID && doors[DoorPosition.NORTH.ordinal()] == DoorState.CLOSED) {
 				y = 0;
 				doorInQuestion = DoorPosition.NORTH;
+				questionTrigger.set(questionTrigger.get() + 1);
 				//statusString.set("NORTH");
 			} 
 			else {
@@ -166,6 +173,7 @@ public class Room implements Drawable {
 			else if (y == ROOM_MID && doors[DoorPosition.EAST.ordinal()] == DoorState.CLOSED) {
 				x = ROOMSIZE - 1;
 				doorInQuestion = DoorPosition.EAST;
+				questionTrigger.set(questionTrigger.get() + 1);
 				//statusString.set("EAST");
 			}
 			else {
@@ -180,6 +188,7 @@ public class Room implements Drawable {
 			else if (x == ROOM_MID && doors[DoorPosition.SOUTH.ordinal()] == DoorState.CLOSED) {
 				y = ROOMSIZE - 1;
 				doorInQuestion = DoorPosition.SOUTH;
+				questionTrigger.set(questionTrigger.get() + 1);
 				//statusString.set("SOUTH");
 			}
 			else {
@@ -427,6 +436,13 @@ public class Room implements Drawable {
 			break;
 		}
 		
+	}
+
+	/**
+	 * @return the doorInQuestion
+	 */
+	public DoorPosition getDoorInQuestion() {
+		return doorInQuestion;
 	}
 
 }
