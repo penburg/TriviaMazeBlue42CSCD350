@@ -181,7 +181,7 @@ public class Dungeon extends Region {
 				x = rand.nextInt(BOARDSIZE);
 				y = rand.nextInt(BOARDSIZE);
 			}
-			mGameBoard[x][y].setTreasure(s);
+			//mGameBoard[x][y].setTreasure(s);
 			x = rand.nextInt(BOARDSIZE);
 			y = rand.nextInt(BOARDSIZE);
 		}
@@ -302,15 +302,15 @@ public class Dungeon extends Region {
 	}
 
 	public void onAttack() {
-		if (mHero.isAlive()) {
-			if (battle == null) {
-				battle = new BattleScene(this.mHero, mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getMonster());
-				battle.isBattleOver().addListener(notUsed -> battleOver());
-			} else {
-				battle = null;
-			}
-
-		}
+//		if (mHero.isAlive()) {
+//			if (battle == null) {
+//				battle = new BattleScene(this.mHero, mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getMonster());
+//				battle.isBattleOver().addListener(notUsed -> battleOver());
+//			} else {
+//				battle = null;
+//			}
+//
+//		}
 		draw();
 	}
 
