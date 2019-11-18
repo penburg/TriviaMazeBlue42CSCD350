@@ -77,10 +77,6 @@ public class Room implements Drawable {
 		isExit = false;
 		isEntrance = false;
 
-		//Heal Potion
-		if (rand.nextInt(100) <= PROBIBILITY) {
-			setItem(POTION_HEAL);
-		}
 		//Vision Potion
 		if (rand.nextInt(100) <= PROBIBILITY) {
 			setItem(POTION_VISION);

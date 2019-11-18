@@ -42,9 +42,7 @@ public abstract class Hero extends DungeonCharacter {
     public String toString() {
         String ret = "";
         ret += getName();
-        ret += ", hp: " + this.getHitPoints();
-        ret += ", Healing potions: " + this.getNumPotionsHeal();
-        ret += ", Vision potions: " + this.getNumPotionsVision();
+        ret += " Vision potions: " + this.getNumPotionsVision();
         return ret;
     }
 
