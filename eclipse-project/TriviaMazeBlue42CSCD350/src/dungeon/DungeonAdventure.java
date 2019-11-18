@@ -59,17 +59,11 @@ public class DungeonAdventure extends Application {
 
         Scene scene = new Scene(root, 750, 800);
         scene.setOnKeyPressed(keyEvent -> onKeyPressed(keyEvent));
-        primaryStage.setTitle("Heroes and Monsters - A Dungeon Adventure");
+        primaryStage.setTitle("Blue42 Maze Game");
         primaryStage.setScene(scene);
         
         primaryStage.show();
-        SettingDialogController control;
-        try {
-            control = new SettingDialogController(mGame);
-            control.show();
-        } catch (IOException ex) {
-            Logger.getLogger(DungeonAdventure.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
         
     }

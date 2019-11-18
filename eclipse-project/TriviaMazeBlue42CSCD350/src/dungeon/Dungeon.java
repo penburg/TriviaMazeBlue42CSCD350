@@ -272,18 +272,7 @@ public class Dungeon extends Region {
 		}
 	}
 
-	public void onAttack() {
-//		if (mHero.isAlive()) {
-//			if (battle == null) {
-//				battle = new BattleScene(this.mHero, mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getMonster());
-//				battle.isBattleOver().addListener(notUsed -> battleOver());
-//			} else {
-//				battle = null;
-//			}
-//
-//		}
-		draw();
-	}
+
 
 	public void onEnter() {
 		if (mHero.isAlive()) {
@@ -347,17 +336,6 @@ public class Dungeon extends Region {
 
 	}
 
-	public void onUseHealthPotion() {
-		if (mHero.isAlive()) {
-			if (mHero.getNumPotionsHeal() > 0) {
-				statusString.set(mHero.getName() + " drank a health potion\nand gained " + mHero.usePotionHeal() + " hit points.");
-
-			} else {
-				statusString.set(mHero.getName() + " has no health potions to drink.");
-			}
-		}
-		draw();
-	}
 
 	public void onCheatCode() {
 		statusString.set("You shall from this day forward be called The Cheater " + mHero.getName());
