@@ -40,7 +40,6 @@ public class Dungeon extends Region {
 
 	private Hero mHero;
 
-	private BattleScene battle;
 
 	private Question question;
 
@@ -85,7 +84,7 @@ public class Dungeon extends Region {
 		double imgX = (getWidth() - (pWidth * mScale)) / 2f;
 		double imgY = (getHeight() - (pHeight * mScale)) / 2f;
 		//System.out.println("offset " + imgX + " " + imgY);
-		if (battle == null && question == null) {
+		if (question == null) {
 			gc.drawImage(mBackground, imgX, imgY, (pWidth * mScale), (pHeight * mScale));
 			double offset = pWidth * mScale / (double) BOARDSIZE;
 			for (int i = 0; i < BOARDSIZE; i++) {
@@ -95,9 +94,6 @@ public class Dungeon extends Region {
 
 			}
 		} 
-		else if (battle != null){
-			battle.draw(imgX, imgY, 0, 0, (pWidth * mScale), mCanvas);
-		}
 		else if(question != null) {
 			question.draw(imgX, imgY, 0, 0, (pWidth * mScale), mCanvas);
 		}
@@ -179,25 +175,21 @@ public class Dungeon extends Region {
 	}
 
 	public void onLeft() {
-		if (battle == null && question == null) {
+		if (question == null) {
 			moveHero(-1, 0);
 		}
 		draw();
 	}
 
 	public void onRight() {
-		if (battle == null && question == null) {
+		if (question == null) {
 			moveHero(1, 0);
 		}
 		draw();
 	}
 
 	public void onUp() {
-		if (battle != null) {
-			battle.onUp();
-
-		}
-		else if(question != null){
+		if(question != null){
 			question.onUp();
 		}
 		else {
@@ -207,10 +199,7 @@ public class Dungeon extends Region {
 	}
 
 	public void onDown() {
-		if (battle != null) {
-			battle.onDown();
-		}
-		else if(question != null) {
+		if(question != null) {
 			question.onDown();
 		}
 		else {
@@ -298,7 +287,7 @@ public class Dungeon extends Region {
 
 	public void onEnter() {
 		if (mHero.isAlive()) {
-			if (battle == null && question == null) {
+			if (question == null) {
 				if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].isEntrance() && mHero.isAlive()) {
 					Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 					alert.setTitle("Return to the surface?");
@@ -321,10 +310,7 @@ public class Dungeon extends Region {
 
 				}
 			}
-			else if(battle != null){
-				battle.onEnter();
-			}
-			else if(question != null) {
+			if(question != null) {
 				question.onEnter();
 			}
 
