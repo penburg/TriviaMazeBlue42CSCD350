@@ -35,13 +35,11 @@ public class Room implements Drawable {
 	};
 
 	private boolean isVisable;
-	//private boolean hasPit;
 	private boolean isEntrance;
 	private boolean isExit;
 	private DoorState doors[] = {DoorState.CLOSED, DoorState.CLOSED, DoorState.CLOSED, DoorState.CLOSED};
 	private DoorPosition doorInQuestion;
 	private String treasure;
-	private Monster monster;
 	private Hero hero;
 	private int[] heroLoc;
 	private int[][] roomGrid;
@@ -52,14 +50,11 @@ public class Room implements Drawable {
 	public static final int ROOMSIZE = 3;
 	private final int ROOM_MID = ROOMSIZE / 3;
 	private final int EMPTY = 0;
-	private final int HERO = 1;
-	//private final int MONSTER = 2;
 	private final int ENTRANCE = 3;
 	private final int EXIT = 4;
 	private final int POTION_HEAL = 5;
 	private final int POTION_VISION = 6;
 	private final int POTION_GREEN = 7;
-	//private final int TREASURE = 8;
 	private final double wallWidth = 3;
 	private final double doorWidth = 5;
 
@@ -71,7 +66,6 @@ public class Room implements Drawable {
 	public static final Image IMAGE_ENTRANCE = new Image("images/ladder.png");
 
 	private static final Random rand = new Random();
-	//private static final MonsterFactory monsterFactory = new MonsterFactory();
 
 	public Room(StringProperty statusS, IntegerProperty trigger) {
 		//System.out.println("Creating room");
@@ -91,19 +85,9 @@ public class Room implements Drawable {
 		if (rand.nextInt(100) <= PROBIBILITY) {
 			setItem(POTION_VISION);
 		}
-		//Monster
-		if (rand.nextInt(100) <= PROBIBILITY) {
-			//this.monster = monsterFactory.createMonster(monsterFactory.randomMonster());
-			//setItem(MONSTER);
-		}
-
-		//hasPit = (rand.nextInt(100) <= PROBIBILITY);
 
 	}
 
-//	public Monster getMonster() {
-//		return monster;
-//	}
 
 	public final void setItem(int item) {
 		int x = rand.nextInt(ROOMSIZE);
@@ -122,11 +106,6 @@ public class Room implements Drawable {
 	public void setHero(Hero hero) {
 		this.hero = hero;
 		this.isVisable = true;
-//		//roomGrid[ROOMSIZE / 2][ROOMSIZE / 2] = HERO;
-//		if (hasPit) {
-//			this.statusString.set(hero.getName() + " Fell in a pit\n" + hero.subtractHitPoints(rand.nextInt(19) + 1));
-//			//hero.subtractHitPoints(rand.nextInt(19) + 1);
-//		}
 	}
 
 	public int[] getHeroLoc() {
@@ -197,46 +176,11 @@ public class Room implements Drawable {
 
 		this.heroLoc[0] = x;
 		this.heroLoc[1] = y;
-		//move Monster
-		int monsterX = x, monsterY = y;
-		if (this.hero != null) {
-//			for (int i = 0; i < ROOMSIZE; i++) {
-//				for (int j = 0; j < ROOMSIZE; j++) {
-//					if (roomGrid[i][j] == MONSTER) {
-//						monsterX = i;
-//						monsterY = j;
-//						break;
-//					}
-//				}
-//			}
-//			roomGrid[monsterX][monsterY] = EMPTY;
-//			if (x > monsterX && monsterX + 1 < ROOMSIZE && roomGrid[monsterX + 1][monsterY] == EMPTY) {
-//				monsterX ++;
-//			} else if (x < monsterX && monsterX - 1 >= 0  && roomGrid[monsterX - 1][monsterY] == EMPTY) {
-//				monsterX --;
-//			} else if (y > monsterY && monsterY + 1 < ROOMSIZE && roomGrid[monsterX][monsterY + 1] == EMPTY) {
-//				monsterY ++;
-//			} else if (y < monsterY && monsterY - 1 >= 0  && roomGrid[monsterX][monsterY - 1] == EMPTY) {
-//				monsterY --;
-//			}
-//
-//			roomGrid[monsterX][monsterY] = MONSTER;
 
-		}
+
+		
 		if (this.hero != null) {
 			switch (roomGrid[x][y]) {
-//			case TREASURE:
-//				this.hero.addTreasure(treasure);
-//				this.statusString.set(this.hero.getName() + " found the \"" + treasure + "\" pillar.");
-//				roomGrid[x][y] = EMPTY;
-//				break;
-//			case MONSTER:
-//				this.statusString.set(this.monster.attack(this.hero));
-//				if(!this.monster.isAlive()){
-//					roomGrid[x][y] = EMPTY;
-//					this.monster = null;
-//				}
-//				break;
 			case ENTRANCE:
 				break;
 			case EXIT:
@@ -275,33 +219,17 @@ public class Room implements Drawable {
 	public void setIsEntrance() {
 		roomGrid = new int[ROOMSIZE][ROOMSIZE];
 		roomGrid[0][0] = ENTRANCE;
-		//this.monster = null;
 		this.isExit = false;
 		this.isEntrance = true;
 		this.isVisable = true;
-		//this.hasPit = false;
 	}
 
 	public void setIsExit() {
 		roomGrid = new int[ROOMSIZE][ROOMSIZE];
 		roomGrid[ROOMSIZE - 1][ROOMSIZE - 1] = EXIT;
-		//this.monster = null;
 		this.isEntrance = false;
 		this.isExit = true;
-		//this.hasPit = false;
 	}
-
-//	public void setTreasure(String treasure) {
-//		this.treasure = treasure;
-//		int x = rand.nextInt(ROOMSIZE);
-//		int y = rand.nextInt(ROOMSIZE);
-//		while (roomGrid[x][y] != EMPTY) {
-//			x = rand.nextInt(ROOMSIZE);
-//			y = rand.nextInt(ROOMSIZE);
-//		}
-//		//roomGrid[rand.nextInt(ROOMSIZE)][rand.nextInt(ROOMSIZE)] = TREASURE;
-//
-//	}
 
 	public boolean hasTreasure() {
 		return treasure != null;
@@ -321,11 +249,6 @@ public class Room implements Drawable {
 		if (!isVisable) {
 			canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
 		} else {
-//			if (hasPit) {
-//				gc.setFill(Color.color(1, 0, 0, .25));
-//				canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
-//				gc.setFill(Color.BLACK);
-//			}
 			double topX = imgX + (x * offset);
 			double topY = imgY + (y * offset);
 			gc.setStroke(Color.BLACK);
@@ -350,20 +273,6 @@ public class Room implements Drawable {
 			for (int i = 0; i < ROOMSIZE; i++) {
 				for (int j = 0; j < ROOMSIZE; j++) {
 					switch (roomGrid[i][j]) {
-//					case TREASURE:
-//						//System.out.println("draw rock at " + i + "," + j);
-//						gc.drawImage(IMAGE_TREASURE, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
-//						break;
-//					case MONSTER:
-//						if (this.monster != null && this.monster.isAlive()) {
-//
-//							this.monster.draw(imgX + (x * offset), imgY + (y * offset), i, j, roomOffset, canvas);
-//						}
-//						else{
-//							this.monster = null;
-//						}
-//						//gc.drawImage(ROCK_CRACKED_IMAGE, (roomOffset * i) + imgX, (roomOffset * j) + imgY, roomOffset, roomOffset);
-//						break;
 					case ENTRANCE:
 						gc.drawImage(IMAGE_ENTRANCE, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
 						break;
