@@ -6,7 +6,6 @@
 package dungeon;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -14,7 +13,6 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -124,11 +122,6 @@ public class DungeonAdventure extends Application {
 
     }
 
-    private void setStatus(String s) {
-        if (s != null) {
-            mStatus.setText(s);
-        }
-    }
 
     private void onNewGame() {
         mGame.newGame();
@@ -205,7 +198,7 @@ public class DungeonAdventure extends Application {
         alert.getDialogPane().setContent(gp);
         
 
-        Optional<ButtonType> result = alert.showAndWait();
+
 
     }
 

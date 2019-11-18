@@ -11,15 +11,10 @@ import java.util.Random;
 import dungeon.Room.DoorPosition;
 import dungeon.Room.DoorState;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -46,7 +41,6 @@ public class Dungeon extends Region {
 	private Hero mHero;
 
 	private BattleScene battle;
-	private BooleanProperty isBattleOver;
 
 	private Question question;
 
@@ -61,8 +55,7 @@ public class Dungeon extends Region {
 	private final static Random rand = new Random();
 	private HeroFactory heroFactory;
 
-	private final String TREASURES[] = {"Abstraction", "Encapsulation", "Inheritance", "Polymorphism"};
-
+	
 	public Dungeon() {
 		mScale = 1;
 		//scale based on picture
@@ -173,18 +166,7 @@ public class Dungeon extends Region {
 		mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(0, 0);
 		//System.out.println("Hero Placed");
 
-		int x = rand.nextInt(BOARDSIZE);
-		int y = rand.nextInt(BOARDSIZE);
 		//System.out.println("Placing treasure");
-		for (String s : TREASURES) {
-			while (mGameBoard[x][y].hasTreasure() || mGameBoard[x][y].isEntrance() || mGameBoard[x][y].isExit()) {
-				x = rand.nextInt(BOARDSIZE);
-				y = rand.nextInt(BOARDSIZE);
-			}
-			//mGameBoard[x][y].setTreasure(s);
-			x = rand.nextInt(BOARDSIZE);
-			y = rand.nextInt(BOARDSIZE);
-		}
 
 		//System.out.println("end new game");
 		draw();
@@ -331,7 +313,6 @@ public class Dungeon extends Region {
 					Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 					alert.setTitle("Exit the Dungeon?");
 					String text = "Would you like to exit the dungeon?\n";
-					text += mHero.getName() + " has " + mHero.TreasureList.size() + " of 4 treasures";
 					alert.setHeaderText(text);
 					Optional<ButtonType> results = alert.showAndWait();
 					if (results.get() == ButtonType.OK) {
@@ -351,13 +332,6 @@ public class Dungeon extends Region {
 		draw();
 	}
 
-	private void battleOver() {
-		if (battle.isBattleOver().get()) {
-
-			this.battle = null;
-
-		}
-	}
 
 	public void onUseVisionPotion() {
 		if (mHero.isAlive()) {
