@@ -5,6 +5,11 @@
  */
 package dungeon;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 import java.util.Random;
 
@@ -60,6 +65,13 @@ public class Dungeon extends Region {
 
 	private final static Random rand = new Random();
 	private HeroFactory heroFactory;
+	
+	private int[] questions = shuffleQuestionNumbers(); //Creates and randomizes a new question list.
+	private int currentQuestion = 0;
+	
+	//Need to find out where best to askQuestion() and where to iterate currentQuestion after asking a question.
+	//askQuestion(questions[currentQuestion]); //When a user chooses to answer a question.
+	//currentQuestion++; //Iterates to the next question in the question list.
 
 	private final String TREASURES[] = {"Abstraction", "Encapsulation", "Inheritance", "Polymorphism"};
 
@@ -83,6 +95,98 @@ public class Dungeon extends Region {
 
 	public StringProperty getStatusStringProperty() {
 		return statusString;
+	}
+	
+	public static int[] shuffleQuestionNumbers()
+	{
+		
+		int[] nums = new int[64];
+		int i = 0;
+		
+		for (i = 0; i < 62; i++)
+		{
+			nums[i] = i + 1;
+		}
+		
+		Random rgen = new Random();		
+		 
+		for (i = 0; i < nums.length; i++)
+		{
+		    int randomPosition = rgen.nextInt(nums.length);
+		    int temp = nums[i];
+		    nums[i] = nums[randomPosition];
+		    nums[randomPosition] = temp;
+		}
+		
+		return nums;
+	}
+	
+	public static void askQuestion(int questionNumberInDatabase)
+	{
+		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
+		
+		int qType = 0, correct = 0;
+		String question = "", shortanswer = "", a1 = "", a2 = "", a3 = "", a4 = "", explanation = "";
+		
+        String url = "jdbc:sqlite:../questions.db";
+		
+        try (Connection conn = DriverManager.getConnection(url);
+        		Statement stmt  = conn.createStatement();
+                ResultSet rs    = stmt.executeQuery(sql))
+        {
+        	while (rs.next())
+        	{
+		        qType = rs.getInt("type");
+		        correct = rs.getInt("correct");
+		        question = rs.getString("question");
+		        shortanswer = rs.getString("shortanswercorrect");
+		        a1 = rs.getString("a1");
+		        a2 = rs.getString("a2");
+		        a3 = rs.getString("a3");
+		        a4 = rs.getString("a4");
+		        explanation = rs.getString("explanation");
+	        }
+        }
+        catch (SQLException e)
+        {
+        	System.out.println(e.getMessage());
+        }
+        
+		Question q = null;
+		
+		switch (qType)
+		{
+			case 1:
+				q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
+				System.out.println("Multiple Choice Question Created!");
+				//Draw Multiple Choice GUI stuff here
+				//q.getBtn1();
+				//q.getBtn2();
+				//q.getBtn3();
+				//q.getBtn4();
+				//q.getQuestion();
+				//q.getCorrectAnswer();
+				//q.getExplanation();
+				break;
+			case 2:
+				q = new TrueFalse(correct, question, explanation);
+				System.out.println("True/False Question Created!");
+				//Draw True False GUI stuff here
+				//q.getBtn1();
+				//q.getBtn2();
+				//q.getQuestion();
+				//q.getCorrectAnswer();
+				//q.getExplanation();
+				break;
+			case 3:
+				q = new ShortAnswer(shortanswer, question, explanation);
+				System.out.println("Short Answer Question Created!");
+				//Draw Short Answer GUI stuff here
+				//q.getQuestion();
+				//q.getCorrectAnswer();
+				//q.getExplanation();
+				break;
+		}
 	}
 
 	public void draw() {
