@@ -44,7 +44,7 @@ public class VideoQuestion extends Question {
 		if(!isVideoShown) {
 			WebView webView = new WebView();
 			//https://youtu.be/rvtRuzKbPfY
-			webView.getEngine().load("https://www.youtube.com/embed/rvtRuzKbPfY?&autoplay=1");
+			webView.getEngine().load(this.url);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("WebView");
 			alert.setHeaderText("WebView");
@@ -84,17 +84,17 @@ public class VideoQuestion extends Question {
 
 	@Override
 	public void onUp() {
-		//optionSelected = (optionSelected - 1 + options.length) % options.length;
+		optionSelected = (optionSelected - 1 + options.size()) % options.size();
 	}
 
 	@Override
 	public void onDown() {
-		//optionSelected = (optionSelected + 1 + options.length) % options.length;
+		optionSelected = (optionSelected + 1 + options.size()) % options.size();
 	}
 
 	@Override
 	public void onEnter() {
-		this.QuestionCorrect = (optionSelected == 1);
+		this.QuestionCorrect = (optionSelected == optionCorrect);
 		this.QuestionSubmitted.set(true);
 	}
 
