@@ -66,18 +66,14 @@ public class Dungeon extends Region {
 	private final static Random rand = new Random();
 	private HeroFactory heroFactory;
 	
-	private int[] questions = shuffleQuestionNumbers(); //Creates and randomizes a new question list.
+	private int[] questions = shuffleQuestionNumbers();
 	private int currentQuestion = 0;
-	
-	//Need to find out where best to askQuestion() and where to iterate currentQuestion after asking a question.
-	//askQuestion(questions[currentQuestion]); //When a user chooses to answer a question.
-	//currentQuestion++; //Iterates to the next question in the question list.
+		
 
 	private final String TREASURES[] = {"Abstraction", "Encapsulation", "Inheritance", "Polymorphism"};
 
 	public Dungeon() {
 		mScale = 1;
-		//scale based on picture
 		setPrefSize(pWidth * mScale, pHeight * mScale);
 		mCanvas = new Canvas(pWidth * mScale, pHeight * mScale);
 		mBackground = new Image("images/background.png");
@@ -100,10 +96,10 @@ public class Dungeon extends Region {
 	public static int[] shuffleQuestionNumbers()
 	{
 		
-		int[] nums = new int[64];
+		int[] nums = new int[35];
 		int i = 0;
 		
-		for (i = 0; i < 62; i++)
+		for (i = 0; i < 35; i++)
 		{
 			nums[i] = i + 1;
 		}
@@ -121,14 +117,14 @@ public class Dungeon extends Region {
 		return nums;
 	}
 	
-	public static void askQuestion(int questionNumberInDatabase)
+	public static Question askQuestion(int questionNumberInDatabase)
 	{
 		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
 		
 		int qType = 0, correct = 0;
 		String question = "", shortanswer = "", a1 = "", a2 = "", a3 = "", a4 = "", explanation = "";
 		
-        String url = "jdbc:sqlite:../questions.db";
+        String url = "jdbc:sqlite:src/questions.db";
 		
         try (Connection conn = DriverManager.getConnection(url);
         		Statement stmt  = conn.createStatement();
@@ -158,35 +154,15 @@ public class Dungeon extends Region {
 		{
 			case 1:
 				q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
-				System.out.println("Multiple Choice Question Created!");
-				//Draw Multiple Choice GUI stuff here
-				//q.getBtn1();
-				//q.getBtn2();
-				//q.getBtn3();
-				//q.getBtn4();
-				//q.getQuestion();
-				//q.getCorrectAnswer();
-				//q.getExplanation();
 				break;
 			case 2:
 				q = new TrueFalse(correct, question, explanation);
-				System.out.println("True/False Question Created!");
-				//Draw True False GUI stuff here
-				//q.getBtn1();
-				//q.getBtn2();
-				//q.getQuestion();
-				//q.getCorrectAnswer();
-				//q.getExplanation();
 				break;
 			case 3:
 				q = new ShortAnswer(shortanswer, question, explanation);
-				System.out.println("Short Answer Question Created!");
-				//Draw Short Answer GUI stuff here
-				//q.getQuestion();
-				//q.getCorrectAnswer();
-				//q.getExplanation();
 				break;
 		}
+		return q;
 	}
 
 	public void draw() {
@@ -530,8 +506,9 @@ public class Dungeon extends Region {
 
 	private void onQuestionTrigger() {
 		if(question == null) {
-			question = new NullQuestion();
+			question = askQuestion(questions[currentQuestion]);
 			question.getQuestionSubmitted().addListener(notUsed -> questionSubmitted());
+			currentQuestion++; //Iterates to the next question in the question list.
 		}
 		else {
 			question = null;
