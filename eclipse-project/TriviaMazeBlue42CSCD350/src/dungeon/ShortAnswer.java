@@ -19,20 +19,6 @@ public class ShortAnswer extends Question
 		this.correctAnswer = shortAnswer;
 	}
 	
-//	public String getCorrectAnswer()
-//	{
-//		return this.correctAnswer;
-//	}
-//	
-//	public String getQuestion()
-//	{
-//		return this.question;
-//	}
-//	
-//	public String getExplanation()
-//	{
-//		return this.explanation;
-//	}
 
 	@Override
 	public void onUp() {

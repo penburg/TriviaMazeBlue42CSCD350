@@ -60,25 +60,12 @@ public abstract class Question implements Drawable{
         gc.restore();
 	}
 	
-	public String getQuestion()
-	{
-		return this.question;
-	}
-	
-	public void setQuestion(String q)
-	{
-		this.question = q;
-	}
-	
+
 	public String getExplanation()
 	{
 		return this.explanation;
 	}
 	
-	public void setExplanation(String e)
-	{
-		this.explanation = e;
-	}
 	
 	/**
 	 * Passes the up keystroke event

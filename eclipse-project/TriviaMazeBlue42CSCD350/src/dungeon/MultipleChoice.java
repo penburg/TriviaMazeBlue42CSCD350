@@ -23,40 +23,6 @@ public class MultipleChoice extends Question
 		this.correctBtn = correctAnswer - 1;
 	}
 	
-//	public String getBtn1()
-//	{
-//		return this.btn1;
-//	}
-//	
-//	public String getBtn2()
-//	{
-//		return this.btn2;
-//	}
-//	
-//	public String getBtn3()
-//	{
-//		return this.btn3;
-//	}
-//	
-//	public String getBtn4()
-//	{
-//		return this.btn4;
-//	}
-//	
-//	public int getCorrectAnswer()
-//	{
-//		return this.correctBtn;
-//	}
-//	
-//	public String getQuestion()
-//	{
-//		return this.question;
-//	}
-//	
-//	public String getExplanation()
-//	{
-//		return this.explanation;
-//	}
 
 	@Override
 	public void onUp() {
