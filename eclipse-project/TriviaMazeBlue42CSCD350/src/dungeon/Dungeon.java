@@ -471,4 +471,18 @@ public class Dungeon extends Region {
 
 	}
 
+	public void onDoorCheatCode() {
+		for (int i = 0; i < BOARDSIZE; i++) {
+			for (int j = 0; j < BOARDSIZE; j++) {
+				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.EAST);
+				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.WEST);
+				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
+				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);	
+			}
+
+		}
+		draw();
+		
+	}
+
 }
