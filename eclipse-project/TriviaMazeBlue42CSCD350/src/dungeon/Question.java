@@ -27,10 +27,13 @@ public abstract class Question implements Drawable{
     protected final double lineWidth = 1.0f;
     protected final String fontString = "System";
     protected final double fontSize = .05;
+    protected String question, explanation;
 	
 	public Question() {
 		this.QuestionCorrect = false;
 		this.QuestionSubmitted = new SimpleBooleanProperty(false);
+		this.question = "";
+		this.explanation = "";
 	}
 
 
@@ -56,6 +59,13 @@ public abstract class Question implements Drawable{
         //restore gc state
         gc.restore();
 	}
+	
+
+	public String getExplanation()
+	{
+		return this.explanation;
+	}
+	
 	
 	/**
 	 * Passes the up keystroke event

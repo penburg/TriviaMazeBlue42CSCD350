@@ -6,7 +6,6 @@
 package dungeon;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -14,7 +13,6 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -28,8 +26,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -63,17 +59,11 @@ public class DungeonAdventure extends Application {
 
         Scene scene = new Scene(root, 750, 800);
         scene.setOnKeyPressed(keyEvent -> onKeyPressed(keyEvent));
-        primaryStage.setTitle("Heroes and Monsters - A Dungeon Adventure");
+        primaryStage.setTitle("Blue42 Maze Game");
         primaryStage.setScene(scene);
         
         primaryStage.show();
-        SettingDialogController control;
-        try {
-            control = new SettingDialogController(mGame);
-            control.show();
-        } catch (IOException ex) {
-            Logger.getLogger(DungeonAdventure.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
         
     }
@@ -124,11 +114,6 @@ public class DungeonAdventure extends Application {
 
     }
 
-    private void setStatus(String s) {
-        if (s != null) {
-            mStatus.setText(s);
-        }
-    }
 
     private void onNewGame() {
         mGame.newGame();
@@ -154,58 +139,36 @@ public class DungeonAdventure extends Application {
         gp.add(new Label("Move Left"), 1, 2);
         gp.add(new Label("Move Right"), 1, 3);
         
-        gp.add(new Label("a"), 0, 4);
-        gp.add(new Label("p"), 0, 5);
-        gp.add(new Label("v"), 0, 6);
-        gp.add(new Label("enter"), 0, 7);
+        gp.add(new Label("v"), 0, 4);
+        gp.add(new Label("enter"), 0, 5);
                 
-        gp.add(new Label("Attack enemy in room"), 1, 4);
-        gp.add(new Label("Use Health Potion"), 1, 5);
-        gp.add(new Label("Use Vision Potion"), 1, 6);
-        gp.add(new Label("Enter / Execute"), 1, 7);
+        gp.add(new Label("Use Vision Potion"), 1, 4);
+        gp.add(new Label("Enter / Execute"), 1, 5);
         
                
-        ImageView potionHealth = new ImageView(Room.IMAGE_POTION_HEAL);
-        potionHealth.setFitWidth(CONTROL_IMAGE_WIDTH);
-        potionHealth.setPreserveRatio(true);
-        gp.add(potionHealth, 0, 8);
-        gp.add(new Label("Health Potion"), 1, 8);
-        
         ImageView potionVision = new ImageView(Room.IMAGE_POTION_VISION);
         potionVision.setFitWidth(CONTROL_IMAGE_WIDTH);
         potionVision.setPreserveRatio(true);
-        gp.add(potionVision, 0, 9);
-        gp.add(new Label("Vision Potion"), 1, 9);
-        
-        ImageView potionTreasure = new ImageView(Room.IMAGE_TREASURE);
-        potionTreasure.setFitWidth(CONTROL_IMAGE_WIDTH);
-        potionTreasure.setPreserveRatio(true);
-        gp.add(potionTreasure, 0, 10);
-        gp.add(new Label("Treasure"), 1, 10);
+        gp.add(potionVision, 0, 6);
+        gp.add(new Label("Vision Potion"), 1, 6);
         
         ImageView potionEntrance = new ImageView(Room.IMAGE_ENTRANCE);
         potionEntrance.setFitWidth(CONTROL_IMAGE_WIDTH);
         potionEntrance.setPreserveRatio(true);
-        gp.add(potionEntrance, 0, 11);
-        gp.add(new Label("Entrance"), 1, 11);
+        gp.add(potionEntrance, 0, 7);
+        gp.add(new Label("Entrance"), 1, 7);
         
         ImageView potionExit = new ImageView(Room.IMAGE_EXIT);
         potionExit.setFitWidth(CONTROL_IMAGE_WIDTH);
         potionExit.setPreserveRatio(true);
-        gp.add(potionExit, 0, 12);
-        gp.add(new Label("Exit"), 1, 12);
+        gp.add(potionExit, 0, 8);
+        gp.add(new Label("Exit"), 1, 8);
         
-        Rectangle r = new Rectangle();
-        r.setHeight(CONTROL_IMAGE_WIDTH);
-        r.setWidth(CONTROL_IMAGE_WIDTH);
-        r.setFill(Color.color(1, 0, 0, .25));
-        gp.add(r, 0, 13);
-        gp.add(new Label("Room with a pit"), 1, 13);
         
         alert.getDialogPane().setContent(gp);
         
 
-        Optional<ButtonType> result = alert.showAndWait();
+        alert.showAndWait();
 
     }
 
@@ -219,9 +182,7 @@ public class DungeonAdventure extends Application {
 
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
-        //System.out.println(keyEvent.getText());
-        //System.out.println("wft");
+    private void onKeyPressed(KeyEvent keyEvent) {;
         switch (keyEvent.getCode()) {
             case LEFT:
                 mGame.onLeft();
@@ -234,12 +195,6 @@ public class DungeonAdventure extends Application {
                 break;
             case DOWN:
                 mGame.onDown();
-                break;
-            case A:
-                mGame.onAttack();
-                break;
-            case P:
-                mGame.onUseHealthPotion();
                 break;
             case V:
                 mGame.onUseVisionPotion();

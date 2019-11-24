@@ -27,9 +27,7 @@
  */
 package dungeon;
 
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 public abstract class Hero extends DungeonCharacter {
@@ -38,17 +36,13 @@ public abstract class Hero extends DungeonCharacter {
     protected int numTurns;
     private int numPotionsHeal;
     private int numPotionsVision;
-    protected ArrayList<String> TreasureList;
     private Random rand;
 
     @Override
     public String toString() {
         String ret = "";
         ret += getName();
-        ret += ", hp: " + this.getHitPoints();
-        ret += ", Healing potions: " + this.getNumPotionsHeal();
-        ret += ", Vision potions: " + this.getNumPotionsVision();
-        ret += ", Treasures: " + this.TreasureList.size() + " of 4";
+        ret += " Vision potions: " + this.getNumPotionsVision();
         return ret;
     }
 
@@ -62,7 +56,6 @@ public abstract class Hero extends DungeonCharacter {
 
         Preferences prefs = Preferences.userNodeForPackage(getClass());
         setName(prefs.get("Name", "Jack"));
-        TreasureList = new ArrayList();
         this.rand = new Random();
 
     }
@@ -103,14 +96,6 @@ public abstract class Hero extends DungeonCharacter {
         return numPotionsVision;
     }
     
-    public void addTreasure(String t){
-        this.TreasureList.add(t);
-    }
-    
-    public String[] getTreasures(){
-        return (String[])this.TreasureList.toArray();
-    }
-
     public boolean defend() {
         return Math.random() <= chanceToBlock;
 
