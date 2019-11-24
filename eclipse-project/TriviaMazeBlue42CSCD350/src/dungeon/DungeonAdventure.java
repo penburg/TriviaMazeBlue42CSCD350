@@ -250,6 +250,9 @@ public class DungeonAdventure extends Application {
             case D:
             	mGame.onDebugQuestion();
             	break;
+            case U:
+            	mGame.onDoorCheatCode();
+            	break;
             case ENTER:
                 mGame.onEnter();
                 break;

@@ -33,6 +33,7 @@ public class Dungeon extends Region {
     private BooleanProperty mIsPaused;
 
     private Room[][] mGameBoard;
+    private boolean unlockDoors ;
     private int[] mHeroLoc = {-1, -1};
     private int[] mExitLoc = {-1, -1};
     private int[] mEntranceLoc = {-1, -1};
@@ -280,7 +281,7 @@ public class Dungeon extends Region {
     public void onAttack() {
         if (mHero.isAlive()) {
             if (battle == null) {
-                battle = new BattleScene(this.mHero, mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getMonster());
+                //battle = new BattleScene(this.mHero, mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getMonster());
                 battle.isBattleOver().addListener(notUsed -> battleOver());
             } else {
                 battle = null;
@@ -386,6 +387,20 @@ public class Dungeon extends Region {
         }
         draw();
     }
+    //Terrance Addition below
+    public void onDoorCheatCode() {
+    	statusString.set("TEST");
+    	
+    	 for (int i = 0; i < BOARDSIZE; i++) {
+             for (int j = 0; j < BOARDSIZE; j++) {
+                 mGameBoard[i][j].setUnlockDoors(true);
+             }
+
+         }
+         draw();
+    
+    }
+    
 
     public void onDebugQuestion() {
     	if(question == null) {

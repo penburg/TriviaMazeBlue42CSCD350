@@ -23,6 +23,7 @@ public class Room implements Drawable {
     private boolean isEntrance;
     private boolean isExit;
     private boolean doors[] = {false, false, false, false};
+    private boolean unlockDoors;
     private String treasure;
     //private Monster monster;
     private Hero hero;
@@ -340,5 +341,13 @@ public class Room implements Drawable {
 
         }
     }
+
+	public boolean getUnlockDoors() {
+		return unlockDoors;
+	}
+
+	public void setUnlockDoors(boolean unlockDoors) {
+		this.unlockDoors = unlockDoors;
+	}
 
 }
