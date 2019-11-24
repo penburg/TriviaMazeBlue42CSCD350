@@ -12,9 +12,9 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
-    <Tab fx:id="TF_Pane" text="T/F">
+    <Tab fx:id="TF_Tab" text="T/F">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="333.0" prefWidth="600.0">
                <children>
@@ -26,10 +26,12 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="TF_False" layoutX="36.0" layoutY="177.0" mnemonicParsing="false" text="False" toggleGroup="$TFAnswer" />
+                  <TextField fx:id="TF_Explanation" layoutX="253.0" layoutY="149.0" prefHeight="26.0" prefWidth="320.0" />
+                  <Label layoutX="119.0" layoutY="154.0" text="Wrong Explanation:" />
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab fx:id="MC_Pane" text="Multiple Choice">
+    <Tab fx:id="MC_Tab" text="Multiple Choice">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -47,10 +49,12 @@
                   <TextField fx:id="MC_B_Field" layoutX="76.0" layoutY="189.0" />
                   <TextField fx:id="MC_C_Field" layoutX="76.0" layoutY="222.0" />
                   <TextField fx:id="MC_D_Field" layoutX="76.0" layoutY="260.0" />
+                  <Label layoutX="264.0" layoutY="159.0" text="Wrong Explanation:" />
+                  <TextField fx:id="MC_Explanation" layoutX="264.0" layoutY="180.0" prefHeight="26.0" prefWidth="309.0" />
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab fx:id="SA_Pane" text="Short Answer">
+      <Tab fx:id="SA_Tab" text="Short Answer">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -58,12 +62,14 @@
                   <TextArea fx:id="SA_Prompt" layoutX="34.0" layoutY="47.0" prefHeight="99.0" prefWidth="540.0" />
                   <Label layoutX="34.0" layoutY="161.0" text="Answer:" />
                   <TextField fx:id="SA_Answer" layoutX="96.0" layoutY="156.0" />
+                  <Label layoutX="34.0" layoutY="197.0" text="Wrong Explanation:" />
+                  <TextField fx:id="SA_Explanation" layoutX="170.0" layoutY="192.0" prefHeight="26.0" prefWidth="402.0" />
                </children></AnchorPane>
         </content>
       </Tab>
-      <Tab fx:id="YT_Pane" text="YouTube">
+      <Tab fx:id="YT_Tab" text="YouTube">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="349.0" prefWidth="600.0">
                <children>
                   <Label layoutX="34.0" layoutY="31.0" text="Prompt:" />
                   <TextArea fx:id="YT_Prompt" layoutX="34.0" layoutY="47.0" prefHeight="99.0" prefWidth="540.0" />
@@ -79,12 +85,14 @@
                   <RadioButton fx:id="YT_B_Radio" layoutX="34.0" layoutY="259.0" mnemonicParsing="false" text="B" toggleGroup="$VAnswer" />
                   <RadioButton fx:id="YT_C_Radio" layoutX="260.0" layoutY="224.0" mnemonicParsing="false" text="C" toggleGroup="$VAnswer" />
                   <RadioButton fx:id="YT_D_Radio" layoutX="259.0" layoutY="259.0" mnemonicParsing="false" text="D" toggleGroup="$VAnswer" />
-                  <Button layoutX="528.0" layoutY="185.0" mnemonicParsing="false" text="Test" />
+                  <Button fx:id="YT_Test" layoutX="528.0" layoutY="185.0" mnemonicParsing="false" text="Test" />
                   <TextField fx:id="YT_B_Field" layoutX="77.0" layoutY="255.0" />
                   <TextField fx:id="YT_A_Field" layoutX="77.0" layoutY="220.0" />
                   <TextField fx:id="YT_C_Field" layoutX="300.0" layoutY="220.0" />
                   <TextField fx:id="YT_D_Field" layoutX="300.0" layoutY="255.0" />
-                  <Spinner fx:id="YT_Spinner" layoutX="271.0" layoutY="185.0" prefHeight="26.0" prefWidth="64.0" />
+                  <Spinner fx:id="YT_Spinner" layoutX="271.0" layoutY="185.0" prefHeight="26.0" prefWidth="73.0" />
+                  <Label layoutX="33.0" layoutY="292.0" text="Wrong Explanation:" />
+                  <TextField fx:id="YT_Explanation" layoutX="167.0" layoutY="287.0" prefHeight="26.0" prefWidth="422.0" />
                </children></AnchorPane>
         </content>
       </Tab>
