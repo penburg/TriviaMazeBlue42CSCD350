@@ -27,10 +27,13 @@ public abstract class Question implements Drawable{
     protected final double lineWidth = 1.0f;
     protected final String fontString = "System";
     protected final double fontSize = .05;
+    protected String question, explanation;
 	
 	public Question() {
 		this.QuestionCorrect = false;
 		this.QuestionSubmitted = new SimpleBooleanProperty(false);
+		this.question = "";
+		this.explanation = "";
 	}
 
 
@@ -55,6 +58,26 @@ public abstract class Question implements Drawable{
         
         //restore gc state
         gc.restore();
+	}
+	
+	public String getQuestion()
+	{
+		return this.question;
+	}
+	
+	public void setQuestion(String q)
+	{
+		this.question = q;
+	}
+	
+	public String getExplanation()
+	{
+		return this.explanation;
+	}
+	
+	public void setExplanation(String e)
+	{
+		this.explanation = e;
 	}
 	
 	/**

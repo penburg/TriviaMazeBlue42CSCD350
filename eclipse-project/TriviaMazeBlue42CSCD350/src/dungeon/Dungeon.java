@@ -5,6 +5,11 @@
  */
 package dungeon;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 import java.util.Random;
 
@@ -53,11 +58,14 @@ public class Dungeon extends Region {
 
 	private final static Random rand = new Random();
 	private HeroFactory heroFactory;
+	
+	private int[] questions = shuffleQuestionNumbers();
+	private int currentQuestion = 0;
+		
 
 	
 	public Dungeon() {
 		mScale = 1;
-		//scale based on picture
 		setPrefSize(pWidth * mScale, pHeight * mScale);
 		mCanvas = new Canvas(pWidth * mScale, pHeight * mScale);
 		mBackground = new Image("images/background.png");
@@ -75,6 +83,78 @@ public class Dungeon extends Region {
 
 	public StringProperty getStatusStringProperty() {
 		return statusString;
+	}
+	
+	public static int[] shuffleQuestionNumbers()
+	{
+		
+		int[] nums = new int[35];
+		int i = 0;
+		
+		for (i = 0; i < 35; i++)
+		{
+			nums[i] = i + 1;
+		}
+		
+		Random rgen = new Random();		
+		 
+		for (i = 0; i < nums.length; i++)
+		{
+		    int randomPosition = rgen.nextInt(nums.length);
+		    int temp = nums[i];
+		    nums[i] = nums[randomPosition];
+		    nums[randomPosition] = temp;
+		}
+		
+		return nums;
+	}
+	
+	public static Question askQuestion(int questionNumberInDatabase)
+	{
+		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
+		
+		int qType = 0, correct = 0;
+		String question = "", shortanswer = "", a1 = "", a2 = "", a3 = "", a4 = "", explanation = "";
+		
+        String url = "jdbc:sqlite:src/questions.db";
+		
+        try (Connection conn = DriverManager.getConnection(url);
+        		Statement stmt  = conn.createStatement();
+                ResultSet rs    = stmt.executeQuery(sql))
+        {
+        	while (rs.next())
+        	{
+		        qType = rs.getInt("type");
+		        correct = rs.getInt("correct");
+		        question = rs.getString("question");
+		        shortanswer = rs.getString("shortanswercorrect");
+		        a1 = rs.getString("a1");
+		        a2 = rs.getString("a2");
+		        a3 = rs.getString("a3");
+		        a4 = rs.getString("a4");
+		        explanation = rs.getString("explanation");
+	        }
+        }
+        catch (SQLException e)
+        {
+        	System.out.println(e.getMessage());
+        }
+        
+		Question q = null;
+		
+		switch (qType)
+		{
+			case 1:
+				q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
+				break;
+			case 2:
+				q = new TrueFalse(correct, question, explanation);
+				break;
+			case 3:
+				q = new ShortAnswer(shortanswer, question, explanation);
+				break;
+		}
+		return q;
 	}
 
 	public void draw() {
@@ -364,8 +444,9 @@ public class Dungeon extends Region {
 
 	private void onQuestionTrigger() {
 		if(question == null) {
-			question = new NullQuestion();
+			question = askQuestion(questions[currentQuestion]);
 			question.getQuestionSubmitted().addListener(notUsed -> questionSubmitted());
+			currentQuestion++; //Iterates to the next question in the question list.
 		}
 		else {
 			question = null;
