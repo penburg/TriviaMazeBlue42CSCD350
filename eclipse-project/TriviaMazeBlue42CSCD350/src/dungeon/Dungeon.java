@@ -463,7 +463,7 @@ public class Dungeon extends Region {
 			statusString.set("Open Sesame!!");
 		}
 		else {
-			statusString.set("Failure is always an option");
+			statusString.set(this.question.getExplanation());
 			// need to lock the door ajecent to me
 		}
 		this.question = null;
