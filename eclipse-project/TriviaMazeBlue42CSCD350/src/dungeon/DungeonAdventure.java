@@ -71,7 +71,7 @@ public class DungeonAdventure extends Application {
     private void onAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("Patrick Enburg, CSCD 349 Final Project, Fall 2018");
+        alert.setHeaderText("Team Blue43, CSCD 350 Final Project, Fall 2019");
         alert.showAndWait();
 
     }
@@ -96,8 +96,12 @@ public class DungeonAdventure extends Application {
         MenuItem settingsMenuItem = new MenuItem("_Settings");
         settingsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         settingsMenuItem.setOnAction(actionEvent -> onSettings());
+        
+        MenuItem addQuestionMenuItem = new MenuItem("_Add Question");
+        addQuestionMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN));
+        addQuestionMenuItem.setOnAction(actionEvent -> onAddQuestion());
 
-        GameMenu.getItems().addAll(newMenuItem, new SeparatorMenuItem(), settingsMenuItem);
+        GameMenu.getItems().addAll(newMenuItem, new SeparatorMenuItem(), addQuestionMenuItem, settingsMenuItem);
 
         // Help menu with just an about item for now
         Menu helpMenu = new Menu("_Help");
@@ -175,6 +179,16 @@ public class DungeonAdventure extends Application {
     private void onSettings() {
         try {
             SettingDialogController control = new SettingDialogController(mGame);
+            control.show();
+        } catch (IOException ex) {
+            Logger.getLogger(DungeonAdventure.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    private void onAddQuestion() {
+        try {
+            AddQuestionDialog control = new AddQuestionDialog(mGame);
             control.show();
         } catch (IOException ex) {
             Logger.getLogger(DungeonAdventure.class.getName()).log(Level.SEVERE, null, ex);
