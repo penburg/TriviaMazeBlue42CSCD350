@@ -85,7 +85,7 @@ public class Dungeon extends Region {
 		return statusString;
 	}
 	
-	public static int[] shuffleQuestionNumbers()
+	private int[] shuffleQuestionNumbers()
 	{
 		
 		int[] nums = new int[35];
@@ -109,7 +109,7 @@ public class Dungeon extends Region {
 		return nums;
 	}
 	
-	public static Question askQuestion(int questionNumberInDatabase)
+	private Question askQuestion(int questionNumberInDatabase)
 	{
 		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
 		
@@ -146,12 +146,15 @@ public class Dungeon extends Region {
 		{
 			case 1:
 				q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
+				statusString.set("DEBUG - Multiple Choice Question");
 				break;
 			case 2:
 				q = new TrueFalse(correct, question, explanation);
+				statusString.set("DEBUG - True / False Question");
 				break;
 			case 3:
 				q = new ShortAnswer(shortanswer, question, explanation);
+				statusString.set("DEBUG -Short Answer Question");
 				break;
 		}
 		return q;
