@@ -26,7 +26,7 @@ public class Room implements Drawable {
 		LOCKED,
 		WALL,
 	};
-	
+
 	public enum DoorPosition{
 		NORTH,
 		SOUTH,
@@ -174,7 +174,7 @@ public class Room implements Drawable {
 		this.heroLoc[1] = y;
 
 
-		
+
 		if (this.hero != null) {
 			switch (roomGrid[x][y]) {
 			case ENTRANCE:
@@ -204,10 +204,11 @@ public class Room implements Drawable {
 	}
 
 	public void setDoorState(DoorState state, DoorPosition pos) {
-		
-		doors[pos.ordinal()] = state;
+		if(doors[pos.ordinal()] != DoorState.WALL) {
+			doors[pos.ordinal()] = state;
+		}
 	}
-	
+
 	public void setIsVisable(boolean isVisable) {
 		this.isVisable = isVisable;
 	}
@@ -252,7 +253,7 @@ public class Room implements Drawable {
 			gc.strokeRect(topX, topY, offset, offset);
 			double doorLength = (double) offset / 3f;
 
-			
+
 			setDoorColor(gc, doors[DoorPosition.NORTH.ordinal()]);
 			gc.strokeLine(topX + doorLength, topY, topX + doorLength + doorLength, topY);
 
@@ -319,7 +320,7 @@ public class Room implements Drawable {
 		}
 	}
 
-	
+
 	/**
 	 * @param questionCorrect
 	 */
@@ -339,7 +340,7 @@ public class Room implements Drawable {
 			doors[DoorPosition.WEST.ordinal()] = newState;
 			break;
 		}
-		
+
 	}
 
 	/**

@@ -477,7 +477,7 @@ public class Dungeon extends Region {
 				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.EAST);
 				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.WEST);
 				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);	
+				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
 			}
 
 		}
