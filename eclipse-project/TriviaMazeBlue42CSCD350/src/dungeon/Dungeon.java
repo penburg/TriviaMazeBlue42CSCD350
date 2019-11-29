@@ -484,5 +484,16 @@ public class Dungeon extends Region {
 		draw();
 		
 	}
+	public  void traverseMaze() {
+		for (int i = 0; i < mGameBoard.length-1; i++) {
+			for (int j = 0; j < mGameBoard[i].length; j++) {
+				System.out.println("Room at " + i + ", " + j + ", " + mGameBoard[i][j].isExit());
+				
+			}
+
+		}
+		draw();
+		
+	}
 
 }

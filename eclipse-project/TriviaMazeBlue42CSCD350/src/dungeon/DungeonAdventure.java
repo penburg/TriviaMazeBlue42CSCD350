@@ -219,6 +219,9 @@ public class DungeonAdventure extends Application {
             case U:
             	mGame.onDoorCheatCode();
             	break;
+            case T:
+            	mGame.traverseMaze();
+            	break;
             case ENTER:
                 mGame.onEnter();
                 break;
