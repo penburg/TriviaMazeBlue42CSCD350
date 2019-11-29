@@ -326,20 +326,7 @@ public class Room implements Drawable {
 	 */
 	public void setDoorInQuestion(boolean questionCorrect) {
 		DoorState newState = questionCorrect ? DoorState.OPEN : DoorState.LOCKED;
-		switch (doorInQuestion) {
-		case NORTH:
-			doors[DoorPosition.NORTH.ordinal()] = newState;
-			break;
-		case SOUTH:
-			doors[DoorPosition.SOUTH.ordinal()] = newState;
-			break;
-		case EAST:
-			doors[DoorPosition.EAST.ordinal()] = newState;
-			break;
-		case WEST:
-			doors[DoorPosition.WEST.ordinal()] = newState;
-			break;
-		}
+		setDoorState(newState, doorInQuestion);
 
 	}
 

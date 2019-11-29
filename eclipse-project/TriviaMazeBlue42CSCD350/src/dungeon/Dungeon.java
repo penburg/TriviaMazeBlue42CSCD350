@@ -58,12 +58,12 @@ public class Dungeon extends Region {
 
 	private final static Random rand = new Random();
 	private HeroFactory heroFactory;
-	
+
 	private int[] questions = shuffleQuestionNumbers();
 	private int currentQuestion = 0;
-		
 
-	
+
+
 	public Dungeon() {
 		mScale = 1;
 		setPrefSize(pWidth * mScale, pHeight * mScale);
@@ -84,78 +84,78 @@ public class Dungeon extends Region {
 	public StringProperty getStatusStringProperty() {
 		return statusString;
 	}
-	
+
 	private int[] shuffleQuestionNumbers()
 	{
-		
+
 		int[] nums = new int[35];
 		int i = 0;
-		
+
 		for (i = 0; i < 35; i++)
 		{
 			nums[i] = i + 1;
 		}
-		
+
 		Random rgen = new Random();		
-		 
+
 		for (i = 0; i < nums.length; i++)
 		{
-		    int randomPosition = rgen.nextInt(nums.length);
-		    int temp = nums[i];
-		    nums[i] = nums[randomPosition];
-		    nums[randomPosition] = temp;
+			int randomPosition = rgen.nextInt(nums.length);
+			int temp = nums[i];
+			nums[i] = nums[randomPosition];
+			nums[randomPosition] = temp;
 		}
-		
+
 		return nums;
 	}
-	
+
 	private Question askQuestion(int questionNumberInDatabase)
 	{
 		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
-		
+
 		int qType = 0, correct = 0;
 		String question = "", shortanswer = "", a1 = "", a2 = "", a3 = "", a4 = "", explanation = "";
-		
-        String url = "jdbc:sqlite:src/questions.db";
-		
-        try (Connection conn = DriverManager.getConnection(url);
-        		Statement stmt  = conn.createStatement();
-                ResultSet rs    = stmt.executeQuery(sql))
-        {
-        	while (rs.next())
-        	{
-		        qType = rs.getInt("type");
-		        correct = rs.getInt("correct");
-		        question = rs.getString("question");
-		        shortanswer = rs.getString("shortanswercorrect");
-		        a1 = rs.getString("a1");
-		        a2 = rs.getString("a2");
-		        a3 = rs.getString("a3");
-		        a4 = rs.getString("a4");
-		        explanation = rs.getString("explanation");
-	        }
-        }
-        catch (SQLException e)
-        {
-        	System.out.println(e.getMessage());
-        }
-        
+
+		String url = "jdbc:sqlite:src/questions.db";
+
+		try (Connection conn = DriverManager.getConnection(url);
+				Statement stmt  = conn.createStatement();
+				ResultSet rs    = stmt.executeQuery(sql))
+		{
+			while (rs.next())
+			{
+				qType = rs.getInt("type");
+				correct = rs.getInt("correct");
+				question = rs.getString("question");
+				shortanswer = rs.getString("shortanswercorrect");
+				a1 = rs.getString("a1");
+				a2 = rs.getString("a2");
+				a3 = rs.getString("a3");
+				a4 = rs.getString("a4");
+				explanation = rs.getString("explanation");
+			}
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}
+
 		Question q = null;
-		
+
 		switch (qType)
 		{
-			case 1:
-				q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
-				statusString.set("DEBUG - Multiple Choice Question");
-				break;
-			case 2:
-				q = new TrueFalse(correct, question, explanation);
-				statusString.set("DEBUG - True / False Question");
-				break;
-			case 3:
-				q = new ShortAnswer(shortanswer, question, explanation);
-				statusString.set("DEBUG -Short Answer Question");
-				break;
+		case 1:
+			q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
+			statusString.set("DEBUG - Multiple Choice Question");
+			break;
+		case 2:
+			q = new TrueFalse(correct, question, explanation);
+			statusString.set("DEBUG - True / False Question");
+			break;
+		case 3:
+			q = new ShortAnswer(shortanswer, question, explanation);
+			statusString.set("DEBUG -Short Answer Question");
+			break;
 		}
 		return q;
 	}
@@ -355,8 +355,6 @@ public class Dungeon extends Region {
 		}
 	}
 
-
-
 	public void onEnter() {
 		if (mHero.isAlive()) {
 			if (question == null) {
@@ -390,7 +388,6 @@ public class Dungeon extends Region {
 		draw();
 	}
 
-
 	public void onUseVisionPotion() {
 		if (mHero.isAlive()) {
 			if (mHero.getNumPotionsVision() > 0) {
@@ -418,7 +415,6 @@ public class Dungeon extends Region {
 		draw();
 
 	}
-
 
 	public void onCheatCode() {
 		statusString.set("You shall from this day forward be called The Cheater " + mHero.getName());
@@ -482,18 +478,19 @@ public class Dungeon extends Region {
 
 		}
 		draw();
-		
+
 	}
+
 	public  void traverseMaze() {
 		for (int i = 0; i < mGameBoard.length-1; i++) {
 			for (int j = 0; j < mGameBoard[i].length; j++) {
 				System.out.println("Room at " + i + ", " + j + ", " + mGameBoard[i][j].isExit());
-				
+
 			}
 
 		}
 		draw();
-		
+
 	}
 
 }
