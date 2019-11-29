@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
@@ -302,7 +303,16 @@ public class Dungeon extends Region {
 		//newX = newX % Room.ROOMSIZE;
 		//newY = newY % Room.ROOMSIZE;
 		if (mHero.isAlive()) {
-			statusString.set(this.mHero.toString() + " Old room [" + mHeroLoc[0] + "," + mHeroLoc[1] + "]");
+			ArrayList<Room> path = new ArrayList<Room>();
+			path = exitPath(path, mHeroLoc[0], mHeroLoc[1]);
+			String pathMessage = "";
+			if(path == null) {
+				pathMessage = " No Path to exit";
+			}
+			else {
+				pathMessage = " Exit path found length to exit: " + path.size();
+			}
+			statusString.set(this.mHero.toString() + pathMessage);
 			mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(newX, newY);
 
 			if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[0] >= Room.ROOMSIZE) {
@@ -522,4 +532,43 @@ public class Dungeon extends Region {
 
 	}
 
+	/**
+	 * Returns a path to the exit, may not be optimal
+	 * 
+	 * @param prevPath The previous path taken
+	 * @param x The East - West location on the game board to start from
+	 * @param y The North - South location on the game board to start from
+	 * @return The path to exit or null if none exist
+	 */
+	private ArrayList<Room> exitPath(ArrayList<Room> prevPath, int x, int y){
+		if(prevPath.contains(mGameBoard[x][y]) || x < 0 || y < 0 || x > BOARDSIZE || y > BOARDSIZE) {
+			//Returned to previously visited room
+			return null;
+		}
+		prevPath.add(mGameBoard[x][y]);
+		
+		if(mGameBoard[x][y].isExit()) {
+			return prevPath;
+		}
+		else {
+			DoorState[] doors = mGameBoard[x][y].getDoors();
+			ArrayList<Room> nextPath = null;
+			if(doors[DoorPosition.NORTH.ordinal()] == DoorState.OPEN || doors[DoorPosition.NORTH.ordinal()] ==  DoorState.CLOSED) {
+				nextPath = exitPath(prevPath, x, y - 1);
+			}
+			if(nextPath == null && (doors[DoorPosition.SOUTH.ordinal()] == DoorState.OPEN || doors[DoorPosition.SOUTH.ordinal()] ==  DoorState.CLOSED)) {
+				nextPath = exitPath(prevPath, x, y + 1);
+			}
+			if(nextPath == null && (doors[DoorPosition.EAST.ordinal()] == DoorState.OPEN || doors[DoorPosition.EAST.ordinal()] ==  DoorState.CLOSED)) {
+				nextPath = exitPath(prevPath, x + 1, y);
+			}
+			if(nextPath == null && (doors[DoorPosition.WEST.ordinal()] == DoorState.OPEN || doors[DoorPosition.WEST.ordinal()] ==  DoorState.CLOSED)) {
+				nextPath = exitPath(prevPath, x - 1, y);
+			}
+			
+				return nextPath;
+			
+		}
+
+	}
 }
