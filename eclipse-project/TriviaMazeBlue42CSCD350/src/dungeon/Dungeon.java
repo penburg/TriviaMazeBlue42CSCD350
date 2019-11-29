@@ -39,6 +39,8 @@ public class Dungeon extends Region {
 	private IntegerProperty mIsQuestionTriggered;
 
 	private Room[][] mGameBoard;
+	//[0] East - West
+	//[1] North - South
 	private int[] mHeroLoc = {-1, -1};
 	private int[] mExitLoc = {-1, -1};
 	private int[] mEntranceLoc = {-1, -1};
@@ -300,7 +302,7 @@ public class Dungeon extends Region {
 		//newX = newX % Room.ROOMSIZE;
 		//newY = newY % Room.ROOMSIZE;
 		if (mHero.isAlive()) {
-			statusString.set(this.mHero.toString());
+			statusString.set(this.mHero.toString() + " Old room [" + mHeroLoc[0] + "," + mHeroLoc[1] + "]");
 			mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(newX, newY);
 
 			if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[0] >= Room.ROOMSIZE) {
@@ -313,7 +315,7 @@ public class Dungeon extends Region {
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
 				}
-				mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.WEST);
+				//mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.WEST);
 			} else if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[0] < 0) {
 				mHeroLoc[0]--;
 				if (mHeroLoc[0] >= 0) {
@@ -324,7 +326,7 @@ public class Dungeon extends Region {
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
 				}
-				mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.EAST);
+				//mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.EAST);
 			}
 			if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[1] >= Room.ROOMSIZE) {
 				mHeroLoc[1]++;
@@ -336,7 +338,7 @@ public class Dungeon extends Region {
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
 				}
-				mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
+				//mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
 			} else if (mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[1] < 0) {
 				mHeroLoc[1]--;
 				if (mHeroLoc[1] >= 0) {
@@ -347,7 +349,7 @@ public class Dungeon extends Region {
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
 					mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHeroLoc(oldX, oldY);
 				}
-				mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
+				//mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
 			}
 		} else {
 			this.mHero.setCharacterImage(gravestoneImage);
@@ -455,13 +457,40 @@ public class Dungeon extends Region {
 
 	private void questionSubmitted() {
 		mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorInQuestion(question.isQuestionCorrect());
+		int nextRoom[] = new int[2];
+		DoorPosition nextRoomDoor = null;
+
+		switch(mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getDoorInQuestion()) {
+		case NORTH:
+			nextRoom[0] = mHeroLoc[0];
+			nextRoom[1] = mHeroLoc[1] - 1;
+			nextRoomDoor =  DoorPosition.SOUTH;
+			break;
+		case SOUTH:
+			nextRoom[0] = mHeroLoc[0];
+			nextRoom[1] = mHeroLoc[1] + 1;
+			nextRoomDoor =  DoorPosition.NORTH;
+			break;
+		case EAST:
+			nextRoom[0] = mHeroLoc[0] + 1;
+			nextRoom[1] = mHeroLoc[1];
+			nextRoomDoor =  DoorPosition.WEST;
+			break;
+		case WEST:
+			nextRoom[0] = mHeroLoc[0] - 1;
+			nextRoom[1] = mHeroLoc[1];
+			nextRoomDoor =  DoorPosition.EAST;
+			break;
+		}
 		if(question.isQuestionCorrect()) {
 			statusString.set("Open Sesame!!");
+			mGameBoard[nextRoom[0]][nextRoom[1]].setDoorState(DoorState.OPEN, nextRoomDoor);
 		}
 		else {
 			statusString.set(this.question.getExplanation());
-			// need to lock the door ajecent to me
+			mGameBoard[nextRoom[0]][nextRoom[1]].setDoorState(DoorState.LOCKED, nextRoomDoor);
 		}
+		
 		this.question = null;
 		draw();
 
