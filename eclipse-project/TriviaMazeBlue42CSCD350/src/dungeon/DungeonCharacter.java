@@ -153,6 +153,10 @@ public abstract class DungeonCharacter implements Drawable {
     protected ArrayList<Attack> getAttackList() {
         return attackList;
     }
+    
+    public void kill() {
+    	this.hitPoints = 0;
+    }
 
     @Override
     public void draw(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {

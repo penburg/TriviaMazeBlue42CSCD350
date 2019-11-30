@@ -294,6 +294,29 @@ public class Dungeon extends Region {
 		draw();
 	}
 
+	private void onGameOver(boolean isWinner) {
+		if(isWinner) {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setTitle("GameOver");
+			alert.setHeaderText("You have found the exit!\nWould you like to play again?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK){
+				newGame();
+			} else {
+				// ... user chose CANCEL or closed the dialog
+			}
+		}
+		else {
+			mHero.kill();
+			Alert alert = new Alert(Alert.AlertType.WARNING);
+			alert.setTitle("GameOver");
+			alert.setHeaderText("You have failed to find the exit!\nYou have died of starvation, sorry");
+			alert.show();
+			draw();
+		}
+	}
+
 	private void moveHero(int x, int y) {
 		int oldX = mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[0];
 		int oldY = mGameBoard[mHeroLoc[0]][mHeroLoc[1]].getHeroLoc()[1];
@@ -307,7 +330,7 @@ public class Dungeon extends Region {
 			path = exitPath(path, mHeroLoc[0], mHeroLoc[1]);
 			String pathMessage = "";
 			if(path == null) {
-				pathMessage = " No Path to exit";
+				onGameOver(false);
 			}
 			else {
 				pathMessage = " Exit path found length to exit: " + path.size();
@@ -361,7 +384,13 @@ public class Dungeon extends Region {
 				}
 				//mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
 			}
-		} else {
+			if(mGameBoard[mHeroLoc[0]][mHeroLoc[1]].isExit()) {
+				draw();
+				onGameOver(true);
+			}
+		} 
+		
+		else {
 			this.mHero.setCharacterImage(gravestoneImage);
 			this.statusString.set(this.mHero.getName() + " is dead :(");
 		}
@@ -500,7 +529,7 @@ public class Dungeon extends Region {
 			statusString.set(this.question.getExplanation());
 			mGameBoard[nextRoom[0]][nextRoom[1]].setDoorState(DoorState.LOCKED, nextRoomDoor);
 		}
-		
+
 		this.question = null;
 		draw();
 
@@ -546,7 +575,7 @@ public class Dungeon extends Region {
 			return null;
 		}
 		prevPath.add(mGameBoard[x][y]);
-		
+
 		if(mGameBoard[x][y].isExit()) {
 			return prevPath;
 		}
@@ -565,9 +594,9 @@ public class Dungeon extends Region {
 			if(nextPath == null && (doors[DoorPosition.WEST.ordinal()] == DoorState.OPEN || doors[DoorPosition.WEST.ordinal()] ==  DoorState.CLOSED)) {
 				nextPath = exitPath(prevPath, x - 1, y);
 			}
-			
-				return nextPath;
-			
+
+			return nextPath;
+
 		}
 
 	}

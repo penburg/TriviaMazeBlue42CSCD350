@@ -110,7 +110,7 @@ public abstract class Hero extends DungeonCharacter {
         }
         return ret;
     }//end method
-
+    
     
     @Override
     public final String attack(DungeonCharacter opponent) {
