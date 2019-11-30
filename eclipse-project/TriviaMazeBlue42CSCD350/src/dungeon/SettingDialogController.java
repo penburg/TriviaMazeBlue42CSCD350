@@ -44,10 +44,8 @@ public class SettingDialogController extends Dialog<ButtonType> implements Initi
     private ButtonType mOK;
     private Dungeon mGame;
     
-    public final ObservableList<String> species = FXCollections.observableArrayList(
-               "Sorceress", "Thief",  "Warrior");
-    public final ObservableList<String> genders = FXCollections.observableArrayList(
-               "Male", "Female");
+    public final ObservableList<String> species = FXCollections.observableArrayList("Warrior");
+    public final ObservableList<String> genders = FXCollections.observableArrayList("Male");
 
     public SettingDialogController(Dungeon game) throws IOException {
         super();
