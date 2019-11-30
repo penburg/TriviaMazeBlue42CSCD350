@@ -60,12 +60,9 @@ public class Dungeon extends Region {
 	private final Image gravestoneImage = new Image("images/gravestone.png");
 
 	private final static Random rand = new Random();
-	private HeroFactory heroFactory;
 
 	private int[] questions = shuffleQuestionNumbers();
 	private int currentQuestion = 0;
-
-
 
 	public Dungeon() {
 		mScale = 1;
@@ -73,7 +70,6 @@ public class Dungeon extends Region {
 		mCanvas = new Canvas(pWidth * mScale, pHeight * mScale);
 		mBackground = new Image("images/background.png");
 		getChildren().add(mCanvas);
-		heroFactory = new HeroFactory();
 		statusString = new SimpleStringProperty();
 		mIsQuestionTriggered = new SimpleIntegerProperty(0);
 		mIsQuestionTriggered.addListener(notUsed -> onQuestionTrigger());
@@ -241,7 +237,7 @@ public class Dungeon extends Region {
 		mGameBoard[mEntranceLoc[0]][mEntranceLoc[1]].setIsEntrance();
 		mGameBoard[mExitLoc[0]][mExitLoc[1]].setIsExit();
 
-		mHero = heroFactory.createHero();
+		mHero = new Warrior();
 		//System.out.println("Hero Created");
 
 		mGameBoard[mHeroLoc[0]][mHeroLoc[1]].setHero(mHero);
