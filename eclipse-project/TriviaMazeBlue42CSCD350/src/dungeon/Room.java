@@ -181,11 +181,6 @@ public class Room implements Drawable {
 				break;
 			case EXIT:
 				break;
-			case POTION_HEAL:
-				this.hero.addPotionHeal();
-				this.statusString.set(this.hero.getName() + " found a potion of healing");
-				roomGrid[x][y] = EMPTY;
-				break;
 			case POTION_VISION:
 				this.hero.addPotionVision();
 				this.statusString.set(this.hero.getName() + " found a potion of vision");

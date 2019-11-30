@@ -15,11 +15,11 @@ public class Warrior extends Hero {
 
 	public Warrior() {
 
-		super("Warrior", 125, 4, .8, 35, 60, .2);
 		String imgName = "images/m-warrior.png";
 		setCharacterImage(new Image(imgName));
 
 	}//end constructor
+
 
 
 }//end Hero class

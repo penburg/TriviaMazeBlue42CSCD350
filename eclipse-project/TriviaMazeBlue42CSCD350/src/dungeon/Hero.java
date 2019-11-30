@@ -27,17 +27,11 @@
  */
 package dungeon;
 
-import java.util.Random;
 import java.util.prefs.Preferences;
 
 public abstract class Hero extends DungeonCharacter {
-
-    protected double chanceToBlock;
-    protected int numTurns;
-    private int numPotionsHeal;
-    private int numPotionsVision;
-    private Random rand;
-
+	private int numPotionsVision;
+	
     @Override
     public String toString() {
         String ret = "";
@@ -48,35 +42,14 @@ public abstract class Hero extends DungeonCharacter {
 
 //-----------------------------------------------------------------
 //calls base constructor and gets name of hero from user
-    public Hero(String type, int hitPoints, int attackSpeed,
-            double chanceToHit, int damageMin, int damageMax,
-            double chanceToBlock) {
-        super(type, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax);
-        this.chanceToBlock = chanceToBlock;
-
+    public Hero() {
+    	numPotionsVision = 0;
         Preferences prefs = Preferences.userNodeForPackage(getClass());
         setName(prefs.get("Name", "Jack"));
-        this.rand = new Random();
 
     }
-
-    public void addPotionHeal() {
-        this.numPotionsHeal++;
-    }
-
     public void addPotionVision() {
         this.numPotionsVision++;
-    }
-
-    public int usePotionHeal() {
-        if (numPotionsHeal > 0) {
-            int ret = rand.nextInt(10) + 5;
-            addHitPoints(ret);
-            numPotionsHeal--;
-            return ret;
-        } else {
-            return 0;
-        }
     }
 
     public boolean usePotionVision() {
@@ -88,33 +61,8 @@ public abstract class Hero extends DungeonCharacter {
         }
     }
 
-    public int getNumPotionsHeal() {
-        return numPotionsHeal;
-    }
-
-    public int getNumPotionsVision() {
+     public int getNumPotionsVision() {
         return numPotionsVision;
     }
     
-    public boolean defend() {
-        return Math.random() <= chanceToBlock;
-
-    }//end defend method
-
-    public String subtractHitPoints(int hitPoints) {
-        String ret = "";
-        if (defend()) {
-            ret += getName() + " BLOCKED the attack!";
-        } else {
-            ret += super.subtractHitPoints(hitPoints);
-        }
-        return ret;
-    }//end method
-    
-    
-    @Override
-    public final String attack(DungeonCharacter opponent) {
-        return getAttackList().get(0).attackOpponent(opponent);
-        //super.attack(opponent); //To change body of generated methods, choose Tools | Templates.
-    }
 }//end Hero class

@@ -33,36 +33,21 @@
  */
 package dungeon;
 
-import java.util.ArrayList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public abstract class DungeonCharacter implements Drawable {
 
-    private ArrayList<Attack> attackList;
     private String name;
-    private int hitPoints;
-    private int maxHitPoints;
-    private int attackSpeed;
-    private double chanceToHit;
-    private int damageMin, damageMax;
+    private boolean alive;
     private Image CharacterImage;
 
 //-----------------------------------------------------------------
 //explicit constructor to initialize instance variables -- it is called
 // by derived classes
-    public DungeonCharacter(String name, int hitPoints, int attackSpeed,
-            double chanceToHit, int damageMin, int damageMax) {
-
-        this.name = name;
-        this.hitPoints = hitPoints;
-        this.maxHitPoints = hitPoints;
-        this.attackSpeed = attackSpeed;
-        this.chanceToHit = chanceToHit;
-        this.damageMin = damageMin;
-        this.damageMax = damageMax;
-        this.attackList = new ArrayList();
+    public DungeonCharacter() {
+    	this.alive = true;
         this.CharacterImage = new Image("images/person.png");
     }//end constructor
 
@@ -76,86 +61,19 @@ public abstract class DungeonCharacter implements Drawable {
     }//end getName
 
 //-----------------------------------------------------------------
-    public int getHitPoints() {
-        return hitPoints;
-    }//end getHitPoints
-//-----------------------------------------------------------------
-
-    public int getMaxHitPoints() {
-        return maxHitPoints;
-    }
-
-    public final int getAttackSpeed() {
-        return attackSpeed;
-    }//end getAttackSpeed
-
-    public final double getChanceToHit() {
-        return chanceToHit;
-    }
-
-    public final int getDamageMin() {
-        return damageMin;
-    }
-
-    public final int getDamageMax() {
-        return damageMax;
-    }
-
-    public final void withAttack(Attack a) {
-        this.attackList.add(a);
-    }
-
-    
-    public void addHitPoints(int hitPoints) {
-        if (hitPoints <= 0) {
-            System.out.println("Hitpoint amount must be positive.");
-        } else {
-            this.hitPoints += hitPoints;
-            //System.out.println("Remaining Hit Points: " + hitPoints);
-
-        }
-    }//end addHitPoints method
-
-   
-    public String subtractHitPoints(int hitPoints) {
-        String ret = "";
-        if (hitPoints < 0) {
-            ret += "Hitpoint amount must be positive.";
-        } else if (hitPoints > 0) {
-            this.hitPoints -= hitPoints;
-            if (this.hitPoints < 0) {
-                this.hitPoints = 0;
-            }
-            ret += getName() + " hit  for <" + hitPoints + "> points damage.\n";
-            ret += getName() + " now has " + getHitPoints() + " hit points remaining.";
-
-        }//end else if
-
-        if (this.hitPoints == 0) {
-           ret += name + " has been killed :-(";
-        }
-        return ret;
-    }//end method
 
     
     public boolean isAlive() {
-        return (hitPoints > 0);
+        return alive;
     }//end isAlive method
-
-    public abstract String attack(DungeonCharacter opponent);
-
-
-    public final void setName(String name) {
+    
+   public final void setName(String name) {
         this.name = name;
     }
 
-//-----------------------------------------------------------------
-    protected ArrayList<Attack> getAttackList() {
-        return attackList;
-    }
     
     public void kill() {
-    	this.hitPoints = 0;
+    	this.alive = false;
     }
 
     @Override
