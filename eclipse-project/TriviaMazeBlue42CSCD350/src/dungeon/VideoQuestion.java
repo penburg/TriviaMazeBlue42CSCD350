@@ -25,11 +25,12 @@ public class VideoQuestion extends Question {
 
 	private String url;
 	
-	public VideoQuestion(String url, ArrayList<String> options, int correctOption) {
+	public VideoQuestion(String url, ArrayList<String> options, int correctOption, String explanation) {
 		optionSelected = 0;
 		this.url = url;
 		this.options = options;
 		this.optionCorrect = correctOption;
+		this.explanation = explanation;
 		
 	}
 

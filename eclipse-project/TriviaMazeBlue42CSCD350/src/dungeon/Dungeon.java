@@ -33,7 +33,7 @@ import javafx.scene.layout.Region;
  * @author patrick
  */
 public class Dungeon extends Region {
-	
+
 	private enum QuestionType{
 		NULL,
 		MultipleChoice,
@@ -163,6 +163,22 @@ public class Dungeon extends Region {
 		case ShortAnswer:
 			q = new ShortAnswer(shortanswer, question, explanation);
 			//statusString.set("DEBUG -Short Answer Question");
+			break;
+		case Video:
+			ArrayList<String> options = new ArrayList<String>();
+			if(!a1.isEmpty()) {
+				options.add(a1);
+			}
+			if(!a2.isEmpty()) {
+				options.add(a2);		
+			}
+			if(!a3.isEmpty()) {
+				options.add(a3);
+			}
+			if(!a4.isEmpty()) {
+				options.add(a4);
+			}
+			q = new VideoQuestion(shortanswer, options, correct, explanation);
 			break;
 		default:
 			q = new NullQuestion();
@@ -397,7 +413,7 @@ public class Dungeon extends Region {
 				onGameOver(true);
 			}
 		} 
-		
+
 		else {
 			this.mHero.setCharacterImage(gravestoneImage);
 			this.statusString.set(this.mHero.getName() + " is dead :(");
