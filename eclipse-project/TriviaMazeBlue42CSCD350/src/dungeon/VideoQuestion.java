@@ -21,9 +21,8 @@ import javafx.scene.web.WebView;
 
 public class VideoQuestion extends Question {
 	private boolean isVideoShown = false;
-	private int optionSelected, optionCorrect;
+	private int optionCorrect;
 
-	private ArrayList<String> options;
 	private String url;
 	
 	public VideoQuestion(String url, ArrayList<String> options, int correctOption) {
@@ -54,29 +53,8 @@ public class VideoQuestion extends Question {
 			isVideoShown = true;
 		}
 		
-		double tenPercent = offset * 0.1f;
-        double fivePercent = offset * 0.05f;
-        double thirtyFivePercent = offset * 0.35f;
-        
-		double listSpace = fivePercent;
-		double listX = imgX + tenPercent;
-        double listY = imgY + thirtyFivePercent + thirtyFivePercent + tenPercent;
-		
-        double messageTopX = imgX;
-        double messageTopY = imgY + tenPercent + tenPercent;
-        
-        //gc.fillText(message, messageTopX, messageTopY);
-        //gc.strokeText(message, messageTopX, messageTopY);
-        
-        
-        for (int i = 0; i < options.size(); i++) {
-            //gc.fillText(options[i], listX, listY + (i * listSpace));
-           // gc.strokeText(options[i], listX, listY + (i * listSpace));
-            if (i == optionSelected) {
-                gc.fillText("->", listX - fivePercent, listY + (i * listSpace));
-                gc.strokeText("->", listX - fivePercent, listY + (i * listSpace));
-            }
-        }
+		drawPrompt(imgX, imgY, x, y, offset, canvas);
+		drawMenu(imgX, imgY, x, y, offset, canvas);
         
 
 		gc.restore();

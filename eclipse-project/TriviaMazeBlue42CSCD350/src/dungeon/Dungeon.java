@@ -33,6 +33,14 @@ import javafx.scene.layout.Region;
  * @author patrick
  */
 public class Dungeon extends Region {
+	
+	private enum QuestionType{
+		NULL,
+		MultipleChoice,
+		TrueFalse,
+		ShortAnswer,
+		Video,	
+	};
 
 	private Canvas mCanvas;
 	private Image mBackground;
@@ -112,7 +120,8 @@ public class Dungeon extends Region {
 	{
 		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
 
-		int qType = 0, correct = 0;
+		int correct = 0;
+		QuestionType qType = QuestionType.NULL;
 		String question = "", shortanswer = "", a1 = "", a2 = "", a3 = "", a4 = "", explanation = "";
 
 		String url = "jdbc:sqlite:src/questions.db";
@@ -123,7 +132,7 @@ public class Dungeon extends Region {
 		{
 			while (rs.next())
 			{
-				qType = rs.getInt("type");
+				qType = QuestionType.values()[rs.getInt("type")];
 				correct = rs.getInt("correct");
 				question = rs.getString("question");
 				shortanswer = rs.getString("shortanswercorrect");
@@ -143,17 +152,20 @@ public class Dungeon extends Region {
 
 		switch (qType)
 		{
-		case 1:
+		case MultipleChoice:
 			q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
-			statusString.set("DEBUG - Multiple Choice Question");
+			//statusString.set("DEBUG - Multiple Choice Question");
 			break;
-		case 2:
+		case TrueFalse:
 			q = new TrueFalse(correct, question, explanation);
-			statusString.set("DEBUG - True / False Question");
+			//statusString.set("DEBUG - True / False Question");
 			break;
-		case 3:
+		case ShortAnswer:
 			q = new ShortAnswer(shortanswer, question, explanation);
-			statusString.set("DEBUG -Short Answer Question");
+			//statusString.set("DEBUG -Short Answer Question");
+			break;
+		default:
+			q = new NullQuestion();
 			break;
 		}
 		return q;
