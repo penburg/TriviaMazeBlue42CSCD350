@@ -153,14 +153,27 @@ public abstract class Question implements Drawable{
 		int charCount = 0;
 		String newPrompt = "";
 		for(int i = 0; i < s.length(); i++) {
-			if(charCount > 30) {
-				newPrompt += "\n";
-				charCount = 0;
+			if(charCount >= 30) {
+				int lastSpace = newPrompt.lastIndexOf(' ');
+				int lastNewLine = newPrompt.lastIndexOf('\n');
+				if(lastSpace > 0 && lastSpace > lastNewLine) {
+					String tmp = newPrompt.substring(lastSpace + 1);
+					newPrompt = newPrompt.substring(0, lastSpace);
+					newPrompt += "\n";
+					newPrompt += tmp;
+					charCount = tmp.length();
+				}
+				else {
+					newPrompt += "\n";
+					charCount = 0;
+				}
+				
 			}
 			if(s.charAt(i) == '\n') {
 				charCount = 0;
 			}
 			newPrompt += s.charAt(i);
+			charCount ++;
 		}
 		return newPrompt;
 	}
