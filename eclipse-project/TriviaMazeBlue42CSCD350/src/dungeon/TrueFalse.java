@@ -13,7 +13,7 @@ public class TrueFalse extends Question
 	
 	public TrueFalse(int correctAnswer, String question, String explanation)
 	{
-		this.question = question;
+		this.question = wordWrap(question);
 		this.explanation = explanation;
 		this.correctBtn = correctAnswer - 1;
 		this.options.add("True");

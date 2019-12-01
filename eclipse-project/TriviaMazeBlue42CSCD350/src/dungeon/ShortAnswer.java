@@ -12,7 +12,7 @@ public class ShortAnswer extends Question
 	
 	public ShortAnswer(String shortAnswer, String question, String explanation)
 	{
-		this.question = "***Stub***\n" + question;
+		this.question = wordWrap("***Stub***\n" + question);
 		this.explanation = explanation;
 		this.correctAnswer = shortAnswer;
 		this.options.add("Lock");

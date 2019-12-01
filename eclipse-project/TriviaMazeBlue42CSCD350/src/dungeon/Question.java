@@ -138,9 +138,10 @@ public abstract class Question implements Drawable{
         double fivePercent = offset * 0.05f;
         double thirtyFivePercent = offset * 0.35f;
         		
-        double messageTopX = imgX;
-        double messageTopY = imgY + tenPercent + tenPercent;
+        double messageTopX = imgX + tenPercent;
+        double messageTopY = imgY + tenPercent + fivePercent;
         
+       
         gc.fillText(this.question, messageTopX, messageTopY);
         gc.strokeText(this.question, messageTopX, messageTopY);
         
@@ -148,5 +149,20 @@ public abstract class Question implements Drawable{
 
 	}
 	
-
+	protected String wordWrap(String s) {
+		int charCount = 0;
+		String newPrompt = "";
+		for(int i = 0; i < s.length(); i++) {
+			if(charCount > 30) {
+				newPrompt += "\n";
+				charCount = 0;
+			}
+			if(s.charAt(i) == '\n') {
+				charCount = 0;
+			}
+			newPrompt += s.charAt(i);
+		}
+		return newPrompt;
+	}
+	
 }

@@ -12,7 +12,7 @@ public class MultipleChoice extends Question
 	
 	public MultipleChoice(String btn1, String btn2, String btn3, String btn4, int correctAnswer, String question, String explanation)
 	{
-		this.question = question;
+		this.question = wordWrap(question);
 		this.explanation = explanation;
 		this.options.add(btn1);
 		this.options.add(btn2);
