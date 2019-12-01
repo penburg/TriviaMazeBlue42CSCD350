@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+import dungeon.Dungeon.QuestionType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,10 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
+import javafx.scene.web.WebView;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 
@@ -90,7 +94,49 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 		getDialogPane().getButtonTypes().addAll(mOK, cancel);
 
 		getDialogPane().lookupButton(mOK).addEventFilter(ActionEvent.ACTION, eh -> onOK(eh));
+		YT_Test.setOnMouseClicked(notUsed -> onTestYouTube());
+	}
 
+	/**
+	 * Popups a youtube Video for testing autoplay and start pos
+	 * 
+	 * @return
+	 */
+	private void onTestYouTube() {
+		String URL = getYouTubeUrl();
+		WebView mywebView = new WebView();
+		//https://youtu.be/rvtRuzKbPfY
+		mywebView.getEngine().load(URL);
+		mywebView.setContextMenuEnabled(false);
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("WebView - " + URL);
+		alert.setHeaderText("WebView - " + URL);
+
+		alert.getDialogPane().setContent(mywebView);
+		alert.showAndWait();
+	}
+	
+	private String getYouTubeUrl() {
+		String URL = YT_URL.getText();
+		int startPos = YT_Spinner.getValue();
+		boolean autoPlay = YT_AutoPlay.isSelected();
+		String YouTubeID = "rvtRuzKbPfY";
+		if(URL.contains("v=")) {
+			int pos = URL.indexOf("v=");
+			YouTubeID = URL.substring(pos + 2);
+		}
+		if(YouTubeID.contains("&")) {
+			int pos = YouTubeID.indexOf("&");
+			YouTubeID = YouTubeID.substring(0, pos);
+		}
+		URL = "https://www.youtube.com/embed/" + YouTubeID + "?";
+		if(autoPlay) {
+			URL += "&autoplay=1";
+		}
+		if(startPos != 0) {
+			URL += "&start=" + startPos;
+		}
+		return URL;
 	}
 
 	@Override
@@ -103,7 +149,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 	private void onOK(ActionEvent eh) {
 		String prompt;
 		String explanation;
-		int correctChoice;
+		int correctChoice = 0;
 		ArrayList<String> options = new ArrayList<String>();
 		if(TF_Tab.isSelected()) {
 			prompt = TF_Prompt.getText();
@@ -111,6 +157,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			options.add("False");
 			correctChoice = TF_True.isSelected() ? 1 : 2;
 			explanation = TF_Explanation.getText();
+			mGame.addQuestion(QuestionType.TrueFalse, prompt, "", options, correctChoice, explanation);
 		}
 		else if(MC_Tab.isSelected()) {
 			prompt = MC_Prompt.getText();
@@ -131,18 +178,18 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			else if(MC_D_Radio.isSelected()) {
 				correctChoice = 4;
 			}
+			mGame.addQuestion(QuestionType.TrueFalse, prompt, "", options, correctChoice, explanation);
 		}
 		else if(SA_Tab.isSelected()) {
 			prompt = SA_Prompt.getText();
 			explanation = SA_Explanation.getText();
 			String saAnswer = SA_Answer.getText();
+			mGame.addQuestion(QuestionType.TrueFalse, prompt, saAnswer, options, correctChoice, explanation);
 		}
 		else if(YT_Tab.isSelected()) {
 			prompt = YT_Prompt.getText();
 			explanation = YT_Explanation.getText();
-			String URL = YT_URL.getText();
-			int startPos = YT_Spinner.getValue();
-			boolean autoPlay = YT_AutoPlay.isSelected();
+			String URL = getYouTubeUrl();
 			options.add(YT_A_Field.getText());
 			options.add(YT_B_Field.getText());
 			options.add(YT_C_Field.getText());
@@ -159,6 +206,8 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			else if(YT_D_Radio.isSelected()) {
 				correctChoice = 4;
 			}
+			
+			mGame.addQuestion(QuestionType.TrueFalse, prompt, URL, options, correctChoice, explanation);
 		}
 
 

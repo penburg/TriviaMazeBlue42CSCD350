@@ -7,7 +7,6 @@ package dungeon;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import javafx.collections.FXCollections;

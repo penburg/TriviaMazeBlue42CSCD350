@@ -187,6 +187,17 @@ public class Dungeon extends Region {
 		return q;
 	}
 
+	/**
+	 * Insert a new question into the database, data has not been
+	 * Sanitized yet and may contain empty strings
+	 * 
+	 * @param qType enum of the QuestionType
+	 * @param prompt Question prompt
+	 * @param sAnswer Answer to a short answer OR YouTube URL
+	 * @param options ArrayList of strings of possible answers
+	 * @param correct int of correct answer (1 based indexing)
+	 * @param explanation Explanation of why an answer is wrong
+	 */
 	public void addQuestion(QuestionType qType, String prompt, String sAnswer, ArrayList<String> options, int correct, String explanation) {
 		
 	}

@@ -45,6 +45,7 @@ public class VideoQuestion extends Question {
 			WebView webView = new WebView();
 			//https://youtu.be/rvtRuzKbPfY
 			webView.getEngine().load(this.url);
+			webView.setContextMenuEnabled(false);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("WebView");
 			alert.setHeaderText("WebView");
