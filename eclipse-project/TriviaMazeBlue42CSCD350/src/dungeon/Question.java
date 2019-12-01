@@ -112,7 +112,7 @@ public abstract class Question implements Drawable{
         
 		double listSpace = fivePercent;
 		double listX = imgX + tenPercent;
-        double listY = imgY + thirtyFivePercent + thirtyFivePercent + tenPercent;
+        double listY = imgY + thirtyFivePercent + thirtyFivePercent;
         
         for (int i = 0; i < options.size(); i++) {
             gc.fillText(options.get(i), listX, listY + (i * listSpace));
