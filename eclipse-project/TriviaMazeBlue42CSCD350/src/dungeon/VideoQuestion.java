@@ -52,6 +52,7 @@ public class VideoQuestion extends Question {
 
 			alert.getDialogPane().setContent(webView);
 			alert.showAndWait();
+			webView.getEngine().load("http://127.0.0.1");
 			isVideoShown = true;
 		}
 		
@@ -61,6 +62,7 @@ public class VideoQuestion extends Question {
 
 		gc.restore();
 	}
+
 
 	@Override
 	public void onUp() {

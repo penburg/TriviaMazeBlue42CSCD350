@@ -26,6 +26,7 @@ import javafx.scene.web.WebView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.input.MouseEvent;
 
 /*
  * Course:	CSCD350
@@ -80,6 +81,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 
 	private ButtonType mOK;
 	private Dungeon mGame;
+	private WebView webView;
 
 	public AddQuestionDialog(Dungeon game) throws IOException {
 		super();
@@ -95,6 +97,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 
 		getDialogPane().lookupButton(mOK).addEventFilter(ActionEvent.ACTION, eh -> onOK(eh));
 		YT_Test.setOnMouseClicked(notUsed -> onTestYouTube());
+		webView = new WebView();
 	}
 
 	/**
@@ -104,17 +107,18 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 	 */
 	private void onTestYouTube() {
 		String URL = getYouTubeUrl();
-		WebView mywebView = new WebView();
 		//https://youtu.be/rvtRuzKbPfY
-		mywebView.getEngine().load(URL);
-		mywebView.setContextMenuEnabled(false);
+		webView.getEngine().load(URL);
+		webView.setContextMenuEnabled(false);
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("WebView - " + URL);
 		alert.setHeaderText("WebView - " + URL);
 
-		alert.getDialogPane().setContent(mywebView);
+		alert.getDialogPane().setContent(webView);
 		alert.showAndWait();
+		webView.getEngine().load("http://127.0.0.1");
 	}
+	
 	
 	private String getYouTubeUrl() {
 		String URL = YT_URL.getText();
@@ -150,6 +154,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 		String prompt;
 		String explanation;
 		int correctChoice = 0;
+		webView.getEngine().load("http://127.0.0.1");
 		ArrayList<String> options = new ArrayList<String>();
 		if(TF_Tab.isSelected()) {
 			prompt = TF_Prompt.getText();
