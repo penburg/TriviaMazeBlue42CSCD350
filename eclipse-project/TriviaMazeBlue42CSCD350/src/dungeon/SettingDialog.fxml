@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
@@ -8,10 +9,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="149.0" prefWidth="248.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="276.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="452.0" minWidth="10.0" prefWidth="103.2000244140625" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="144.7999755859375" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="452.0" minWidth="10.0" prefWidth="134.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="142.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -20,12 +21,13 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="randomButton" mnemonicParsing="false" text="Random" GridPane.rowIndex="3" />
-      <Label prefHeight="18.0" prefWidth="113.0" text="Species:" GridPane.rowIndex="1" />
-      <Label prefHeight="18.0" prefWidth="209.0" text="Gender:" GridPane.rowIndex="2" />
-      <Spinner id="GenderSpinner" fx:id="genderSpinner" prefHeight="26.0" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Spinner id="SpeciesSpinner" fx:id="speciesSpinner" prefHeight="26.0" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label prefHeight="18.0" prefWidth="110.0" text="Name:" />
       <TextField id="NameField" fx:id="nameField" GridPane.columnIndex="1" />
+      <CheckBox fx:id="TF_Checkbox" mnemonicParsing="false" text="True / False" GridPane.rowIndex="1" />
+      <CheckBox fx:id="MC_Checkbox" mnemonicParsing="false" text="MultipleChoice" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <CheckBox fx:id="SA_Checkbox" mnemonicParsing="false" text="Short Answer" GridPane.rowIndex="2" />
+      <CheckBox fx:id="YT_Checkbox" mnemonicParsing="false" text="Video" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Spinner fx:id="presetSpinner" GridPane.rowIndex="3" />
+      <Button fx:id="presetLoadButton" mnemonicParsing="false" text="Load Preset" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    </children>
 </GridPane>

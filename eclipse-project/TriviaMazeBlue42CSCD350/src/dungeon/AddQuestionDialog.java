@@ -1,6 +1,7 @@
 package dungeon;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -103,19 +104,21 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 		String prompt;
 		String explanation;
 		int correctChoice;
-		String[] options = new String[4];
+		ArrayList<String> options = new ArrayList<String>();
 		if(TF_Tab.isSelected()) {
 			prompt = TF_Prompt.getText();
+			options.add("True");
+			options.add("False");
 			correctChoice = TF_True.isSelected() ? 1 : 2;
 			explanation = TF_Explanation.getText();
 		}
 		else if(MC_Tab.isSelected()) {
 			prompt = MC_Prompt.getText();
 			explanation = MC_Explanation.getText();
-			options[0] = MC_A_Field.getText();
-			options[1] = MC_B_Field.getText();
-			options[2] = MC_C_Field.getText();
-			options[3] = MC_D_Field.getText();
+			options.add(MC_A_Field.getText());
+			options.add(MC_B_Field.getText());
+			options.add(MC_C_Field.getText());
+			options.add(MC_D_Field.getText());
 			if(MC_A_Radio.isSelected()) {
 				correctChoice = 1;
 			}
@@ -140,10 +143,10 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			String URL = YT_URL.getText();
 			int startPos = YT_Spinner.getValue();
 			boolean autoPlay = YT_AutoPlay.isSelected();
-			options[0] = YT_A_Field.getText();
-			options[1] = YT_B_Field.getText();
-			options[2] = YT_C_Field.getText();
-			options[3] = YT_D_Field.getText();
+			options.add(YT_A_Field.getText());
+			options.add(YT_B_Field.getText());
+			options.add(YT_C_Field.getText());
+			options.add(YT_D_Field.getText());
 			if(YT_A_Radio.isSelected()) {
 				correctChoice = 1;
 			}

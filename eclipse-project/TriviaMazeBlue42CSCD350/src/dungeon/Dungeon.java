@@ -34,7 +34,7 @@ import javafx.scene.layout.Region;
  */
 public class Dungeon extends Region {
 
-	private enum QuestionType{
+	public enum QuestionType{
 		NULL,
 		MultipleChoice,
 		TrueFalse,
@@ -187,6 +187,10 @@ public class Dungeon extends Region {
 		return q;
 	}
 
+	public void addQuestion(QuestionType qType, String prompt, String sAnswer, ArrayList<String> options, int correct, String explanation) {
+		
+	}
+	
 	public void draw() {
 		GraphicsContext gc = mCanvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, mCanvas.getWidth(), mCanvas.getHeight());

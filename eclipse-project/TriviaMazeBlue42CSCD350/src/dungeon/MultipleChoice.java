@@ -11,10 +11,18 @@ public class MultipleChoice extends Question
 	{
 		this.question = wordWrap(question);
 		this.explanation = explanation;
-		this.options.add(btn1);
-		this.options.add(btn2);
-		this.options.add(btn3);
-		this.options.add(btn4);
+		if(!btn1.isEmpty()) {
+			options.add(btn1);
+		}
+		if(!btn2.isEmpty()) {
+			options.add(btn2);		
+		}
+		if(!btn3.isEmpty()) {
+			options.add(btn3);
+		}
+		if(!btn4.isEmpty()) {
+			options.add(btn4);
+		}
 		this.correctBtn = correctAnswer - 1;
 	}
 	
