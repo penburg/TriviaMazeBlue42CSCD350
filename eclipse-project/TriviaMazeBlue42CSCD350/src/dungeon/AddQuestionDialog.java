@@ -133,7 +133,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			int pos = YouTubeID.indexOf("&");
 			YouTubeID = YouTubeID.substring(0, pos);
 		}
-		URL = "https://www.youtube.com/embed/" + YouTubeID + "?";
+		URL = "https://www.youtube.com/embed/" + YouTubeID + "?controls=0&disablekb=1&rel=0";
 		if(autoPlay) {
 			URL += "&autoplay=1";
 		}
