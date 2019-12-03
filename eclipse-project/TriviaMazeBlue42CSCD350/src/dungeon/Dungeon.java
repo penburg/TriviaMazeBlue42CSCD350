@@ -123,8 +123,10 @@ public class Dungeon extends Region {
 		int correct = 0;
 		QuestionType qType = QuestionType.NULL;
 		String question = "", shortanswer = "", a1 = "", a2 = "", a3 = "", a4 = "", explanation = "";
-
-		String url = "jdbc:sqlite:src/questions.db";
+		String dbPath = DungeonAdventure.getUserDataDirectory("dungeon.DungeonAdventure");
+		dbPath += System.getProperty("file.separator");
+		dbPath += "questions.db";
+		String url = "jdbc:sqlite:" + dbPath;
 
 		try (Connection conn = DriverManager.getConnection(url);
 				Statement stmt  = conn.createStatement();
