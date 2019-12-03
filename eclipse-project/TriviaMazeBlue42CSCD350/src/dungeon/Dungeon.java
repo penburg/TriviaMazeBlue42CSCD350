@@ -71,6 +71,7 @@ public class Dungeon extends Region {
 
 	private int[] questions = shuffleQuestionNumbers();
 	private int currentQuestion = 0;
+	private Connection dbConnection;
 
 	public Dungeon() {
 		mScale = 1;
@@ -81,6 +82,21 @@ public class Dungeon extends Region {
 		statusString = new SimpleStringProperty();
 		mIsQuestionTriggered = new SimpleIntegerProperty(0);
 		mIsQuestionTriggered.addListener(notUsed -> onQuestionTrigger());
+
+		String dbPath = "jdbc:sqlite:";
+		dbPath += DungeonAdventure.getUserDataDirectory("dungeon.DungeonAdventure");
+		dbPath += System.getProperty("file.separator");
+		dbPath += "questions.db";
+		try {
+			dbConnection = DriverManager.getConnection(dbPath);
+		} catch (SQLException e) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("DB connection Error");
+			alert.setHeaderText("Error While connecting DB");
+			alert.showAndWait();
+			e.printStackTrace();
+		}
+
 		newGame();
 
 
@@ -123,15 +139,9 @@ public class Dungeon extends Region {
 		int correct = 0;
 		QuestionType qType = QuestionType.NULL;
 		String question = "", shortanswer = "", a1 = "", a2 = "", a3 = "", a4 = "", explanation = "";
-		String dbPath = DungeonAdventure.getUserDataDirectory("dungeon.DungeonAdventure");
-		dbPath += System.getProperty("file.separator");
-		dbPath += "questions.db";
-		String url = "jdbc:sqlite:" + dbPath;
-
-		try (Connection conn = DriverManager.getConnection(url);
-				Statement stmt  = conn.createStatement();
-				ResultSet rs    = stmt.executeQuery(sql))
-		{
+		try {
+			Statement stmt  = dbConnection.createStatement();
+			ResultSet rs    = stmt.executeQuery(sql);
 			while (rs.next())
 			{
 				qType = QuestionType.values()[rs.getInt("type")];
@@ -201,9 +211,9 @@ public class Dungeon extends Region {
 	 * @param explanation Explanation of why an answer is wrong
 	 */
 	public void addQuestion(QuestionType qType, String prompt, String sAnswer, ArrayList<String> options, int correct, String explanation) {
-		
+
 	}
-	
+
 	public void draw() {
 		GraphicsContext gc = mCanvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, mCanvas.getWidth(), mCanvas.getHeight());
