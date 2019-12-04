@@ -5,6 +5,11 @@
  */
 package dungeon;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -225,16 +230,16 @@ public class Dungeon extends Region {
 			//type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation
 			String sqlInsert = "INSERT INTO questions (";
 			String sqlValues = "VALUES (";
-			
+
 			sqlInsert += "type, ";
 			sqlValues += qType.ordinal() + ", ";
-			
+
 			sqlInsert += "question, ";
 			if(prompt.contains("'")) {
 				prompt = prompt.replaceAll("'", "''");
 			}
 			sqlValues += "'" + prompt + "', ";
-			
+
 			if(!sAnswer.isEmpty()) {
 				sqlInsert += "shortanswercorrect, ";
 				sqlValues += "'" + sAnswer + "', ";
@@ -259,7 +264,7 @@ public class Dungeon extends Region {
 				sqlInsert += "a" + (i + 1) + ", ";
 				sqlValues += "'" + options.get(i) + "', ";
 			}
-			
+
 			try {
 				sqlInsert = sqlInsert.substring(0, sqlInsert.length() -2);
 				sqlInsert += ") \n";
@@ -716,5 +721,72 @@ public class Dungeon extends Region {
 
 		}
 
+	}
+
+	/**
+	 * Saves a game to the given file
+	 * 
+	 * @param f The file to be saved to.
+	 */
+	public void saveGame(File f) {
+		try {
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+//			private Room[][] mGameBoard;
+//			private int[] mHeroLoc = {-1, -1};
+//			private int[] mExitLoc = {-1, -1};
+//			private int[] mEntranceLoc = {-1, -1};
+//			private Hero mHero;
+			oos.writeObject(mGameBoard);
+			oos.writeObject(mHeroLoc);
+			oos.writeObject(mExitLoc);
+			oos.writeObject(mEntranceLoc);
+			oos.writeObject(mHero);
+			
+
+			oos.close();
+			fos.close();
+
+		} catch (Exception ex) {
+			// TODO: report the error somehow
+			statusString.set("Error saving file - " + ex.getMessage());
+		}
+
+	}
+
+	/**
+	 * Opens and initializes a saved game
+	 * 
+	 * @param f The file that is to be opened.
+	 */
+	public void openGame(File f) {
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+//			private Room[][] mGameBoard;
+//			private int[] mHeroLoc = {-1, -1};
+//			private int[] mExitLoc = {-1, -1};
+//			private int[] mEntranceLoc = {-1, -1};
+//			private Hero mHero;
+			mGameBoard = (Room[][]) ois.readObject();
+			mHeroLoc = (int[]) ois.readObject();
+			mExitLoc = (int[]) ois.readObject();
+			mEntranceLoc = (int[]) ois.readObject();
+			mHero = (Hero) ois.readObject();
+			
+			ois.close();
+			fis.close();
+			for (int i = 0; i < BOARDSIZE; i++) {
+				for (int j = 0; j < BOARDSIZE; j++) {
+					mGameBoard[i][j].reOpenRoom(statusString, mIsQuestionTriggered);
+				}
+			}
+			
+			draw();
+		}
+		catch (Exception ex) {
+			newGame();
+			statusString.set("Error opening file - " + ex.getMessage());
+		}
 	}
 }

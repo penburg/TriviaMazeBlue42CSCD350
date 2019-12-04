@@ -30,6 +30,8 @@ package dungeon;
 import java.util.prefs.Preferences;
 
 public abstract class Hero extends DungeonCharacter {
+
+	private static final long serialVersionUID = 1L;
 	private int numPotionsVision;
 	
     @Override

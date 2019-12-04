@@ -5,6 +5,7 @@
  */
 package dungeon;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javafx.beans.property.IntegerProperty;
@@ -18,7 +19,9 @@ import javafx.scene.paint.Color;
  *
  * @author penburg
  */
-public class Room implements Drawable {
+public class Room implements Drawable, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public enum DoorState{
 		CLOSED,
@@ -43,8 +46,8 @@ public class Room implements Drawable {
 	private Hero hero;
 	private int[] heroLoc;
 	private int[][] roomGrid;
-	private StringProperty statusString;
-	private IntegerProperty questionTrigger;
+	private transient StringProperty statusString;
+	private transient IntegerProperty questionTrigger;
 
 	private final int PROBIBILITY = 10;
 	public static final int ROOMSIZE = 3;
@@ -330,6 +333,17 @@ public class Room implements Drawable {
 	 */
 	public DoorPosition getDoorInQuestion() {
 		return doorInQuestion;
+	}
+	
+	/**
+	 * Reassigns properties lost on saving
+	 * 
+	 * @param statusS Status String property
+	 * @param trigger Integer String Property
+	 */
+	public void reOpenRoom(StringProperty statusS, IntegerProperty trigger) {
+		statusString = statusS;
+		questionTrigger = trigger;
 	}
 
 }

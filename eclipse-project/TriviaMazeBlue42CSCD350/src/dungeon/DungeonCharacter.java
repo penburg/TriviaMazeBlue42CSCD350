@@ -33,15 +33,18 @@
  */
 package dungeon;
 
+import java.io.Serializable;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public abstract class DungeonCharacter implements Drawable {
+public abstract class DungeonCharacter implements Drawable, Serializable {
 
-    private String name;
+	private static final long serialVersionUID = 1L;
+	private String name;
     private boolean alive;
-    private Image CharacterImage;
+    private transient Image CharacterImage;
 
 //-----------------------------------------------------------------
 //explicit constructor to initialize instance variables -- it is called
@@ -82,4 +85,6 @@ public abstract class DungeonCharacter implements Drawable {
         //canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
         gc.drawImage(CharacterImage, imgX + (x * offset), imgY + (y * offset),  offset, offset);
     }
+    
+    
 }//end class Character

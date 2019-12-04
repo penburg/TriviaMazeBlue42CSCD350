@@ -34,6 +34,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
@@ -46,6 +48,7 @@ public class DungeonAdventure extends Application {
 	private Dungeon mGame;
 
 	private final double CONTROL_IMAGE_WIDTH = 25;
+    private Stage mStage;
 
 	@Override
 	public void start(Stage primaryStage){
@@ -77,7 +80,7 @@ public class DungeonAdventure extends Application {
 			}
 			//System.out.println(userDataDir);
 		}
-
+		mStage = primaryStage;
 		mGame = new Dungeon();
 
 		BorderPane root = new BorderPane();
@@ -165,21 +168,51 @@ public class DungeonAdventure extends Application {
 
 
 	/**
-	 * Insert Comment Here
+	 * Opens a file chooser dialog to save the file
 	 * 
-	 * @return
+	 * @return void
 	 */
 	private void onSave() {
-		// TODO Auto-generated method stub
+			File selectedFile = null;
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Blue42 Trivia Maze");
+            fileChooser.getExtensionFilters().addAll(
+                    new ExtensionFilter("Blue42 Trivia Maze Files (*.b42m)", "*.b42m"),
+                    new ExtensionFilter("All Files (*.*)", "*.*"));
+
+            selectedFile = fileChooser.showSaveDialog(mStage);
+      
+        if (selectedFile != null) {
+        	if(!selectedFile.getName().endsWith(".b42m")) {
+        		selectedFile = new File(selectedFile.getAbsolutePath() + ".b42m");
+        	}
+        	mGame.saveGame(selectedFile);
+        	
+        } else {
+        	mGame.getStatusStringProperty().set("Save aborted");
+        }
 	}
 
 	/**
-	 * Insert Comment Here
+	 * Opens a file chooser dialog to open the file
 	 * 
-	 * @return
+	 * @return void
 	 */
 	private void onOpen() {
-		// TODO Auto-generated method stub
+		 FileChooser chooser = new FileChooser();
+	        chooser.setTitle("Open an Blue42 Trivia Maze File");
+	        chooser.setInitialDirectory(new File("."));
+	        chooser.getExtensionFilters().addAll(
+	                new ExtensionFilter("MyRectangle Files (*.b42m)", "*.b42m"),
+	                new ExtensionFilter("All Files (*.*)", "*.*"));
+	        File selectedFile = chooser.showOpenDialog(mStage);
+	        if (selectedFile != null) {
+	        	mGame.openGame(selectedFile);
+	        }
+	        else {
+	        	mGame.getStatusStringProperty().set("open aborted");
+	        }
+	        
 
 	}
 
