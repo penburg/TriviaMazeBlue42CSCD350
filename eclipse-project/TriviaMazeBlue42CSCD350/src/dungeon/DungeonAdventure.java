@@ -141,8 +141,8 @@ public class DungeonAdventure extends Application {
 		newMenuItem.setOnAction(actionEvent -> onNewGame());
 
 
-		MenuItem settingsMenuItem = new MenuItem("_Settings");
-		settingsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+		MenuItem settingsMenuItem = new MenuItem("S_ettings");
+		settingsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
 		settingsMenuItem.setOnAction(actionEvent -> onSettings());
 
 		MenuItem addQuestionMenuItem = new MenuItem("_Add Question");
