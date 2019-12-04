@@ -8,8 +8,6 @@ package dungeon;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -120,10 +118,19 @@ public class DungeonAdventure extends Application {
 		MenuBar menuBar = new MenuBar();
 		// File menu with just a quit item for now
 		Menu fileMenu = new Menu("_File");
+		MenuItem openMenuItem = new MenuItem("_Open");
+		openMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+		openMenuItem.setOnAction(notUsed -> onOpen());
+		
+		MenuItem saveMenuItem = new MenuItem("_Save");
+		saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+		saveMenuItem.setOnAction(notUsed -> onSave());
+		
 		MenuItem quitMenuItem = new MenuItem("_Quit");
 		quitMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
-		quitMenuItem.setOnAction(actionEvent -> Platform.exit());
-		fileMenu.getItems().add(quitMenuItem);
+		quitMenuItem.setOnAction(notUsed -> Platform.exit());
+		
+		fileMenu.getItems().addAll(openMenuItem, saveMenuItem, new SeparatorMenuItem(), quitMenuItem);
 
 		Menu GameMenu = new Menu("_Game");
 		MenuItem newMenuItem = new MenuItem("_New");
@@ -156,6 +163,25 @@ public class DungeonAdventure extends Application {
 
 	}
 
+
+	/**
+	 * Insert Comment Here
+	 * 
+	 * @return
+	 */
+	private void onSave() {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * Insert Comment Here
+	 * 
+	 * @return
+	 */
+	private void onOpen() {
+		// TODO Auto-generated method stub
+
+	}
 
 	private void onNewGame() {
 		mGame.newGame();
