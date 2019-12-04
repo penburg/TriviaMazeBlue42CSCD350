@@ -69,7 +69,7 @@ public class Dungeon extends Region {
 
 	private final static Random rand = new Random();
 
-	private int[] questions = shuffleQuestionNumbers();
+	private int[] questions;
 	private int currentQuestion = 0;
 	private Connection dbConnection;
 
@@ -96,7 +96,7 @@ public class Dungeon extends Region {
 			alert.showAndWait();
 			e.printStackTrace();
 		}
-
+		questions = shuffleQuestionNumbers();
 		newGame();
 
 
@@ -110,11 +110,21 @@ public class Dungeon extends Region {
 
 	private int[] shuffleQuestionNumbers()
 	{
-
-		int[] nums = new int[35];
+		int count = 0;
+		String sqlStatment = "SELECT COUNT(*) FROM questions;";
+		Statement stmt;
+		try {
+			stmt = dbConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlStatment);
+			count = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//System.out.println("Count: " + count);
+		int[] nums = new int[count];
 		int i = 0;
 
-		for (i = 0; i < 35; i++)
+		for (i = 0; i < count; i++)
 		{
 			nums[i] = i + 1;
 		}
@@ -190,7 +200,7 @@ public class Dungeon extends Region {
 			if(!a4.isEmpty()) {
 				options.add(a4);
 			}
-			q = new VideoQuestion(shortanswer, options, correct, explanation);
+			q = new VideoQuestion(question, shortanswer, options, correct, explanation);
 			break;
 		default:
 			q = new NullQuestion();
@@ -211,7 +221,63 @@ public class Dungeon extends Region {
 	 * @param explanation Explanation of why an answer is wrong
 	 */
 	public void addQuestion(QuestionType qType, String prompt, String sAnswer, ArrayList<String> options, int correct, String explanation) {
-
+		if(!prompt.isEmpty()) {
+			//type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation
+			String sqlInsert = "INSERT INTO questions (";
+			String sqlValues = "VALUES (";
+			
+			sqlInsert += "type, ";
+			sqlValues += qType.ordinal() + ", ";
+			
+			sqlInsert += "question, ";
+			if(prompt.contains("'")) {
+				prompt = prompt.replaceAll("'", "''");
+			}
+			sqlValues += "'" + prompt + "', ";
+			
+			if(!sAnswer.isEmpty()) {
+				sqlInsert += "shortanswercorrect, ";
+				sqlValues += "'" + sAnswer + "', ";
+			}
+			if(correct > 0) {
+				sqlInsert += "correct, ";
+				sqlValues += correct + ", ";
+			}
+			if(!explanation.isEmpty()) {
+				sqlInsert += "explanation, ";
+				sqlValues += "'" + explanation + "', ";
+			}
+			else {
+				sqlInsert += "explanation, ";
+				explanation = "The corrct answer is: ";
+				if(options.size() >= correct) {
+					explanation += options.get(correct -1);
+				}
+				sqlValues += "'" + explanation + "', ";
+			}
+			for(int i = 0; i < options.size(); i++) {
+				sqlInsert += "a" + (i + 1) + ", ";
+				sqlValues += "'" + options.get(i) + "', ";
+			}
+			
+			try {
+				sqlInsert = sqlInsert.substring(0, sqlInsert.length() -2);
+				sqlInsert += ") \n";
+				sqlValues = sqlValues.substring(0, sqlValues.length() - 2);
+				sqlValues += ");";
+				String sqlStatment = sqlInsert + sqlValues;
+				Statement stmt = dbConnection.createStatement();
+				stmt.executeUpdate(sqlStatment);
+				//stmt.executeQuery(sqlStatment);
+			} catch (SQLException e) {
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("SQL Statment Error");
+				alert.setHeaderText("SQL Error\n" + sqlInsert + sqlValues);
+				alert.showAndWait();
+				System.out.println(sqlInsert + sqlValues + "\n");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void draw() {

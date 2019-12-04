@@ -183,13 +183,13 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			else if(MC_D_Radio.isSelected()) {
 				correctChoice = 4;
 			}
-			mGame.addQuestion(QuestionType.TrueFalse, prompt, "", options, correctChoice, explanation);
+			mGame.addQuestion(QuestionType.MultipleChoice, prompt, "", options, correctChoice, explanation);
 		}
 		else if(SA_Tab.isSelected()) {
 			prompt = SA_Prompt.getText();
 			explanation = SA_Explanation.getText();
 			String saAnswer = SA_Answer.getText();
-			mGame.addQuestion(QuestionType.TrueFalse, prompt, saAnswer, options, correctChoice, explanation);
+			mGame.addQuestion(QuestionType.ShortAnswer, prompt, saAnswer, options, correctChoice, explanation);
 		}
 		else if(YT_Tab.isSelected()) {
 			prompt = YT_Prompt.getText();
@@ -212,7 +212,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 				correctChoice = 4;
 			}
 			
-			mGame.addQuestion(QuestionType.TrueFalse, prompt, URL, options, correctChoice, explanation);
+			mGame.addQuestion(QuestionType.Video, prompt, URL, options, correctChoice, explanation);
 		}
 
 
