@@ -48,7 +48,7 @@ public class DungeonAdventure extends Application {
 	private Dungeon mGame;
 
 	private final double CONTROL_IMAGE_WIDTH = 25;
-    private Stage mStage;
+	private Stage mStage;
 
 	@Override
 	public void start(Stage primaryStage){
@@ -124,15 +124,15 @@ public class DungeonAdventure extends Application {
 		MenuItem openMenuItem = new MenuItem("_Open");
 		openMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 		openMenuItem.setOnAction(notUsed -> onOpen());
-		
+
 		MenuItem saveMenuItem = new MenuItem("_Save");
 		saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 		saveMenuItem.setOnAction(notUsed -> onSave());
-		
+
 		MenuItem quitMenuItem = new MenuItem("_Quit");
 		quitMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
 		quitMenuItem.setOnAction(notUsed -> Platform.exit());
-		
+
 		fileMenu.getItems().addAll(openMenuItem, saveMenuItem, new SeparatorMenuItem(), quitMenuItem);
 
 		Menu GameMenu = new Menu("_Game");
@@ -173,24 +173,24 @@ public class DungeonAdventure extends Application {
 	 * @return void
 	 */
 	private void onSave() {
-			File selectedFile = null;
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save Blue42 Trivia Maze");
-            fileChooser.getExtensionFilters().addAll(
-                    new ExtensionFilter("Blue42 Trivia Maze Files (*.b42m)", "*.b42m"),
-                    new ExtensionFilter("All Files (*.*)", "*.*"));
+		File selectedFile = null;
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Blue42 Trivia Maze");
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter("Blue42 Trivia Maze Files (*.b42m)", "*.b42m"),
+				new ExtensionFilter("All Files (*.*)", "*.*"));
 
-            selectedFile = fileChooser.showSaveDialog(mStage);
-      
-        if (selectedFile != null) {
-        	if(!selectedFile.getName().endsWith(".b42m")) {
-        		selectedFile = new File(selectedFile.getAbsolutePath() + ".b42m");
-        	}
-        	mGame.saveGame(selectedFile);
-        	
-        } else {
-        	mGame.getStatusStringProperty().set("Save aborted");
-        }
+		selectedFile = fileChooser.showSaveDialog(mStage);
+
+		if (selectedFile != null) {
+			if(!selectedFile.getName().endsWith(".b42m")) {
+				selectedFile = new File(selectedFile.getAbsolutePath() + ".b42m");
+			}
+			mGame.saveGame(selectedFile);
+
+		} else {
+			mGame.getStatusStringProperty().set("Save aborted");
+		}
 	}
 
 	/**
@@ -199,20 +199,20 @@ public class DungeonAdventure extends Application {
 	 * @return void
 	 */
 	private void onOpen() {
-		 FileChooser chooser = new FileChooser();
-	        chooser.setTitle("Open an Blue42 Trivia Maze File");
-	        chooser.setInitialDirectory(new File("."));
-	        chooser.getExtensionFilters().addAll(
-	                new ExtensionFilter("MyRectangle Files (*.b42m)", "*.b42m"),
-	                new ExtensionFilter("All Files (*.*)", "*.*"));
-	        File selectedFile = chooser.showOpenDialog(mStage);
-	        if (selectedFile != null) {
-	        	mGame.openGame(selectedFile);
-	        }
-	        else {
-	        	mGame.getStatusStringProperty().set("open aborted");
-	        }
-	        
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Open an Blue42 Trivia Maze File");
+		chooser.setInitialDirectory(new File("."));
+		chooser.getExtensionFilters().addAll(
+				new ExtensionFilter("MyRectangle Files (*.b42m)", "*.b42m"),
+				new ExtensionFilter("All Files (*.*)", "*.*"));
+		File selectedFile = chooser.showOpenDialog(mStage);
+		if (selectedFile != null) {
+			mGame.openGame(selectedFile);
+		}
+		else {
+			mGame.getStatusStringProperty().set("open aborted");
+		}
+
 
 	}
 
@@ -293,40 +293,41 @@ public class DungeonAdventure extends Application {
 
 	}
 
-	private void onKeyPressed(KeyEvent keyEvent) {;
-	switch (keyEvent.getCode()) {
-	case LEFT:
-		mGame.onLeft();
-		break;
-	case RIGHT:
-		mGame.onRight();
-		break;
-	case UP:
-		mGame.onUp();
-		break;
-	case DOWN:
-		mGame.onDown();
-		break;
-	case V:
-		mGame.onUseVisionPotion();
-		break;
-	case C:
-		mGame.onCheatCode();
-		break;
-	case U:
-		mGame.onDoorCheatCode();
-		break;
-	case T:
-		mGame.traverseMaze();
-		break;
-	case ENTER:
-		mGame.onEnter();
-		break;
-	default:
-		break;
+	private void onKeyPressed(KeyEvent keyEvent) {
+		mGame.onKeyPress(keyEvent);
+		switch (keyEvent.getCode()) {
+		case LEFT:
+			mGame.onLeft();
+			break;
+		case RIGHT:
+			mGame.onRight();
+			break;
+		case UP:
+			mGame.onUp();
+			break;
+		case DOWN:
+			mGame.onDown();
+			break;
+		case V:
+			mGame.onUseVisionPotion();
+			break;
+		case C:
+			mGame.onCheatCode();
+			break;
+		case U:
+			mGame.onDoorCheatCode();
+			break;
+		case T:
+			mGame.traverseMaze();
+			break;
+		case ENTER:
+			mGame.onEnter();
+			break;
+		default:
+			break;
 
-	}
-	//keyEvent.consume();
+		}
+		//keyEvent.consume();
 	}
 
 	/**

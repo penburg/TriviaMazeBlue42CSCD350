@@ -31,6 +31,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 
 /**
@@ -552,7 +553,7 @@ public class Dungeon extends Region {
 	}
 
 	public void onUseVisionPotion() {
-		if (mHero.isAlive()) {
+		if (mHero.isAlive() && this.question == null) {
 			if (mHero.getNumPotionsVision() > 0) {
 				int a, b, c, d;
 				a = (mHeroLoc[0] > 0) ? mHeroLoc[0] - 1 : 0;
@@ -580,15 +581,17 @@ public class Dungeon extends Region {
 	}
 
 	public void onCheatCode() {
-		statusString.set("You shall from this day forward be called The Cheater " + mHero.getName());
-		mHero.setName("The Cheater " + mHero.getName());
-		for (int i = 0; i < BOARDSIZE; i++) {
-			for (int j = 0; j < BOARDSIZE; j++) {
-				mGameBoard[i][j].setIsVisable(true);
-			}
+		if(this.question == null) {
+			statusString.set("You shall from this day forward be called The Cheater " + mHero.getName());
+			mHero.setName("The Cheater " + mHero.getName());
+			for (int i = 0; i < BOARDSIZE; i++) {
+				for (int j = 0; j < BOARDSIZE; j++) {
+					mGameBoard[i][j].setIsVisable(true);
+				}
 
+			}
+			draw();
 		}
-		draw();
 	}
 
 	public void onDebugQuestion() {
@@ -658,31 +661,39 @@ public class Dungeon extends Region {
 	}
 
 	public void onDoorCheatCode() {
-		for (int i = 0; i < BOARDSIZE; i++) {
-			for (int j = 0; j < BOARDSIZE; j++) {
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.EAST);
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.WEST);
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
+		if(this.question == null) {
+			for (int i = 0; i < BOARDSIZE; i++) {
+				for (int j = 0; j < BOARDSIZE; j++) {
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.EAST);
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.WEST);
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
+				}
+
 			}
-
+			draw();
 		}
-		draw();
-
 	}
 
 	public  void traverseMaze() {
-		for (int i = 0; i < mGameBoard.length-1; i++) {
-			for (int j = 0; j < mGameBoard[i].length; j++) {
-				System.out.println("Room at " + i + ", " + j + ", " + mGameBoard[i][j].isExit());
+		if(this.question == null) {
+			for (int i = 0; i < mGameBoard.length-1; i++) {
+				for (int j = 0; j < mGameBoard[i].length; j++) {
+					System.out.println("Room at " + i + ", " + j + ", " + mGameBoard[i][j].isExit());
+
+				}
 
 			}
-
+			draw();
 		}
-		draw();
-
 	}
 
+	public void onKeyPress(KeyEvent keyEvent) {
+		if(question != null) {
+			question.onKeyPress(keyEvent);
+			draw();
+		}
+	}
 	/**
 	 * Returns a path to the exit, may not be optimal
 	 * 
@@ -732,17 +743,12 @@ public class Dungeon extends Region {
 		try {
 			FileOutputStream fos = new FileOutputStream(f);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-//			private Room[][] mGameBoard;
-//			private int[] mHeroLoc = {-1, -1};
-//			private int[] mExitLoc = {-1, -1};
-//			private int[] mEntranceLoc = {-1, -1};
-//			private Hero mHero;
 			oos.writeObject(mGameBoard);
 			oos.writeObject(mHeroLoc);
 			oos.writeObject(mExitLoc);
 			oos.writeObject(mEntranceLoc);
 			oos.writeObject(mHero);
-			
+
 
 			oos.close();
 			fos.close();
@@ -763,17 +769,12 @@ public class Dungeon extends Region {
 		try {
 			FileInputStream fis = new FileInputStream(f);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-//			private Room[][] mGameBoard;
-//			private int[] mHeroLoc = {-1, -1};
-//			private int[] mExitLoc = {-1, -1};
-//			private int[] mEntranceLoc = {-1, -1};
-//			private Hero mHero;
 			mGameBoard = (Room[][]) ois.readObject();
 			mHeroLoc = (int[]) ois.readObject();
 			mExitLoc = (int[]) ois.readObject();
 			mEntranceLoc = (int[]) ois.readObject();
 			mHero = (Hero) ois.readObject();
-			
+
 			ois.close();
 			fis.close();
 			for (int i = 0; i < BOARDSIZE; i++) {
@@ -781,7 +782,7 @@ public class Dungeon extends Region {
 					mGameBoard[i][j].reOpenRoom(statusString, mIsQuestionTriggered);
 				}
 			}
-			
+
 			draw();
 		}
 		catch (Exception ex) {

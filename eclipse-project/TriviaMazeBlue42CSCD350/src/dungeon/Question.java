@@ -18,6 +18,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -176,6 +177,17 @@ public abstract class Question implements Drawable{
 			charCount ++;
 		}
 		return newPrompt;
+	}
+
+
+	/**
+	 * Process keyEvents for short answer
+	 * 
+	 * @param keyEvent the key pressed
+	 */
+	public void onKeyPress(KeyEvent keyEvent) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
