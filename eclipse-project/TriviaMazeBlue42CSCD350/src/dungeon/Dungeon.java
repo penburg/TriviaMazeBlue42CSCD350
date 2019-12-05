@@ -5,6 +5,11 @@
  */
 package dungeon;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,6 +18,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.prefs.Preferences;
 
 import dungeon.Room.DoorPosition;
 import dungeon.Room.DoorState;
@@ -26,6 +32,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 
 /**
@@ -142,9 +149,17 @@ public class Dungeon extends Region {
 		return nums;
 	}
 
-	private Question askQuestion(int questionNumberInDatabase)
-	{
+	private Question askQuestion(int questionNumberInDatabase)	{
+		
+		Preferences prefs = Preferences.userNodeForPackage(getClass());
+        boolean TF = prefs.getBoolean("TrueFalse", true);
+        boolean MC = prefs.getBoolean("MultipleChoice", true);
+        boolean SA = prefs.getBoolean("ShortAnswer", true);
+        boolean YT = prefs.getBoolean("Video", true);
+        
+        
 		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
+		
 
 		int correct = 0;
 		QuestionType qType = QuestionType.NULL;
@@ -176,15 +191,21 @@ public class Dungeon extends Region {
 		{
 		case MultipleChoice:
 			q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
-			//statusString.set("DEBUG - Multiple Choice Question");
+			if(!MC) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		case TrueFalse:
 			q = new TrueFalse(correct, question, explanation);
-			//statusString.set("DEBUG - True / False Question");
+			if(!TF) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		case ShortAnswer:
 			q = new ShortAnswer(shortanswer, question, explanation);
-			//statusString.set("DEBUG -Short Answer Question");
+			if(!SA) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		case Video:
 			ArrayList<String> options = new ArrayList<String>();
@@ -201,6 +222,9 @@ public class Dungeon extends Region {
 				options.add(a4);
 			}
 			q = new VideoQuestion(question, shortanswer, options, correct, explanation);
+			if(!YT) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		default:
 			q = new NullQuestion();
@@ -225,16 +249,16 @@ public class Dungeon extends Region {
 			//type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation
 			String sqlInsert = "INSERT INTO questions (";
 			String sqlValues = "VALUES (";
-			
+
 			sqlInsert += "type, ";
 			sqlValues += qType.ordinal() + ", ";
-			
+
 			sqlInsert += "question, ";
 			if(prompt.contains("'")) {
 				prompt = prompt.replaceAll("'", "''");
 			}
 			sqlValues += "'" + prompt + "', ";
-			
+
 			if(!sAnswer.isEmpty()) {
 				sqlInsert += "shortanswercorrect, ";
 				sqlValues += "'" + sAnswer + "', ";
@@ -259,7 +283,7 @@ public class Dungeon extends Region {
 				sqlInsert += "a" + (i + 1) + ", ";
 				sqlValues += "'" + options.get(i) + "', ";
 			}
-			
+
 			try {
 				sqlInsert = sqlInsert.substring(0, sqlInsert.length() -2);
 				sqlInsert += ") \n";
@@ -547,7 +571,7 @@ public class Dungeon extends Region {
 	}
 
 	public void onUseVisionPotion() {
-		if (mHero.isAlive()) {
+		if (mHero.isAlive() && this.question == null) {
 			if (mHero.getNumPotionsVision() > 0) {
 				int a, b, c, d;
 				a = (mHeroLoc[0] > 0) ? mHeroLoc[0] - 1 : 0;
@@ -575,15 +599,17 @@ public class Dungeon extends Region {
 	}
 
 	public void onCheatCode() {
-		statusString.set("You shall from this day forward be called The Cheater " + mHero.getName());
-		mHero.setName("The Cheater " + mHero.getName());
-		for (int i = 0; i < BOARDSIZE; i++) {
-			for (int j = 0; j < BOARDSIZE; j++) {
-				mGameBoard[i][j].setIsVisable(true);
-			}
+		if(this.question == null) {
+			statusString.set("You shall from this day forward be called The Cheater " + mHero.getName());
+			mHero.setName("The Cheater " + mHero.getName());
+			for (int i = 0; i < BOARDSIZE; i++) {
+				for (int j = 0; j < BOARDSIZE; j++) {
+					mGameBoard[i][j].setIsVisable(true);
+				}
 
+			}
+			draw();
 		}
-		draw();
 	}
 
 	public void onDebugQuestion() {
@@ -604,6 +630,7 @@ public class Dungeon extends Region {
 			question = askQuestion(questions[currentQuestion]);
 			question.getQuestionSubmitted().addListener(notUsed -> questionSubmitted());
 			currentQuestion++; //Iterates to the next question in the question list.
+			currentQuestion = currentQuestion % questions.length; // wrap question count if needed
 		}
 		else {
 			question = null;
@@ -653,31 +680,39 @@ public class Dungeon extends Region {
 	}
 
 	public void onDoorCheatCode() {
-		for (int i = 0; i < BOARDSIZE; i++) {
-			for (int j = 0; j < BOARDSIZE; j++) {
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.EAST);
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.WEST);
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
-				mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
+		if(this.question == null) {
+			for (int i = 0; i < BOARDSIZE; i++) {
+				for (int j = 0; j < BOARDSIZE; j++) {
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.EAST);
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.WEST);
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.NORTH);
+					mGameBoard[i][j].setDoorState(DoorState.OPEN, DoorPosition.SOUTH);
+				}
+
 			}
-
+			draw();
 		}
-		draw();
-
 	}
 
 	public  void traverseMaze() {
-		for (int i = 0; i < mGameBoard.length-1; i++) {
-			for (int j = 0; j < mGameBoard[i].length; j++) {
-				System.out.println("Room at " + i + ", " + j + ", " + mGameBoard[i][j].isExit());
+		if(this.question == null) {
+			for (int i = 0; i < mGameBoard.length-1; i++) {
+				for (int j = 0; j < mGameBoard[i].length; j++) {
+					System.out.println("Room at " + i + ", " + j + ", " + mGameBoard[i][j].isExit());
+
+				}
 
 			}
-
+			draw();
 		}
-		draw();
-
 	}
 
+	public void onKeyPress(KeyEvent keyEvent) {
+		if(question != null) {
+			question.onKeyPress(keyEvent);
+			draw();
+		}
+	}
 	/**
 	 * Returns a path to the exit, may not be optimal
 	 * 
@@ -716,5 +751,62 @@ public class Dungeon extends Region {
 
 		}
 
+	}
+
+	/**
+	 * Saves a game to the given file
+	 * 
+	 * @param f The file to be saved to.
+	 */
+	public void saveGame(File f) {
+		try {
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(mGameBoard);
+			oos.writeObject(mHeroLoc);
+			oos.writeObject(mExitLoc);
+			oos.writeObject(mEntranceLoc);
+			oos.writeObject(mHero);
+
+
+			oos.close();
+			fos.close();
+
+		} catch (Exception ex) {
+			// TODO: report the error somehow
+			statusString.set("Error saving file - " + ex.getMessage());
+		}
+
+	}
+
+	/**
+	 * Opens and initializes a saved game
+	 * 
+	 * @param f The file that is to be opened.
+	 */
+	public void openGame(File f) {
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			mGameBoard = (Room[][]) ois.readObject();
+			mHeroLoc = (int[]) ois.readObject();
+			mExitLoc = (int[]) ois.readObject();
+			mEntranceLoc = (int[]) ois.readObject();
+			mHero = (Hero) ois.readObject();
+
+			ois.close();
+			fis.close();
+			for (int i = 0; i < BOARDSIZE; i++) {
+				for (int j = 0; j < BOARDSIZE; j++) {
+					mGameBoard[i][j].reOpenRoom(statusString, mIsQuestionTriggered);
+				}
+			}
+
+			draw();
+		}
+		catch (Exception ex) {
+			newGame();
+			statusString.set("Error opening file - " + ex.getMessage());
+		}
 	}
 }

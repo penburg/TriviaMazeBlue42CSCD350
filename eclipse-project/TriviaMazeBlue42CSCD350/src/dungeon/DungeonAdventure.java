@@ -8,8 +8,6 @@ package dungeon;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +34,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
@@ -48,6 +48,7 @@ public class DungeonAdventure extends Application {
 	private Dungeon mGame;
 
 	private final double CONTROL_IMAGE_WIDTH = 25;
+	private Stage mStage;
 
 	@Override
 	public void start(Stage primaryStage){
@@ -79,7 +80,7 @@ public class DungeonAdventure extends Application {
 			}
 			//System.out.println(userDataDir);
 		}
-
+		mStage = primaryStage;
 		mGame = new Dungeon();
 
 		BorderPane root = new BorderPane();
@@ -120,10 +121,19 @@ public class DungeonAdventure extends Application {
 		MenuBar menuBar = new MenuBar();
 		// File menu with just a quit item for now
 		Menu fileMenu = new Menu("_File");
+		MenuItem openMenuItem = new MenuItem("_Open");
+		openMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+		openMenuItem.setOnAction(notUsed -> onOpen());
+
+		MenuItem saveMenuItem = new MenuItem("_Save");
+		saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+		saveMenuItem.setOnAction(notUsed -> onSave());
+
 		MenuItem quitMenuItem = new MenuItem("_Quit");
 		quitMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
-		quitMenuItem.setOnAction(actionEvent -> Platform.exit());
-		fileMenu.getItems().add(quitMenuItem);
+		quitMenuItem.setOnAction(notUsed -> Platform.exit());
+
+		fileMenu.getItems().addAll(openMenuItem, saveMenuItem, new SeparatorMenuItem(), quitMenuItem);
 
 		Menu GameMenu = new Menu("_Game");
 		MenuItem newMenuItem = new MenuItem("_New");
@@ -131,8 +141,8 @@ public class DungeonAdventure extends Application {
 		newMenuItem.setOnAction(actionEvent -> onNewGame());
 
 
-		MenuItem settingsMenuItem = new MenuItem("_Settings");
-		settingsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+		MenuItem settingsMenuItem = new MenuItem("S_ettings");
+		settingsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
 		settingsMenuItem.setOnAction(actionEvent -> onSettings());
 
 		MenuItem addQuestionMenuItem = new MenuItem("_Add Question");
@@ -156,6 +166,55 @@ public class DungeonAdventure extends Application {
 
 	}
 
+
+	/**
+	 * Opens a file chooser dialog to save the file
+	 * 
+	 * @return void
+	 */
+	private void onSave() {
+		File selectedFile = null;
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Blue42 Trivia Maze");
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter("Blue42 Trivia Maze Files (*.b42m)", "*.b42m"),
+				new ExtensionFilter("All Files (*.*)", "*.*"));
+
+		selectedFile = fileChooser.showSaveDialog(mStage);
+
+		if (selectedFile != null) {
+			if(!selectedFile.getName().endsWith(".b42m")) {
+				selectedFile = new File(selectedFile.getAbsolutePath() + ".b42m");
+			}
+			mGame.saveGame(selectedFile);
+
+		} else {
+			mGame.getStatusStringProperty().set("Save aborted");
+		}
+	}
+
+	/**
+	 * Opens a file chooser dialog to open the file
+	 * 
+	 * @return void
+	 */
+	private void onOpen() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Open an Blue42 Trivia Maze File");
+		chooser.setInitialDirectory(new File("."));
+		chooser.getExtensionFilters().addAll(
+				new ExtensionFilter("MyRectangle Files (*.b42m)", "*.b42m"),
+				new ExtensionFilter("All Files (*.*)", "*.*"));
+		File selectedFile = chooser.showOpenDialog(mStage);
+		if (selectedFile != null) {
+			mGame.openGame(selectedFile);
+		}
+		else {
+			mGame.getStatusStringProperty().set("open aborted");
+		}
+
+
+	}
 
 	private void onNewGame() {
 		mGame.newGame();
@@ -234,40 +293,41 @@ public class DungeonAdventure extends Application {
 
 	}
 
-	private void onKeyPressed(KeyEvent keyEvent) {;
-	switch (keyEvent.getCode()) {
-	case LEFT:
-		mGame.onLeft();
-		break;
-	case RIGHT:
-		mGame.onRight();
-		break;
-	case UP:
-		mGame.onUp();
-		break;
-	case DOWN:
-		mGame.onDown();
-		break;
-	case V:
-		mGame.onUseVisionPotion();
-		break;
-	case C:
-		mGame.onCheatCode();
-		break;
-	case U:
-		mGame.onDoorCheatCode();
-		break;
-	case T:
-		mGame.traverseMaze();
-		break;
-	case ENTER:
-		mGame.onEnter();
-		break;
-	default:
-		break;
+	private void onKeyPressed(KeyEvent keyEvent) {
+		mGame.onKeyPress(keyEvent);
+		switch (keyEvent.getCode()) {
+		case LEFT:
+			mGame.onLeft();
+			break;
+		case RIGHT:
+			mGame.onRight();
+			break;
+		case UP:
+			mGame.onUp();
+			break;
+		case DOWN:
+			mGame.onDown();
+			break;
+		case V:
+			mGame.onUseVisionPotion();
+			break;
+		case C:
+			mGame.onCheatCode();
+			break;
+		case U:
+			mGame.onDoorCheatCode();
+			break;
+		case T:
+			mGame.traverseMaze();
+			break;
+		case ENTER:
+			mGame.onEnter();
+			break;
+		default:
+			break;
 
-	}
-	//keyEvent.consume();
+		}
+		//keyEvent.consume();
 	}
 
 	/**
