@@ -18,6 +18,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.prefs.Preferences;
 
 import dungeon.Room.DoorPosition;
 import dungeon.Room.DoorState;
@@ -148,9 +149,17 @@ public class Dungeon extends Region {
 		return nums;
 	}
 
-	private Question askQuestion(int questionNumberInDatabase)
-	{
+	private Question askQuestion(int questionNumberInDatabase)	{
+		
+		Preferences prefs = Preferences.userNodeForPackage(getClass());
+        boolean TF = prefs.getBoolean("TrueFalse", true);
+        boolean MC = prefs.getBoolean("MultipleChoice", true);
+        boolean SA = prefs.getBoolean("ShortAnswer", true);
+        boolean YT = prefs.getBoolean("Video", true);
+        
+        
 		String sql = "SELECT id, type, question, correct, shortanswercorrect, a1, a2, a3, a4, explanation FROM questions WHERE id = " + questionNumberInDatabase;
+		
 
 		int correct = 0;
 		QuestionType qType = QuestionType.NULL;
@@ -182,15 +191,21 @@ public class Dungeon extends Region {
 		{
 		case MultipleChoice:
 			q = new MultipleChoice(a1, a2, a3, a4, correct, question, explanation);
-			//statusString.set("DEBUG - Multiple Choice Question");
+			if(!MC) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		case TrueFalse:
 			q = new TrueFalse(correct, question, explanation);
-			//statusString.set("DEBUG - True / False Question");
+			if(!TF) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		case ShortAnswer:
 			q = new ShortAnswer(shortanswer, question, explanation);
-			//statusString.set("DEBUG -Short Answer Question");
+			if(!SA) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		case Video:
 			ArrayList<String> options = new ArrayList<String>();
@@ -207,6 +222,9 @@ public class Dungeon extends Region {
 				options.add(a4);
 			}
 			q = new VideoQuestion(question, shortanswer, options, correct, explanation);
+			if(!YT) {
+				q = askQuestion(++currentQuestion);
+			}
 			break;
 		default:
 			q = new NullQuestion();
@@ -612,6 +630,7 @@ public class Dungeon extends Region {
 			question = askQuestion(questions[currentQuestion]);
 			question.getQuestionSubmitted().addListener(notUsed -> questionSubmitted());
 			currentQuestion++; //Iterates to the next question in the question list.
+			currentQuestion = currentQuestion % questions.length; // wrap question count if needed
 		}
 		else {
 			question = null;
