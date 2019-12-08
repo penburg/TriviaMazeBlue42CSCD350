@@ -45,7 +45,6 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 	@FXML	private TextArea TF_Prompt;
 	@FXML	private RadioButton TF_True;
 	@FXML	private TextField TF_Explanation;
-
 	@FXML	private Tab MC_Tab;
 	@FXML	private TextArea MC_Prompt;
 	@FXML	private RadioButton MC_A_Radio;
@@ -57,12 +56,10 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 	@FXML	private TextField MC_C_Field;
 	@FXML	private TextField MC_D_Field;
 	@FXML	private TextField MC_Explanation;
-	
 	@FXML	private Tab SA_Tab;
 	@FXML	private TextArea SA_Prompt;
 	@FXML	private TextField SA_Answer;
 	@FXML	private TextField SA_Explanation;
-	
 	@FXML	private Tab YT_Tab;
 	@FXML	private TextArea YT_Prompt;
 	@FXML	private TextField YT_URL;
@@ -78,7 +75,6 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 	@FXML	private TextField YT_D_Field; 
 	@FXML	private Button YT_Test;
 	@FXML	private TextField YT_Explanation;
-
 	private ButtonType mOK;
 	private Dungeon mGame;
 	private WebView webView;
@@ -90,11 +86,9 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 		loader.setController(this);
 		Parent root = loader.load();
 		getDialogPane().setContent(root);
-
 		mOK = new ButtonType("OK", ButtonData.OK_DONE);
 		ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 		getDialogPane().getButtonTypes().addAll(mOK, cancel);
-
 		getDialogPane().lookupButton(mOK).addEventFilter(ActionEvent.ACTION, eh -> onOK(eh));
 		YT_Test.setOnMouseClicked(notUsed -> onTestYouTube());
 		webView = new WebView();
@@ -113,7 +107,6 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("WebView - " + URL);
 		alert.setHeaderText("WebView - " + URL);
-
 		alert.getDialogPane().setContent(webView);
 		alert.showAndWait();
 		webView.getEngine().load("http://127.0.0.1");
@@ -145,7 +138,6 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
 		YT_Spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999, 1));
 		YT_Spinner.getValueFactory().setValue(0);
 	}
@@ -163,8 +155,7 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			correctChoice = TF_True.isSelected() ? 1 : 2;
 			explanation = TF_Explanation.getText();
 			mGame.addQuestion(QuestionType.TrueFalse, prompt, "", options, correctChoice, explanation);
-		}
-		else if(MC_Tab.isSelected()) {
+		}else if(MC_Tab.isSelected()) {
 			prompt = MC_Prompt.getText();
 			explanation = MC_Explanation.getText();
 			options.add(MC_A_Field.getText());
@@ -173,25 +164,20 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			options.add(MC_D_Field.getText());
 			if(MC_A_Radio.isSelected()) {
 				correctChoice = 1;
-			}
-			else if(MC_B_Radio.isSelected()) {
+			}else if(MC_B_Radio.isSelected()) {
 				correctChoice = 2;
-			}
-			else if(MC_C_Radio.isSelected()) {
+			}else if(MC_C_Radio.isSelected()) {
 				correctChoice = 3;
-			}
-			else if(MC_D_Radio.isSelected()) {
+			}else if(MC_D_Radio.isSelected()) {
 				correctChoice = 4;
 			}
 			mGame.addQuestion(QuestionType.MultipleChoice, prompt, "", options, correctChoice, explanation);
-		}
-		else if(SA_Tab.isSelected()) {
+		}else if(SA_Tab.isSelected()) {
 			prompt = SA_Prompt.getText();
 			explanation = SA_Explanation.getText();
 			String saAnswer = SA_Answer.getText();
 			mGame.addQuestion(QuestionType.ShortAnswer, prompt, saAnswer, options, correctChoice, explanation);
-		}
-		else if(YT_Tab.isSelected()) {
+		}else if(YT_Tab.isSelected()) {
 			prompt = YT_Prompt.getText();
 			explanation = YT_Explanation.getText();
 			String URL = getYouTubeUrl();
@@ -201,21 +187,14 @@ public class AddQuestionDialog extends Dialog<ButtonType> implements Initializab
 			options.add(YT_D_Field.getText());
 			if(YT_A_Radio.isSelected()) {
 				correctChoice = 1;
-			}
-			else if(YT_B_Radio.isSelected()) {
+			}else if(YT_B_Radio.isSelected()) {
 				correctChoice = 2;
-			}
-			else if(YT_C_Radio.isSelected()) {
+			}else if(YT_C_Radio.isSelected()) {
 				correctChoice = 3;
-			}
-			else if(YT_D_Radio.isSelected()) {
+			}else if(YT_D_Radio.isSelected()) {
 				correctChoice = 4;
 			}
-			
 			mGame.addQuestion(QuestionType.Video, prompt, URL, options, correctChoice, explanation);
 		}
-
-
 	}
-
 }

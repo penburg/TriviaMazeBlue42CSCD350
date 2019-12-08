@@ -27,7 +27,6 @@ import javafx.scene.text.Font;
  */
 public abstract class Question implements Drawable{
 	private final static Image bgImage = new Image("images/School_Board.jpg");
-	
 	protected boolean QuestionCorrect;
 	protected BooleanProperty QuestionSubmitted;
     protected final double lineWidth = 1.0f;
@@ -44,57 +43,32 @@ public abstract class Question implements Drawable{
 		this.explanation = "";
 		this.options = new ArrayList<String>();
 	}
-
-
+	
 	@Override
 	public void draw(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        //save gc fills and strokes
         gc.save();
         gc.setStroke(Color.BLACK);
         gc.setFill(Color.WHITE);
         gc.setLineWidth(lineWidth);
         gc.setFont(new Font(fontString, fontSize * offset));
         gc.drawImage(bgImage, imgX, imgY, offset, offset);
-        
-        //restore gc state
         gc.restore();
 	}
 	
-
 	public String getExplanation()
 	{
 		return this.explanation;
 	}
 	
-	
-	/**
-	 * Passes the up keystroke event
-	 */
 	public abstract void onUp();
-	
-	/**
-	 * Passes the down keystroke event
-	 */
 	public abstract void onDown();
-	
-	/**
-	 * Passes the enter / return keystroke event
-	 */
 	public abstract void onEnter();
-
-
-	/**
-	 * @return the questionCorrect
-	 */
+	
 	public boolean isQuestionCorrect() {
 		return QuestionCorrect;
 	}
 
-
-	/**
-	 * @return the questionSubmitted
-	 */
 	public BooleanProperty getQuestionSubmitted() {
 		return QuestionSubmitted;
 	}
@@ -106,11 +80,9 @@ public abstract class Question implements Drawable{
         gc.setFill(Color.WHITE);
         gc.setLineWidth(lineWidth);
         gc.setFont(new Font(fontString, fontSize * offset));
-        
 		double tenPercent = offset * 0.1f;
         double fivePercent = offset * 0.05f;
         double thirtyFivePercent = offset * 0.35f;
-        
 		double listSpace = fivePercent;
 		double listX = imgX + tenPercent;
         double listY = imgY + thirtyFivePercent + thirtyFivePercent;
@@ -123,10 +95,9 @@ public abstract class Question implements Drawable{
                 gc.strokeText("->", listX - fivePercent, listY + (i * listSpace));
             }
         }
-        
         gc.restore();
-	
 	}
+	
 	protected void drawPrompt(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		gc.save();
@@ -134,20 +105,14 @@ public abstract class Question implements Drawable{
         gc.setFill(Color.WHITE);
         gc.setLineWidth(lineWidth);
         gc.setFont(new Font(fontString, fontSize * offset));
-        
 		double tenPercent = offset * 0.1f;
         double fivePercent = offset * 0.05f;
-        double thirtyFivePercent = offset * 0.35f;
-        		
+        double thirtyFivePercent = offset * 0.35f; 		
         double messageTopX = imgX + tenPercent;
         double messageTopY = imgY + tenPercent + fivePercent;
-        
-       
         gc.fillText(this.question, messageTopX, messageTopY);
-        gc.strokeText(this.question, messageTopX, messageTopY);
-        
+        gc.strokeText(this.question, messageTopX, messageTopY); 
         gc.restore();
-
 	}
 	
 	protected String wordWrap(String s) {
@@ -163,12 +128,10 @@ public abstract class Question implements Drawable{
 					newPrompt += "\n";
 					newPrompt += tmp;
 					charCount = tmp.length();
-				}
-				else {
+				}else {
 					newPrompt += "\n";
 					charCount = 0;
 				}
-				
 			}
 			if(s.charAt(i) == '\n') {
 				charCount = 0;
@@ -178,16 +141,7 @@ public abstract class Question implements Drawable{
 		}
 		return newPrompt;
 	}
-
-
-	/**
-	 * Process keyEvents for short answer
-	 * 
-	 * @param keyEvent the key pressed
-	 */
 	public void onKeyPress(KeyEvent keyEvent) {
-		// TODO Auto-generated method stub
 		
 	}
-	
 }

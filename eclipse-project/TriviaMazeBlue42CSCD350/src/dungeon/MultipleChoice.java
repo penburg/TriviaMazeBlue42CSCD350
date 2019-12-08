@@ -4,7 +4,6 @@ import javafx.scene.canvas.Canvas;
 
 public class MultipleChoice extends Question
 {
-	
 	private int correctBtn;
 	
 	public MultipleChoice(String btn1, String btn2, String btn3, String btn4, int correctAnswer, String question, String explanation)
@@ -26,7 +25,6 @@ public class MultipleChoice extends Question
 		this.correctBtn = correctAnswer - 1;
 	}
 	
-
 	@Override
 	public void onUp() {
 		optionSelected = (optionSelected - 1 + options.size()) % options.size();
@@ -49,5 +47,4 @@ public class MultipleChoice extends Question
 		drawPrompt(imgX, imgY, x, y, offset, canvas);
 		drawMenu(imgX, imgY, x, y, offset, canvas);
 	}
-	
 }

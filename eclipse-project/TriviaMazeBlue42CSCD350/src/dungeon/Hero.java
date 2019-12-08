@@ -42,14 +42,12 @@ public abstract class Hero extends DungeonCharacter {
         return ret;
     }
 
-//-----------------------------------------------------------------
-//calls base constructor and gets name of hero from user
     public Hero() {
     	numPotionsVision = 0;
         Preferences prefs = Preferences.userNodeForPackage(getClass());
         setName(prefs.get("Name", "Jack"));
-
     }
+    
     public void addPotionVision() {
         this.numPotionsVision++;
     }
@@ -58,7 +56,7 @@ public abstract class Hero extends DungeonCharacter {
         if (numPotionsVision > 0) {
             numPotionsVision--;
             return true;
-        } else {
+        }else {
             return false;
         }
     }
@@ -66,5 +64,4 @@ public abstract class Hero extends DungeonCharacter {
      public int getNumPotionsVision() {
         return numPotionsVision;
     }
-    
-}//end Hero class
+}

@@ -9,7 +9,6 @@ import javafx.scene.text.Font;
 
 public class ShortAnswer extends Question
 {
-
 	private String correctAnswer;
 	private String shortAnswer;
 
@@ -21,12 +20,11 @@ public class ShortAnswer extends Question
 		this.shortAnswer = "";
 	}
 
-
 	@Override
 	public void onUp() {
 		
 	}
-
+	
 	@Override
 	public void onDown() {
 		
@@ -48,31 +46,23 @@ public class ShortAnswer extends Question
 		gc.setFill(Color.WHITE);
 		gc.setLineWidth(lineWidth);
 		gc.setFont(new Font(fontString, fontSize * offset));
-
 		double tenPercent = offset * 0.1f;
 		double thirtyFivePercent = offset * 0.35f;
-
 		double listX = imgX + tenPercent;
 		double listY = imgY + thirtyFivePercent + thirtyFivePercent;
-
 		gc.fillText(this.shortAnswer, listX, listY);
         gc.strokeText(this.shortAnswer, listX, listY);
-
-
 		gc.restore();
 	}
-
 
 	@Override
 	public void onKeyPress(KeyEvent keyEvent) {
 		if(!keyEvent.isAltDown() && !keyEvent.isControlDown() && !keyEvent.isMetaDown() && !keyEvent.isShortcutDown()) {
 			if(keyEvent.getCode().getName().length() == 1) {
 				this.shortAnswer += keyEvent.getCode().getName();
-			}
-			else if(keyEvent.getCode() == KeyCode.BACK_SPACE && !this.shortAnswer.isEmpty()) {
+			}else if(keyEvent.getCode() == KeyCode.BACK_SPACE && !this.shortAnswer.isEmpty()) {
 				this.shortAnswer = this.shortAnswer.substring(0, this.shortAnswer.length() - 1);
 			}
-
 		}
 	}
 }

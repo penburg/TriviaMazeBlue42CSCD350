@@ -20,9 +20,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.web.WebView;
 
 public class VideoQuestion extends Question {
+	
 	private boolean isVideoShown = false;
 	private int optionCorrect;
-
 	private String url;
 	
 	public VideoQuestion(String question, String url, ArrayList<String> options, int correctOption, String explanation) {
@@ -31,17 +31,14 @@ public class VideoQuestion extends Question {
 		this.question = question;
 		this.options = options;
 		this.optionCorrect = correctOption - 1;
-		this.explanation = explanation;
-		
+		this.explanation = explanation;		
 	}
 
 	@Override
 	public void draw(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {
-		// TODO Auto-generated method stub
 		super.draw(imgX, imgY, x, y, offset, canvas);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		gc.save();
-
 		if(!isVideoShown) {
 			WebView webView = new WebView();
 			//https://youtu.be/rvtRuzKbPfY
@@ -50,20 +47,15 @@ public class VideoQuestion extends Question {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("WebView");
 			alert.setHeaderText("WebView");
-
 			alert.getDialogPane().setContent(webView);
 			alert.showAndWait();
 			webView.getEngine().load("http://127.0.0.1");
 			isVideoShown = true;
-		}
-		
+		}	
 		drawPrompt(imgX, imgY, x, y, offset, canvas);
-		drawMenu(imgX, imgY, x, y, offset, canvas);
-        
-
+		drawMenu(imgX, imgY, x, y, offset, canvas);      
 		gc.restore();
 	}
-
 
 	@Override
 	public void onUp() {
@@ -80,5 +72,4 @@ public class VideoQuestion extends Question {
 		this.QuestionCorrect = (optionSelected == optionCorrect);
 		this.QuestionSubmitted.set(true);
 	}
-
 }

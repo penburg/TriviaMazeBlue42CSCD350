@@ -46,7 +46,6 @@ public class DungeonAdventure extends Application {
 
 	private Label mStatus;
 	private Dungeon mGame;
-
 	private final double CONTROL_IMAGE_WIDTH = 25;
 	private Stage mStage;
 
@@ -64,7 +63,6 @@ public class DungeonAdventure extends Application {
 			if(dataDir.isDirectory()) {
 				InputStream db = getClass().getResourceAsStream("/questions.db");
 				if(db == null) {
-					//System.out.println("db null");
 				}
 				Path outPath = FileSystems.getDefault().getPath(userDataDir, "questions.db");
 				try {
@@ -78,33 +76,22 @@ public class DungeonAdventure extends Application {
 				}
 
 			}
-			//System.out.println(userDataDir);
 		}
 		mStage = primaryStage;
 		mGame = new Dungeon();
-
 		BorderPane root = new BorderPane();
 		root.setCenter(mGame);
-
-		// add the menus
 		root.setTop(buildMenuBar());
-
 		mStatus = new Label();
 		mStatus.setMinHeight(mStatus.getMinHeight() * 3);
 		mStatus.textProperty().bind(mGame.getStatusStringProperty());
 		ToolBar toolBar = new ToolBar(mStatus);
-
 		root.setBottom(toolBar);
-
 		Scene scene = new Scene(root, 750, 800);
 		scene.setOnKeyPressed(keyEvent -> onKeyPressed(keyEvent));
 		primaryStage.setTitle("Blue42 Maze Game");
 		primaryStage.setScene(scene);
-
 		primaryStage.show();
-
-
-
 	}
 
 	private void onAbout() {
@@ -112,60 +99,42 @@ public class DungeonAdventure extends Application {
 		alert.setTitle("About");
 		alert.setHeaderText("Team Blue43, CSCD 350 Final Project, Fall 2019");
 		alert.showAndWait();
-
 	}
 
 	private MenuBar buildMenuBar() {
-		// from pdf provided
-		// build a menu bar
 		MenuBar menuBar = new MenuBar();
-		// File menu with just a quit item for now
 		Menu fileMenu = new Menu("_File");
 		MenuItem openMenuItem = new MenuItem("_Open");
 		openMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 		openMenuItem.setOnAction(notUsed -> onOpen());
-
 		MenuItem saveMenuItem = new MenuItem("_Save");
 		saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 		saveMenuItem.setOnAction(notUsed -> onSave());
-
 		MenuItem quitMenuItem = new MenuItem("_Quit");
 		quitMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
 		quitMenuItem.setOnAction(notUsed -> Platform.exit());
-
 		fileMenu.getItems().addAll(openMenuItem, saveMenuItem, new SeparatorMenuItem(), quitMenuItem);
-
 		Menu GameMenu = new Menu("_Game");
 		MenuItem newMenuItem = new MenuItem("_New");
 		newMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
 		newMenuItem.setOnAction(actionEvent -> onNewGame());
-
-
 		MenuItem settingsMenuItem = new MenuItem("S_ettings");
 		settingsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
 		settingsMenuItem.setOnAction(actionEvent -> onSettings());
-
 		MenuItem addQuestionMenuItem = new MenuItem("_Add Question");
 		addQuestionMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN));
 		addQuestionMenuItem.setOnAction(actionEvent -> onAddQuestion());
-
 		GameMenu.getItems().addAll(newMenuItem, new SeparatorMenuItem(), addQuestionMenuItem, settingsMenuItem);
-
-		// Help menu with just an about item for now
 		Menu helpMenu = new Menu("_Help");
 		MenuItem aboutMenuItem = new MenuItem("_About");
 		aboutMenuItem.setOnAction(actionEvent -> onAbout());
-
 		MenuItem controlsMenuItem = new MenuItem("_Controls");
 		controlsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
 		controlsMenuItem.setOnAction(actionEvent -> onShowControls());
-
 		helpMenu.getItems().addAll(controlsMenuItem,  new SeparatorMenuItem(), aboutMenuItem);
 		menuBar.getMenus().addAll(fileMenu, GameMenu, helpMenu);
 		return menuBar;
-
 	}
-
 
 	/**
 	 * Opens a file chooser dialog to save the file
@@ -179,15 +148,12 @@ public class DungeonAdventure extends Application {
 		fileChooser.getExtensionFilters().addAll(
 				new ExtensionFilter("Blue42 Trivia Maze Files (*.b42m)", "*.b42m"),
 				new ExtensionFilter("All Files (*.*)", "*.*"));
-
 		selectedFile = fileChooser.showSaveDialog(mStage);
-
 		if (selectedFile != null) {
 			if(!selectedFile.getName().endsWith(".b42m")) {
 				selectedFile = new File(selectedFile.getAbsolutePath() + ".b42m");
 			}
 			mGame.saveGame(selectedFile);
-
 		} else {
 			mGame.getStatusStringProperty().set("Save aborted");
 		}
@@ -208,12 +174,9 @@ public class DungeonAdventure extends Application {
 		File selectedFile = chooser.showOpenDialog(mStage);
 		if (selectedFile != null) {
 			mGame.openGame(selectedFile);
-		}
-		else {
+		}else {
 			mGame.getStatusStringProperty().set("open aborted");
 		}
-
-
 	}
 
 	private void onNewGame() {
@@ -225,52 +188,38 @@ public class DungeonAdventure extends Application {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Controls");
 		alert.setHeaderText("Controls and Symbols ");
-
 		GridPane gp = new GridPane();
 		gp.setHgap(CONTROL_IMAGE_WIDTH);
 		gp.setVgap(5.0);
-
 		gp.add(new Label("▲"), 0, 0);
 		gp.add(new Label("▼"), 0, 1);
 		gp.add(new Label("◀"), 0, 2);
 		gp.add(new Label("▶"), 0, 3);
-
 		gp.add(new Label("Move Up"), 1, 0);
 		gp.add(new Label("Move Down"), 1, 1);
 		gp.add(new Label("Move Left"), 1, 2);
 		gp.add(new Label("Move Right"), 1, 3);
-
 		gp.add(new Label("v"), 0, 4);
 		gp.add(new Label("enter"), 0, 5);
-
 		gp.add(new Label("Use Vision Potion"), 1, 4);
 		gp.add(new Label("Enter / Execute"), 1, 5);
-
-
 		ImageView potionVision = new ImageView(Room.IMAGE_POTION_VISION);
 		potionVision.setFitWidth(CONTROL_IMAGE_WIDTH);
 		potionVision.setPreserveRatio(true);
 		gp.add(potionVision, 0, 6);
 		gp.add(new Label("Vision Potion"), 1, 6);
-
 		ImageView potionEntrance = new ImageView(Room.IMAGE_ENTRANCE);
 		potionEntrance.setFitWidth(CONTROL_IMAGE_WIDTH);
 		potionEntrance.setPreserveRatio(true);
 		gp.add(potionEntrance, 0, 7);
 		gp.add(new Label("Entrance"), 1, 7);
-
 		ImageView potionExit = new ImageView(Room.IMAGE_EXIT);
 		potionExit.setFitWidth(CONTROL_IMAGE_WIDTH);
 		potionExit.setPreserveRatio(true);
 		gp.add(potionExit, 0, 8);
 		gp.add(new Label("Exit"), 1, 8);
-
-
 		alert.getDialogPane().setContent(gp);
-
-
 		alert.showAndWait();
-
 	}
 
 	private void onSettings() {
@@ -280,7 +229,6 @@ public class DungeonAdventure extends Application {
 		} catch (IOException ex) {
 			Logger.getLogger(DungeonAdventure.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
 	}
 
 	private void onAddQuestion() {
@@ -290,7 +238,6 @@ public class DungeonAdventure extends Application {
 		} catch (IOException ex) {
 			Logger.getLogger(DungeonAdventure.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
 	}
 
 	private void onKeyPressed(KeyEvent keyEvent) {
@@ -325,9 +272,7 @@ public class DungeonAdventure extends Application {
 			break;
 		default:
 			break;
-
 		}
-		//keyEvent.consume();
 	}
 
 	/**
@@ -345,16 +290,10 @@ public class DungeonAdventure extends Application {
 		if(os.contains("win")) {
 			ret += "AppData" + pathSeperator + "Local" 
 					+ pathSeperator + className;
-		}
-		else if(os.contains("linux")) {
+		}else if(os.contains("linux")) {
 			ret += ".config" + pathSeperator + className;
-		}
-		else if(os.contains("mac")) {
-
+		}else if(os.contains("mac")) {
 		}
 		return ret;
-
 	}
-
-
 }
