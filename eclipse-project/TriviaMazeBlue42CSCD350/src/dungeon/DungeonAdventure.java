@@ -1,8 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Course:	CSCD350
+ * Term:	Fall 2019
+ * Team:	Blue42
+ *
  */
+
+
+/**
+ * @author Team Blue42
+ */
+
 package dungeon;
 
 import java.io.File;
@@ -38,10 +45,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
-/**
- *
- * @author patrick modified from a game made for CSCD370 fall 2018
- */
 public class DungeonAdventure extends Application {
 
 	private Label mStatus;

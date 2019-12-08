@@ -1,10 +1,19 @@
+/*
+ * Course:	CSCD350
+ * Term:	Fall 2019
+ * Team:	Blue42
+ * 
+ */
+
+
+/**
+ * @author Team Blue42
+ */
 package dungeon;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
-
 import dungeon.Dungeon.QuestionType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,23 +30,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.input.MouseEvent;
 
-/*
- * Course:	CSCD350
- * Term:	Fall 2019
- * Team:	Blue42
- * 
- */
-
-/**
- * @author Patrick Enburg <patrick@enburg.info>
- */
 
 public class AddQuestionDialog extends Dialog<ButtonType> implements Initializable {
 

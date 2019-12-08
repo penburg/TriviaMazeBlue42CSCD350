@@ -1,11 +1,13 @@
-/**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2001
- * Company:
+/*
+ * Course:	CSCD350
+ * Term:	Fall 2019
+ * Team:	Blue42
  *
- * @author
- * @version 1.0
+ */
+
+
+/**
+ * @author Team Blue42
  */
 package dungeon;
 

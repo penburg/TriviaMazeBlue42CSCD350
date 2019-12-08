@@ -1,3 +1,15 @@
+/*
+ * Course:	CSCD350
+ * Term:	Fall 2019
+ * Team:	Blue42
+ *
+ */
+
+
+/**
+ * @author Team Blue42
+ */
+
 package dungeon;
 
 import javafx.scene.canvas.Canvas;

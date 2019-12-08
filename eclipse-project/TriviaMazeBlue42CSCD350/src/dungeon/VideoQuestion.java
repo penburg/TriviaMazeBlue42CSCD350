@@ -6,7 +6,7 @@
  */
 
 /**
- * @author Patrick Enburg <patrick@enburg.info
+ * @author Team Blue42
  */
 
 package dungeon;

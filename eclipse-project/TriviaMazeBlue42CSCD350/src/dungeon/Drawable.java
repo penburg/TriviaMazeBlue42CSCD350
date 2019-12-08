@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Course:	CSCD350
+ * Term:	Fall 2019
+ * Team:	Blue42
+ *
+ */
+
+/**
+ * @author Team Blue42
  */
 package dungeon;
 

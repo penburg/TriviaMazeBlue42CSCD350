@@ -6,15 +6,12 @@
  */
 
 /**
- * @author Patrick Enburg <patrick@enburg.info
+ * @author Team Blue42
  */
 
 package dungeon;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 public class NullQuestion extends Question {
 

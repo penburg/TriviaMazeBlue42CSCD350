@@ -10,6 +10,7 @@ module dungeon {
 	requires java.desktop;
 	requires java.scripting;
 	requires java.xml;
+	requires transitive javafx.graphics;
 	
 	exports dungeon to javafx.graphics;
 }

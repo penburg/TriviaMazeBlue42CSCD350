@@ -6,7 +6,7 @@
  */
 
 /**
- * @author Patrick Enburg <patrick@enburg.info>
+ * @author Team Blue42
  */
 
 package dungeon;
@@ -22,9 +22,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-/**
- * @author Patrick Enburg <patrick@enburg.info
- */
 public abstract class Question implements Drawable{
 	private final static Image bgImage = new Image("images/School_Board.jpg");
 	protected boolean QuestionCorrect;
@@ -106,8 +103,7 @@ public abstract class Question implements Drawable{
         gc.setLineWidth(lineWidth);
         gc.setFont(new Font(fontString, fontSize * offset));
 		double tenPercent = offset * 0.1f;
-        double fivePercent = offset * 0.05f;
-        double thirtyFivePercent = offset * 0.35f; 		
+        double fivePercent = offset * 0.05f; 		
         double messageTopX = imgX + tenPercent;
         double messageTopY = imgY + tenPercent + fivePercent;
         gc.fillText(this.question, messageTopX, messageTopY);
@@ -115,6 +111,12 @@ public abstract class Question implements Drawable{
         gc.restore();
 	}
 	
+	/**
+	 * Wraps a string at the last whitespace before 30 characters
+	 * 
+	 * @param s String to be wrapped
+	 * @return a Wrapped String
+	 */
 	protected String wordWrap(String s) {
 		int charCount = 0;
 		String newPrompt = "";
