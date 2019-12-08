@@ -46,11 +46,8 @@ public class SettingDialogController extends Dialog<ButtonType> implements Initi
     private CheckBox SA_Checkbox;
     @FXML
     private CheckBox YT_Checkbox;
-    
-
     private ButtonType mOK;
-    private Dungeon mGame;
-    
+    private Dungeon mGame;  
     public final ObservableList<String> presets = FXCollections.observableArrayList("Easy", "Medium", "Hard", "Custom");
    
     public SettingDialogController(Dungeon game) throws IOException {
@@ -60,19 +57,13 @@ public class SettingDialogController extends Dialog<ButtonType> implements Initi
         loader.setController(this);
         Parent root = loader.load();
         getDialogPane().setContent(root);
-
         mOK = new ButtonType("OK", ButtonData.OK_DONE);
         ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
         getDialogPane().getButtonTypes().addAll(mOK, cancel);
-
-        getDialogPane().lookupButton(mOK).addEventFilter(ActionEvent.ACTION, eh -> onOK(eh));
-        
+        getDialogPane().lookupButton(mOK).addEventFilter(ActionEvent.ACTION, eh -> onOK(eh));       
         presetLoadButton.setOnMouseClicked(notUsed -> onLoadPresetClick());
     }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Preferences prefs = Preferences.userNodeForPackage(getClass());
@@ -86,8 +77,7 @@ public class SettingDialogController extends Dialog<ButtonType> implements Initi
         YT_Checkbox.setSelected(prefs.getBoolean("Video", true));
     }
 
-    private void onOK(ActionEvent eh) {
-       
+    private void onOK(ActionEvent eh) { 
        Preferences prefs = Preferences.userNodeForPackage(getClass());
        prefs.put("Name", nameField.getText());
        prefs.putBoolean("TrueFalse", TF_Checkbox.isSelected());
@@ -95,8 +85,7 @@ public class SettingDialogController extends Dialog<ButtonType> implements Initi
        prefs.putBoolean("ShortAnswer", SA_Checkbox.isSelected());
        prefs.putBoolean("Video", YT_Checkbox.isSelected());
        prefs.put("Preset",  presetSpinner.getValue());
-       mGame.newGame();
-       
+       mGame.newGame();      
     }
 
     private void onLoadPresetClick(){

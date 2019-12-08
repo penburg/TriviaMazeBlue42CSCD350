@@ -45,36 +45,28 @@ public abstract class DungeonCharacter implements Drawable, Serializable {
 	private String name;
     private boolean alive;
     private transient Image CharacterImage;
-
-//-----------------------------------------------------------------
-//explicit constructor to initialize instance variables -- it is called
-// by derived classes
+    
     public DungeonCharacter() {
     	this.alive = true;
         this.CharacterImage = new Image("images/person.png");
-    }//end constructor
+    }
 
     public final void setCharacterImage(Image CharacterImage) {
         this.CharacterImage = CharacterImage;
     }
 
-//-----------------------------------------------------------------
     public final String getName() {
         return name;
-    }//end getName
-
-//-----------------------------------------------------------------
-
-    
+    }
+  
     public boolean isAlive() {
         return alive;
-    }//end isAlive method
+    }
     
    public final void setName(String name) {
         this.name = name;
     }
 
-    
     public void kill() {
     	this.alive = false;
     }
@@ -82,9 +74,6 @@ public abstract class DungeonCharacter implements Drawable, Serializable {
     @Override
     public void draw(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        //canvas.getGraphicsContext2D().fillRect(imgX + (x * offset), imgY + (y * offset), offset, offset);
         gc.drawImage(CharacterImage, imgX + (x * offset), imgY + (y * offset),  offset, offset);
     }
-    
-    
-}//end class Character
+}

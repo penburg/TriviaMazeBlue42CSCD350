@@ -3,9 +3,7 @@ package dungeon;
 import javafx.scene.canvas.Canvas;
 
 public class TrueFalse extends Question
-{
-
-	
+{	
 	private int correctBtn;
 	
 	public TrueFalse(int correctAnswer, String question, String explanation)
@@ -16,7 +14,6 @@ public class TrueFalse extends Question
 		this.options.add("True");
 		this.options.add("False");
 	}
-
 
 	@Override
 	public void onUp() {
@@ -36,10 +33,8 @@ public class TrueFalse extends Question
 	
 	@Override
 	public void draw(double imgX, double imgY, int x, int y, double offset, Canvas canvas) {
-		// TODO Auto-generated method stub
 		super.draw(imgX, imgY, x, y, offset, canvas);
 		drawPrompt(imgX, imgY, x, y, offset, canvas);
 		drawMenu(imgX, imgY, x, y, offset, canvas);
 	}
-
 }

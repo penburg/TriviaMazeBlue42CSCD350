@@ -15,10 +15,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-/**
- *
- * @author penburg
- */
 public class Room implements Drawable, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -48,7 +44,6 @@ public class Room implements Drawable, Serializable {
 	private int[][] roomGrid;
 	private transient StringProperty statusString;
 	private transient IntegerProperty questionTrigger;
-
 	private final int PROBIBILITY = 10;
 	public static final int ROOMSIZE = 3;
 	private final int ROOM_MID = ROOMSIZE / 3;
@@ -60,18 +55,15 @@ public class Room implements Drawable, Serializable {
 	private final int POTION_GREEN = 7;
 	private final double wallWidth = 3;
 	private final double doorWidth = 5;
-
 	public static final Image IMAGE_POTION_HEAL = new Image("images/potion-red.png");
 	public static final Image IMAGE_POTION_VISION = new Image("images/potion-blue.png");
 	public static final Image IMAGE_POTION_GREEN = new Image("images/potion-green.png");
 	public static final Image IMAGE_TREASURE = new Image("images/pillar2.png");
 	public static final Image IMAGE_EXIT = new Image("images/exit.png");
 	public static final Image IMAGE_ENTRANCE = new Image("images/ladder.png");
-
 	private static final Random rand = new Random();
-
+	
 	public Room(StringProperty statusS, IntegerProperty trigger) {
-		//System.out.println("Creating room");
 		statusString = statusS;
 		questionTrigger = trigger;
 		roomGrid = new int[ROOMSIZE][ROOMSIZE];
@@ -79,14 +71,10 @@ public class Room implements Drawable, Serializable {
 		isVisable = false;
 		isExit = false;
 		isEntrance = false;
-
-		//Vision Potion
 		if (rand.nextInt(100) <= PROBIBILITY) {
 			setItem(POTION_VISION);
 		}
-
 	}
-
 
 	public final void setItem(int item) {
 		int x = rand.nextInt(ROOMSIZE);
@@ -116,68 +104,49 @@ public class Room implements Drawable, Serializable {
 		if (x < 0) {
 			if (y == ROOM_MID && doors[DoorPosition.WEST.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			} 
-			else if (y == ROOM_MID && doors[DoorPosition.WEST.ordinal()] == DoorState.CLOSED) {
+			}else if (y == ROOM_MID && doors[DoorPosition.WEST.ordinal()] == DoorState.CLOSED) {
 				x = 0;
 				doorInQuestion = DoorPosition.WEST;
 				questionTrigger.set(questionTrigger.get() + 1);
-				//statusString.set("WEST");
-			} 
-			else {
+			}else {
 				x = 0;
 			}
 		}
-
 		if (y < 0) {
 			if (x == ROOM_MID && doors[DoorPosition.NORTH.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			}
-			else if (x == ROOM_MID && doors[DoorPosition.NORTH.ordinal()] == DoorState.CLOSED) {
+			}else if (x == ROOM_MID && doors[DoorPosition.NORTH.ordinal()] == DoorState.CLOSED) {
 				y = 0;
 				doorInQuestion = DoorPosition.NORTH;
 				questionTrigger.set(questionTrigger.get() + 1);
-				//statusString.set("NORTH");
-			} 
-			else {
+			}else {
 				y = 0;
 			}
 		}
-
 		if (x >= ROOMSIZE) {
 			if (y == ROOM_MID && doors[DoorPosition.EAST.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			}
-			else if (y == ROOM_MID && doors[DoorPosition.EAST.ordinal()] == DoorState.CLOSED) {
+			}else if (y == ROOM_MID && doors[DoorPosition.EAST.ordinal()] == DoorState.CLOSED) {
 				x = ROOMSIZE - 1;
 				doorInQuestion = DoorPosition.EAST;
 				questionTrigger.set(questionTrigger.get() + 1);
-				//statusString.set("EAST");
-			}
-			else {
+			}else {
 				x = ROOMSIZE - 1;
 			}
 		}
-
 		if (y >= ROOMSIZE) {
 			if (x == ROOM_MID && doors[DoorPosition.SOUTH.ordinal()] == DoorState.OPEN) {
 				this.hero = null;
-			}
-			else if (x == ROOM_MID && doors[DoorPosition.SOUTH.ordinal()] == DoorState.CLOSED) {
+			}else if (x == ROOM_MID && doors[DoorPosition.SOUTH.ordinal()] == DoorState.CLOSED) {
 				y = ROOMSIZE - 1;
 				doorInQuestion = DoorPosition.SOUTH;
 				questionTrigger.set(questionTrigger.get() + 1);
-				//statusString.set("SOUTH");
-			}
-			else {
+			}else {
 				y = ROOMSIZE - 1;
 			}
 		}
-
 		this.heroLoc[0] = x;
 		this.heroLoc[1] = y;
-
-
-
 		if (this.hero != null) {
 			switch (roomGrid[x][y]) {
 			case ENTRANCE:
@@ -189,7 +158,7 @@ public class Room implements Drawable, Serializable {
 				this.statusString.set(this.hero.getName() + " found a potion of vision");
 				roomGrid[x][y] = EMPTY;
 				break;
-			case POTION_GREEN://future use
+			case POTION_GREEN:
 				break;
 			default:
 				break;
@@ -250,20 +219,14 @@ public class Room implements Drawable, Serializable {
 			gc.setLineWidth(wallWidth);
 			gc.strokeRect(topX, topY, offset, offset);
 			double doorLength = (double) offset / 3f;
-
-
 			setDoorColor(gc, doors[DoorPosition.NORTH.ordinal()]);
 			gc.strokeLine(topX + doorLength, topY, topX + doorLength + doorLength, topY);
-
 			setDoorColor(gc, doors[DoorPosition.EAST.ordinal()]);
 			gc.strokeLine(topX + offset, topY + doorLength, topX + offset, topY + doorLength + doorLength);
-
 			setDoorColor(gc, doors[DoorPosition.SOUTH.ordinal()]);
 			gc.strokeLine(topX + doorLength, topY + offset, topX + doorLength + doorLength, topY + offset);
-
 			setDoorColor(gc, doors[DoorPosition.WEST.ordinal()]);
 			gc.strokeLine(topX, topY + doorLength, topX, topY + doorLength + doorLength);
-
 			double roomOffset = offset / (double) ROOMSIZE;
 			for (int i = 0; i < ROOMSIZE; i++) {
 				for (int j = 0; j < ROOMSIZE; j++) {
@@ -287,13 +250,10 @@ public class Room implements Drawable, Serializable {
 						break;
 					}
 				}
-
 			}
-
 			if (this.hero != null) {
 				this.hero.draw(imgX + (x * offset), imgY + (y * offset), heroLoc[0], heroLoc[1], roomOffset, canvas);
 			}
-
 		}
 	}
 
@@ -325,7 +285,6 @@ public class Room implements Drawable, Serializable {
 	public void setDoorInQuestion(boolean questionCorrect) {
 		DoorState newState = questionCorrect ? DoorState.OPEN : DoorState.LOCKED;
 		setDoorState(newState, doorInQuestion);
-
 	}
 
 	/**
@@ -345,5 +304,4 @@ public class Room implements Drawable, Serializable {
 		statusString = statusS;
 		questionTrigger = trigger;
 	}
-
 }
