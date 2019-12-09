@@ -57,17 +57,14 @@ public class Room implements Drawable, Serializable {
 	private final int EMPTY = 0;
 	private final int ENTRANCE = 3;
 	private final int EXIT = 4;
-	private final int POTION_HEAL = 5;
 	private final int POTION_VISION = 6;
 	private final int POTION_GREEN = 7;
 	private final double wallWidth = 3;
 	private final double doorWidth = 5;
-	public static final Image IMAGE_POTION_HEAL = new Image("images/potion-red.png");
-	public static final Image IMAGE_POTION_VISION = new Image("images/potion-blue.png");
-	public static final Image IMAGE_POTION_GREEN = new Image("images/potion-green.png");
-	public static final Image IMAGE_TREASURE = new Image("images/pillar2.png");
-	public static final Image IMAGE_EXIT = new Image("images/exit.png");
-	public static final Image IMAGE_ENTRANCE = new Image("images/ladder.png");
+	public static final Image IMAGE_POTION_VISION = new Image("file:images/potion-blue.png");
+	public static final Image IMAGE_POTION_GREEN = new Image("file:images/potion-green.png");
+	public static final Image IMAGE_EXIT = new Image("file:images/exit.png");
+	public static final Image IMAGE_ENTRANCE = new Image("file:images/ladder.png");
 	private static final Random rand = new Random();
 	
 	public Room(StringProperty statusS, IntegerProperty trigger) {
@@ -244,14 +241,8 @@ public class Room implements Drawable, Serializable {
 					case EXIT:
 						gc.drawImage(IMAGE_EXIT, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
 						break;
-					case POTION_HEAL:
-						gc.drawImage(IMAGE_POTION_HEAL, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
-						break;
 					case POTION_VISION:
 						gc.drawImage(IMAGE_POTION_VISION, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
-						break;
-					case POTION_GREEN:
-						gc.drawImage(IMAGE_POTION_GREEN, (roomOffset * i) + imgX + (x * offset), (roomOffset * j) + imgY + (y * offset), roomOffset, roomOffset);
 						break;
 					default:
 						break;
