@@ -48,7 +48,7 @@ public abstract class DungeonCharacter implements Drawable, Serializable {
     
     public DungeonCharacter() {
     	this.alive = true;
-        this.CharacterImage = new Image("file:images/person.png");
+        this.CharacterImage = new Image(getClass().getResource("/images/person.png").toString());
     }
 
     public final void setCharacterImage(Image CharacterImage) {

@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public abstract class Question implements Drawable{
-	private final static Image bgImage = new Image("file:images/School_Board.jpg");
+	private final Image bgImage = new Image(getClass().getResource("/images/School_Board.jpg").toString());
 	protected boolean QuestionCorrect;
 	protected BooleanProperty QuestionSubmitted;
     protected final double lineWidth = 1.0f;
